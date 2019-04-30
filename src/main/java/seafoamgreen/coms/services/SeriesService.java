@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 //TODO: let user subscribe to series
-//TODO: notify all users on new comic post in series
 @Service
 public class SeriesService {
 
@@ -37,11 +36,11 @@ public class SeriesService {
 
     public Series addComic(String seriesID, String comicID)
     {
-        Optional<Series> series = seriesRepository.findById(seriesID);
-        series.get().addComic(comicID);
-        seriesRepository.save(series.get());
-        return series.get();
-
+        //TODO: fix this!!
+        Series series = seriesRepository.findById(seriesID).get();
+        series.getComicList().add(comicID);
+        seriesRepository.save(series);
+        return series;
     }
 
     //Add comic to series list

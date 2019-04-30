@@ -30,6 +30,9 @@ public class Comic {
     //DateTime in format MM-dd-yyyy hh:mm a
     private String dateTime;
 
+    private List<String> upvoters;
+    private List<String> downvoters;
+
     // Panel and Tags are initalized as empty lists. They can be added within the
     // Service layer
     public Comic(String username, String comicName, String seriesID) {
@@ -38,6 +41,34 @@ public class Comic {
         this.seriesID = seriesID;
         this.panelList = new ArrayList<String>();
         this.tags = new ArrayList<String>();
+    }
+
+    /**
+     * @return the downvoters
+     */
+    public List<String> getDownvoters() {
+        return downvoters;
+    }
+
+    /**
+     * @param downvoters the downvoters to set
+     */
+    public void setDownvoters(List<String> downvoters) {
+        this.downvoters = downvoters;
+    }
+
+    /**
+     * @return the upvoters
+     */
+    public List<String> getUpvoters() {
+        return upvoters;
+    }
+
+    /**
+     * @param upvoters the upvoters to set
+     */
+    public void setUpvoters(List<String> upvoters) {
+        this.upvoters = upvoters;
     }
 
     /**
