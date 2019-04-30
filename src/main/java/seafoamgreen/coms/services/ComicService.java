@@ -40,9 +40,9 @@ public class ComicService {
     private SeriesRepository seriesRepository;
 
 
-    public Comic create(String UserID, String comicName, String SeriesID, String tagString) //need to find a way to implement time
+    public Comic create(String Username, String comicName, String SeriesID, String tagString) //need to find a way to implement time
     {
-        Comic comic = new Comic(UserID, comicName, SeriesID);
+        Comic comic = new Comic(Username, comicName, SeriesID);
         comic.setTags(tokenizeTagString(tagString));
         comicRepository.save(comic);
         return comic;
