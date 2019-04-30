@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>COMS.com</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <style>
+        nav {background-color: #71eeb8; border:none;font-family:'Open Sans', sans-serif;position:relative;}
+        .navbar-header{padding-right:50px}
+        .navbar-brand{color:#08442a}
+        .navbar-brand:hover{color:#08442a;}
+        .nav-item a{color:#08442a}
+        .nav-item a:hover{text-decoration: none;color:white}
+        .nav-item{margin-right:15px}
+
+        #searchBox{margin-top:3px}
+        #searchBox input[type=search]{width:15px;padding-left:5px;color:transparent;cursor:pointer;}
+        #searchBox input[type=search]:hover{background-color:none}
+        #searchBox input[type=search]:focus{width:250px;padding-left:40px;color:#000;background-color:#fff;cursor:auto;border-radius: 5px}
+        #searchBox-2 input:-moz-placeholder {color: transparent;}
+        #searchBox-2 input::-webkit-input-placeholder{color: transparent;}
+        #searchBox input[type=search]{background:url(https://png.icons8.com/search) no-repeat 9px center;width:35px;border: none;background-size:20px 20px;padding:5px}
+        input {outline: none;}
+        input[type=search] {-webkit-appearance: textfield;-webkit-box-sizing: content-box;font-family: inherit;font-size: 100%;}
+        input::-webkit-search-decoration, input::-webkit-search-cancel-button {display: none; }
+    </style>
+
+</head>
+
+<nav class="navbar navbar-toggleable-xs navbar-expand-md fixed-top">
+    <div class="navbar-collapse collapse">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/home}"><span class="fa fa-book"></span> COMS</a>
+        </div>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"><a href="searchResults.html">Genre</a></li>
+            <li class="nav-item active"><a href="searchResults.html">Recently Added</a></li>
+            <li class="nav-item active"><a href="searchResults.html">My List</a></li>
+        </ul>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <form id="searchBox" action="searchResults.html">
+                    <input type="search">
+                </form>
+            </li>
+            <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
+                <a data-toggle="modal" data-target="#createComicModal"><span class="fa fa-plus"></span> Create</a>
+            </li>
+            <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
+                <a th:href="@{/create}"><span class="fa fa-upload"></span> Upload</a>
+            </li>
+            <li class="nav-item dropdown" th:if="${isLoggedIn}">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><span class="fa fa-user-circle-o" aria-hidden="true"  th:text=" ${username}"> </span></a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/profile/self}">My Profile</a>
+                    <a class="dropdown-item" href="#">My Comics</a>
+                    <a class="dropdown-item" th:href="@{/accountSettings}">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
+                </div>
+            </li>
+            <li class="nav-item active" style="margin-top:8px" th:if="${notLoggedIn}">
+                <a th:href="@{/}"><span class="fa fa-sign-in"></span> Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<body>
+    <div class="modal fade" id="createComicModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Comic</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="" th:action="" method="post">
+                        <input class="form-control input-large" name="recipient" type="text" placeholder="Series Name"><br/>
+                        <input class="form-control input-large" name="subject" type="text" placeholder="Comic Name"><br/>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                            <button type="submit" class="btn btn-danger" data-dismiss="modal">Next</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
