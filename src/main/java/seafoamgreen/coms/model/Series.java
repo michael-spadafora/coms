@@ -26,9 +26,8 @@ public class Series {
     // List of subscribers
     private List<String> subscriberList;
 
-    public Series(String seriesName, String userID, String username) {
+    public Series(String seriesName, String username) {
         this.seriesName = seriesName;
-        this.userID = userID;
         this.username = username;
         this.comicList = new ArrayList<String>();
         this.collaboratorList = new ArrayList<String>();
@@ -69,6 +68,8 @@ public class Series {
         this.userID = userID;
     }
 
+    public void addComic(String comicID) { this.comicList.add(comicID); }
+
     public List<String> getComicList() {
         return comicList;
     }
@@ -99,6 +100,7 @@ public class Series {
                 "id='" + id + '\'' +
                 ", seriesName='" + seriesName + '\'' +
                 ", userID='" + userID + '\'' +
+                ", username='" + username + '\'' +
                 ", comicList=" + comicList +
                 ", collaboratorList=" + collaboratorList +
                 ", subscriberList=" + subscriberList +

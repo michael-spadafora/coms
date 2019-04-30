@@ -21,9 +21,9 @@ public class SeriesService {
     private SeriesRepository seriesRepository;
 
     //Create
-    public Series create(String seriesName, String UserID, String username)
+    public Series create(String seriesName, String username)
     {
-        Series series = new Series(seriesName, UserID, username);
+        Series series = new Series(seriesName,  username);
         seriesRepository.save(series);
         return series;
     }
@@ -33,6 +33,15 @@ public class SeriesService {
     public Optional<Series> findByID(String id)
     {
         return seriesRepository.findById(id);
+    }
+
+    public Series addComic(String seriesID, String comicID)
+    {
+        Optional<Series> series = seriesRepository.findById(seriesID);
+        series.get().addComic(comicID);
+        seriesRepository.save(series.get());
+        return series.get();
+
     }
 
     //Add comic to series list

@@ -126,9 +126,9 @@ public class Comic {
         this.tags = tagList;
     }
 
-    public void addPanel(String panel)
+    public void addPanel(String panelId)
     {
-        panelList.add(panel);
+        panelList.add(panelId);
     }
 
     public void addTag(String tag)
@@ -144,7 +144,10 @@ public class Comic {
                 ", comicName='" + comicName + '\'' +
                 ", seriesID='" + seriesID + '\'' +
                 ", panelList=" + panelList +
-                ", tagList=" + tags +
+                ", tags=" + tags +
+                ", isPublished=" + isPublished +
+                ", AWSURL='" + AWSURL + '\'' +
+                ", dateTime='" + dateTime + '\'' +
                 '}';
     }
 }

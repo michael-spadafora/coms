@@ -17,19 +17,14 @@ public class PanelService {
     private PanelRepository panelRepository;
 
     //Create
-    public Panel create(String UserID, String comicID, String snapshotJSON)
+    public Panel create(String Username, String comicID, String fabricJSON, String blob)
     {
-        Panel panel = new Panel(UserID, comicID, snapshotJSON);
+        Panel panel = new Panel(Username, comicID, fabricJSON, blob);
         panelRepository.save(panel);
         return panel;
     }
 
 
-    //Retrieve
-    public Panel findBysnapshotJSON(String JSON)
-    {
-        return panelRepository.findBysnapshotJSON(JSON);
-    }
 
     public List<Panel> getAllPanels()
     {
@@ -40,12 +35,6 @@ public class PanelService {
 
     public List<Panel> getByUserID(String userID){ return panelRepository.findByUserID(userID);}
     //Update
-    public Panel update(String snapshotJSON, String newJSON) {
-        Panel panel = panelRepository.findBysnapshotJSON(newJSON);
-        panel.setSnapshotJSON(newJSON);
-        return panelRepository.save(panel);
-    }
-
 
 
     //Delete
