@@ -1,0 +1,150 @@
+package seafoamgreen.coms.model;
+
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Document
+public class Comic {
+
+    //Mongo generated ID. Should not have a setter only getter
+    @Id
+    private String id;
+    //Owner of comic
+    private String username;
+    //Name of comic
+    private String comicName;
+    //Series that comic belongs to
+    private String seriesID;
+    //List of Panels within the comic
+    private List<String> panelList;
+    //List of Tags within the comic
+    private List<String> tags;
+    //is published
+    private boolean isPublished;
+    //aws url of the picture
+    private String AWSURL;
+    //DateTime in format MM-dd-yyyy hh:mm a
+    private String dateTime;
+
+    // Panel and Tags are initalized as empty lists. They can be added within the
+    // Service layer
+    public Comic(String username, String comicName, String seriesID) {
+        this.username = username;
+        this.comicName = comicName;
+        this.seriesID = seriesID;
+        this.panelList = new ArrayList<String>();
+        this.tags = new ArrayList<String>();
+    }
+
+    /**
+     * @return the dateTime
+     */
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    /**
+     * @param dateTime the dateTime to set
+     */
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    /**
+     * @return the aWSURL
+     */
+    public String getAWSURL() {
+        return AWSURL;
+    }
+
+    /**
+     * @param aWSURL the aWSURL to set
+     */
+    public void setAWSURL(String aWSURL) {
+        this.AWSURL = aWSURL;
+    }
+
+    /**
+     * @return the isPublished
+     */
+    public boolean isPublished() {
+        return isPublished;
+    }
+
+    /**
+     * @param isPublished the isPublished to set
+     */
+    public void setPublished(boolean isPublished) {
+        this.isPublished = isPublished;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String userID) {
+        this.username = userID;
+    }
+
+    public String getComicName() {
+        return comicName;
+    }
+
+    public void setComicName(String comicName) {
+        this.comicName = comicName;
+    }
+
+    public String getSeriesID() {
+        return seriesID;
+    }
+
+    public void setSeriesID(String seriesID) {
+        this.seriesID = seriesID;
+    }
+
+    public List<String> getPanelList() {
+        return panelList;
+    }
+
+    public void setPanelList(List<String> panelList) {
+        this.panelList = panelList;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tagList) {
+        this.tags = tagList;
+    }
+
+    public void addPanel(String panel)
+    {
+        panelList.add(panel);
+    }
+
+    public void addTag(String tag)
+    {
+        tags.add(tag);
+    }
+
+    @Override
+    public String toString() {
+        return "Comic{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", comicName='" + comicName + '\'' +
+                ", seriesID='" + seriesID + '\'' +
+                ", panelList=" + panelList +
+                ", tagList=" + tags +
+                '}';
+    }
+}
