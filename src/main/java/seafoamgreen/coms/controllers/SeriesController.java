@@ -35,23 +35,39 @@ public class SeriesController {
         HttpSession session = request.getSession();
 
         String seriesName = request.getParameter("series");
+        String existingSeriesId = request.getParameter("existingSeries");
         String comicName = request.getParameter("comic");
+        String tags = request.getParameter("tags");
+        String publishDate = request.getParameter("publishDate");
+
         String currentUser = (String)session.getAttribute("username");
         System.out.println(currentUser);
         System.out.println(seriesName);
+        System.out.println(existingSeriesId);
         System.out.println(comicName);
+        System.out.println(tags);
+        System.out.println(publishDate);
+
         request.getSession().setAttribute("currentSeriesName", seriesName);
         request.getSession().setAttribute("currentComicName", comicName);
 
-
+        Series currentSeries;
         //Initialize the new Series and Comic Issue inside the DB
-        Series newSeries = seriesService.create(seriesName, currentUser);
-        Comic newComic = comicService.create(currentUser, comicName, newSeries.getId(), "");
-        seriesService.addComic(newSeries.getId(), newComic.getId());
-        newSeries = seriesService.findByID(newSeries.getId()).get();
+        if(existingSeriesId == null) {
+            currentSeries = seriesService.create(seriesName, currentUser);
+
+        }
+        else
+        {
+            currentSeries = seriesService.findByID(existingSeriesId).get();
+
+        }
+        Comic newComic = comicService.create(currentUser, comicName, currentSeries.getId(), "");
+        seriesService.addComic(currentSeries.getId(), newComic.getId());
+        currentSeries = seriesService.findByID(currentSeries.getId()).get();
 
         //Get the fully initialized objects from the DB and then set it into the session before going to create comic page
-        request.getSession().setAttribute("currentSeries", newSeries);
+        request.getSession().setAttribute("currentSeries", currentSeries);
         request.getSession().setAttribute("currentComic", newComic);
 
         ModelAndView mav = new ModelAndView("createComic");
@@ -74,7 +90,7 @@ public class SeriesController {
     @GetMapping("/username")
     public List<Series> getByUsername(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        return seriesService.findByUsername(request.getParameter("username"));
+        return seriesService.findAllByUsername(request.getParameter("username"));
     }
 
 
