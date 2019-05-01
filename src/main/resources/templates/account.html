@@ -132,167 +132,177 @@
 </nav>
 
 <body>
-<div class="tab">
-    <button class="tablinks active" onclick="switchTab(event, 'inbox')">Inbox</button>
-    <button class="tablinks" onclick="switchTab(event, 'comics')">Your Comics</button>
-    <button class="tablinks" onclick="switchTab(event, 'accountInfo')">Account Information</button>
-    <button class="tablinks" onclick="switchTab(event, 'preferences')">Preferences</button>
-    <button class="tablinks" onclick="switchTab(event, 'deactivate')">Deactivate Account</button>
-</div>
-
-<div id="inbox" class="tabcontent" style="display:block">
-    <input id="checkAll" type="checkbox">
-    <button id="deleteAll" class="actions">Delete</button>
-    <button id="createMessage" data-toggle="modal" data-target="#myModal">New Message</button>
-    <div class="messages">
-        <div class="list-group">
-            <a href="#" class="list-group-item">
-                <div class="emailCheckbox">
-                    <label>
-                        <input type="checkbox">
-                    </label>
-                    <span class="sender">User142</span>
-                    <span class="header">Collaboration?</span>
-                    <button><span class="glyphicon glyphicon-share-alt"></span></button>
-                    <span class="emailBody">
-                                <div>Hey RandomUser, do you want to collab on my next comic?</div>
-                            </span>
-
-                </div>
-            </a>
-            <a href="#" class="list-group-item">
-                <div class="emailCheckbox">
-                    <label>
-                        <input type="checkbox">
-                    </label>
-                    <span class="sender">COMS</span>
-                    <span class="header">New Subscriber</span>
-                    <button><span class="glyphicon glyphicon-share-alt"></span></button>
-                    <span class="emailBody">
-                                <div>User142 subscribed to your series, CS Problems.</div>
-                            </span>
-                </div>
-            </a>
-            <a href="#" class="list-group-item">
-                <div class="emailCheckbox">
-                    <label>
-                        <input type="checkbox">
-                    </label>
-                    <span class="sender">COMS</span>
-                    <span class="header">New Comment</span>
-                    <button><span class="glyphicon glyphicon-share-alt"></span></button>
-                    <span class="emailBody">
-                                <div>User142 left a comment on Chapter 5 of CS Problems, "Love your stuff!".</div>
-                            </span>
-                </div>
-            </a>
-        </div>
+    <div class="tab">
+        <button class="tablinks active" onclick="switchTab(event, 'inbox')">Inbox</button>
+        <button class="tablinks" onclick="switchTab(event, 'comics')">Your Comics</button>
+        <button class="tablinks" onclick="switchTab(event, 'accountInfo')">Account Information</button>
+        <button class="tablinks" onclick="switchTab(event, 'preferences')">Preferences</button>
+        <button class="tablinks" onclick="switchTab(event, 'deactivate')">Deactivate Account</button>
     </div>
 
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">New Message</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <input class="form-control input-large" name="recipient" type="text" placeholder="Recipient"><br/>
-                        <input class="form-control input-large" name="subject" type="text" placeholder="Subject"><br/>
-                        <textarea class="form-control input-large" name="bodyMessage" type="text"></textarea>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Send</button>
+    <div id="inbox" class="tabcontent" style="display:block">
+        <input id="checkAll" type="checkbox">
+        <button id="deleteAll" class="actions">Delete</button>
+        <button id="createMessage" data-toggle="modal" data-target="#myModal">New Message</button>
+        <div class="messages">
+
+            <div class="list-group">
+                <a class="list-group-item" th:each="message: ${Messages}">
+                    <span class="sender" th:text="${message.getFromUsername}"></span>
+                    <span class="header" th:text="${message.getMessageTitle}"></span>
+                </a>
+            </div>
+
+    <!--
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <div class="emailCheckbox">
+                        <label>
+                            <input type="checkbox">
+                        </label>
+                        <span class="sender">User142</span>
+                        <span class="header">Collaboration?</span>
+                        <button><span class="glyphicon glyphicon-share-alt"></span></button>
+                        <span class="emailBody">
+                                    <div>Hey RandomUser, do you want to collab on my next comic?</div>
+                                </span>
+
+                    </div>
+                </a>
+                <a href="#" class="list-group-item">
+                    <div class="emailCheckbox">
+                        <label>
+                            <input type="checkbox">
+                        </label>
+                        <span class="sender">COMS</span>
+                        <span class="header">New Subscriber</span>
+                        <button><span class="glyphicon glyphicon-share-alt"></span></button>
+                        <span class="emailBody">
+                                    <div>User142 subscribed to your series, CS Problems.</div>
+                                </span>
+                    </div>
+                </a>
+                <a href="#" class="list-group-item">
+                    <div class="emailCheckbox">
+                        <label>
+                            <input type="checkbox">
+                        </label>
+                        <span class="sender">COMS</span>
+                        <span class="header">New Comment</span>
+                        <button><span class="glyphicon glyphicon-share-alt"></span></button>
+                        <span class="emailBody">
+                                    <div>User142 left a comment on Chapter 5 of CS Problems, "Love your stuff!".</div>
+                                </span>
+                    </div>
+                </a>
+            </div>
+        </div>-->
+
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">New Message</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <input class="form-control input-large" name="recipient" type="text" placeholder="Recipient"><br/>
+                            <input class="form-control input-large" name="subject" type="text" placeholder="Subject"><br/>
+                            <textarea class="form-control input-large" name="bodyMessage" type="text"></textarea>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Send</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div id="comics" class="tabcontent" style="display:none">
-    <div id="comicsTitle">Your Comics</div>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+1.jpg">
-            </div>
-            <div class="middle">
-                <div class="editComic">
-                    <button class="editButton">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </button>
-                </div>
-            </div>
-            <input type="checkbox">
-        </div>
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png">
-            </div>
-            <div class="middle">
-                <div class="editComic">
-                    <button class="editButton">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </button>
-                </div>
-            </div>
-            <input type="checkbox">
-        </div>
-
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+3.jpg">
-            </div>
-            <div class="middle">
-                <div class="editComic">
-                    <button class="editButton">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </button>
-                </div>
-            </div>
-            <input type="checkbox">
-        </div>
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg">
-            </div>
-            <div class="middle">
-                <div class="editComic">
-                    <button class="editButton">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </button>
-                </div>
-            </div>
-            <input type="checkbox">
-        </div>
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+4.jpg">
-            </div>
-            <div class="middle">
-                <div class="editComic">
-                    <button class="editButton">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </button>
-                </div>
-            </div>
-            <input type="checkbox">
-        </div>
     </div>
-    <button id="deleteComic">Delete</button>
-</div>
 
-<div id="accountInfo" class="tabcontent" style="display:none">
-</div>
+    <div id="comics" class="tabcontent" style="display:none">
+        <div id="comicsTitle">Your Comics</div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+1.jpg">
+                </div>
+                <div class="middle">
+                    <div class="editComic">
+                        <button class="editButton">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </div>
+                </div>
+                <input type="checkbox">
+            </div>
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png">
+                </div>
+                <div class="middle">
+                    <div class="editComic">
+                        <button class="editButton">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </div>
+                </div>
+                <input type="checkbox">
+            </div>
 
-<div id="preferences" class="tabcontent" style="display:none">
-</div>
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+3.jpg">
+                </div>
+                <div class="middle">
+                    <div class="editComic">
+                        <button class="editButton">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </div>
+                </div>
+                <input type="checkbox">
+            </div>
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg">
+                </div>
+                <div class="middle">
+                    <div class="editComic">
+                        <button class="editButton">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </div>
+                </div>
+                <input type="checkbox">
+            </div>
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+4.jpg">
+                </div>
+                <div class="middle">
+                    <div class="editComic">
+                        <button class="editButton">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </div>
+                </div>
+                <input type="checkbox">
+            </div>
+        </div>
+        <button id="deleteComic">Delete</button>
+    </div>
 
-<div id="deactivate" class="tabcontent" style="display:none">
-</div>
+    <div id="accountInfo" class="tabcontent" style="display:none">
+    </div>
+
+    <div id="preferences" class="tabcontent" style="display:none">
+    </div>
+
+    <div id="deactivate" class="tabcontent" style="display:none">
+    </div>
 </body>
 
 </html>
