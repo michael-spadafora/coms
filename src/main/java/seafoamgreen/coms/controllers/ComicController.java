@@ -107,7 +107,7 @@ public class ComicController {
         String bucketName = "coms.com-comics";
         String key = "key";
 
-        s3client.putObject(bucketName, key, "content");
+        s3client.putObject(bucketName, key, "content"); 
 
         URL url = s3client.getUrl(bucketName, key);
         String urlstring = s3client.getUrl(bucketName, key).toString();
