@@ -33,5 +33,6 @@ public interface ComicRepository extends MongoRepository<Comic, String> {
     @Query("{ 'dateTime' : ?0 }")
     List<Comic>  findByDateTime(String dateTime);
 
-
+    @Query("{ 'username' : ?0 }")
+    List<Comic> findAllByUsername(String username);
 }

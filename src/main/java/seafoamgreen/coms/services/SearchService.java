@@ -1,5 +1,6 @@
 package seafoamgreen.coms.services;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,11 @@ public class SearchService {
         List<Series> series = seriesRepository.findAllBySeriesNameRegex(seriesNameRegex);
 
         return series;
+    }
+
+    public List<Comic> findAllComicsByUsername(String username) {
+        List<Comic> comics = comicRepository.findAllByUsername(username);
+        return comics;
     }
 }
 
