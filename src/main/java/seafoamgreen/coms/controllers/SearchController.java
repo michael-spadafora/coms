@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.springframework.web.servlet.ModelAndView;
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.model.User;
 import seafoamgreen.coms.services.SearchService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,22 +54,24 @@ public class SearchController {
         return series;
 
     }
-
-    @GetMapping("/") 
-    public ModelAndView searchAll(HttpServletRequest request, HttpServletResponse response) {
+  
+    @GetMapping("/keyword")
+    public ModelAndView search(HttpServletRequest request)
+    {
         ModelAndView mav = new ModelAndView("searchResults");
-        String searchTerm = request.getParameter("searchTerm");
-        List<Series> series = searchService.findAllBySeriesName(searchTerm);  
-        List<Comic> comics = searchService.findAllByComicTitle(searchTerm);   
-        List<User> users = searchService.findAllByUsername(searchTerm);    
-        List<Comic> comicsByTag = searchService.findAllByTag(searchTerm);
 
-        mav.addObject("series", series);
-        mav.addObject("comics", comics);
-        mav.addObject("users", users);
-        mav.addObject("comicsByTag", comicsByTag);
+        List<Comic> comics = new ArrayList<Comic>();
 
+        String searchWord = request.getParameter("searchWord");
+        comics.addAll(searchService.findAllByComicTitle(searchWord));
+        comics.addAll(searchService.findAllByTag(searchWord));
+        comics.addAll(searchService.findAllComicsByUsername(searchWord));
+        mav.addObject("comicList" , comics);
+        mav.addObject("searchWord",searchWord);
+
+        System.out.println(comics);
         return mav;
+
     }
 
 }
