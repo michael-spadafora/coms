@@ -14,6 +14,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <style>
+        .hide {
+            display: none;
+        }
         nav {background-color: #71eeb8; border:none;font-family:'Open Sans', sans-serif;position:relative;}
         .navbar-header{padding-right:50px}
         .navbar-brand{color:#08442a}
@@ -205,14 +208,28 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">New Comic</h4>
+                <h4 id = "create-title" class="modal-title">Create New</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 <form action="/series/create"  method="post" id = "newSeries">
-                    <input class="form-control input-large" name="series" type="text" placeholder="Series Name"><br/>
-                    <input class="form-control input-large" name="comic" type="text" placeholder="Comic Name"><br/>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input onclick = "showSeriesNameBox()" type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
+                        <label class="custom-control-label" for="customRadioInline1">New Series</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input onclick = "showSeriesList()"type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
+                        <label class="custom-control-label" for="customRadioInline2">Existing Series</label>
+                    </div>
+                    <input id = "seriesNameBox" class="hide form-control input-large" name="series" type="text" placeholder="Series Name"><br/>
 
+                    <select name = "existingSeries" style = "display:none;"id = "seriesList">
+                        <option disabled selected value> -- Select a Series -- </option>
+                        <option th:each="series : ${userSeries}" th:value="${series.getId()}" th:text="${series.getSeriesName()}"></option>
+                    </select>
+                    <input id = "comicNameBox" class= "hide form-control input-large" name="comic" type="text" placeholder="Comic Name"><br/>
+                    <input id = "tagsBox" class= "hide form-control input-large" name="tags" type="text" placeholder="Tags"><br/>
+                    <input id = "datePicker" class= "hide" type="date" name="publishDate">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
                         <button onclick= "form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Create</button>
@@ -227,6 +244,41 @@
 <script type="text/javascript">
     function form_submit() {
         document.getElementById("newSeries").submit();
+    }
+
+    function showSeriesNameBox(){
+        document.getElementById('seriesNameBox').style.display = 'block';
+        document.getElementById('comicNameBox').style.display ='block';
+        document.getElementById('tagsBox').style.display ='block';
+        document.getElementById('datePicker').style.display ='block';
+        document.getElementById('create-title').innerHTML = "Create New Series";
+
+        document.getElementById('seriesNameBox').required = true;
+        document.getElementById('comicNameBox').required = true;
+        document.getElementById('tagsBox').required = true;
+        document.getElementById('datePicker').required = true;
+
+
+        document.getElementById('seriesList').style.display = 'none';
+        document.getElementById('seriesList').required = false;
+    }
+
+    function showSeriesList(){
+        document.getElementById('seriesList').style.display = 'block';
+        document.getElementById('comicNameBox').style.display ='block';
+        document.getElementById('tagsBox').style.display ='block';
+        document.getElementById('datePicker').style.display ='block';
+        document.getElementById('create-title').innerHTML = "Create Under Existing Series";
+
+        document.getElementById('seriesList').required = true;
+        document.getElementById('comicNameBox').required = true;
+        document.getElementById('tagsBox').required = true;
+        document.getElementById('datePicker').required = true;
+
+
+
+        document.getElementById('seriesNameBox').style.display = 'none';
+        document.getElementById('seriesNameBox').required = false;
     }
 </script>
 
