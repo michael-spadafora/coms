@@ -90,85 +90,13 @@
 
 <body>
 <div class="container">
-    <h2>Search Results for 'Funny'</h2>
+    <h2>Search Results for '<span th:text="${searchWord}"></span>'</h2>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3" th:each="comic: ${comicList}">
             <div class="thumbnail">
                 <a href="viewComic.html">
-                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+1.jpg">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+3.jpg">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+4.jpg">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+8.jpg">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+7.png">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+9.jpg">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg">
+                    <img th:src="${comic.AWSURL}">
                 </a>
             </div>
         </div>

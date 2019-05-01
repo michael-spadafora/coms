@@ -68,6 +68,7 @@ public class SearchController {
         comics.addAll(searchService.findAllByTag(searchWord));
         comics.addAll(searchService.findAllComicsByUsername(searchWord));
         mav.addObject("comicList" , comics);
+        mav.addObject("searchWord",searchWord);
 
         System.out.println(comics);
         return mav;
