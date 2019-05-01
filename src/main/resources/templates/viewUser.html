@@ -51,7 +51,7 @@
 
         .bottomRight{margin-left:300px}
         .rightTitle{font-size: 18px;padding-bottom: 15px}
-        .col-md-3 > div > a > img{object-fit: cover; width:300px;height:150px}
+        .col-md-3 > div > a > img{object-fit: cover; width:200px;height:150px;margin-right:30px;margin-bottom:13px}
     </style>
 </head>
 
@@ -101,7 +101,8 @@
         <div class="buttons">
             <button id="addFriend"><span class="fa fa-user-plus" style="color:black"></span> Add Friend </button>
             <button id="message"><span class="fa fa-envelope"></span> Message</button>
-            <button id="moreOptions"><span class="fa fa-ellipsis-v"></span></button>
+
+            <button id="moreOptions"><span class="fa fa-money"></span> Tip</button>
         </div>
     </div>
 
@@ -111,11 +112,11 @@
                 <h4 class="sideTitle">Info</h4>
                 <div>
                     <span class="topics">User Since</span>
-                    <span style="margin-left:40px">Oct 2018</span>
+                    <span>Oct 2018</span>
                 </div>
                 <div>
                     <span class="topics">Favorite Genre</span>
-                    <span style="margin-left:14px">Romance</span>
+                    <span>Romance</span>
                 </div>
             </div>
 
@@ -127,7 +128,7 @@
 
         <div class="bottomRight">
             <div class="ownComics">
-                <div class="rightTitle" th:text="${username}">'s Comics</div>
+                <div class="rightTitle"><span th:text="${username}"></span>'s Comics</div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="thumbnail">
@@ -155,7 +156,7 @@
             </div>
 
             <div class="list">
-                <div class="rightTitle" th:text="${username}">'s List</div>
+                <div class="rightTitle"><span th:text="${username}"></span>'s List</div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="thumbnail">

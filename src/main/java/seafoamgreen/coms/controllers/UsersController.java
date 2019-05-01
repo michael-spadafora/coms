@@ -246,8 +246,13 @@ public class UsersController {
             response.sendError(401, "User not logged in");
         }
 
-        ModelAndView mav = new ModelAndView("messages");
+        ModelAndView mav = new ModelAndView("inbox");
         mav.addObject("Messages" , userService.getInbox(username));
+        mav.addObject("username", username);
+        if(username == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
 
     }

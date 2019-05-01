@@ -32,19 +32,8 @@
         input {outline: none;}
         input[type=search] {-webkit-appearance: textfield;-webkit-box-sizing: content-box;font-family: inherit;font-size: 100%;}
         input::-webkit-search-decoration, input::-webkit-search-cancel-button {display: none; }
-
-        .container{margin-top:7%}
-
-        .listOfComics{padding-top:50px;padding-left: 10px;margin-left:15px;margin-right:30px}
-        .listOfComics > h3{margin-left:-10px;font-family: 'Roboto Condensed', sans-serif;color:#0e794b}
-        .testimonial-group{padding-bottom: 25px}
-        .testimonial-group > .row{overflow-x:scroll; white-space: nowrap;flex-wrap: nowrap;}
-        .testimonial-group > .row > .col-xs-4{display:inline-block;float:none}
-        .testimonial-group > .row > .col-xs-4 > a > img{height:150px; width:250px;padding:3px}
-
-        h2{text-align: center;padding-bottom:15px}
-        img{object-fit: cover; width:275px;height:150px;margin-bottom:15px}
     </style>
+
 </head>
 
 <nav class="navbar navbar-toggleable-xs navbar-expand-md fixed-top">
@@ -89,20 +78,29 @@
 </nav>
 
 <body>
-<div class="container">
-    <h2>Search Results for '<span th:text="${searchWord}"></span>'</h2>
 
-    <div class="row">
-        <div class="col-md-3" th:each="comic: ${comicList}">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img th:src="${comic.AWSURL}">
-                </a>
+
+    <div class="modal fade" id="createComicModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Comic</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="" th:action="" method="post">
+                        <input class="form-control input-large" name="recipient" type="text" placeholder="Series Name"><br/>
+                        <input class="form-control input-large" name="subject" type="text" placeholder="Comic Name"><br/>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                            <button type="submit" class="btn btn-danger" data-dismiss="modal">Next</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
-
 </body>
-
 </html>
