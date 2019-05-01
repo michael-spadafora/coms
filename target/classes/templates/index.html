@@ -62,8 +62,13 @@
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
+<<<<<<< HEAD
                 <form id="searchBox" th:href="@{/comic/}">
                     <input type="search">
+=======
+                <form id="searchBox" action="/search/keyword" method = "get">
+                    <input name = "searchWord" type="search">
+>>>>>>> origin/master
                 </form>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">

@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.servlet.ModelAndView;
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.model.User;
 import seafoamgreen.coms.services.SearchService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +53,24 @@ public class SearchController {
         List<Series> series = searchService.findAllBySeriesName(seriesName);
         return series;
         //TODO: search by series name
+
+    }
+
+    @GetMapping("/keyword")
+    public ModelAndView search(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView("searchResults");
+
+        List<Comic> comics = new ArrayList<Comic>();
+
+        String searchWord = request.getParameter("searchWord");
+        comics.addAll(searchService.findAllByComicTitle(searchWord));
+        comics.addAll(searchService.findAllByTag(searchWord));
+        comics.addAll(searchService.findAllComicsByUsername(searchWord));
+        mav.addObject("comicList" , comics);
+
+        System.out.println(comics);
+        return mav;
 
     }
 

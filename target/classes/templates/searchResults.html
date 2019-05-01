@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>COMS.com</title>
 
+<<<<<<< HEAD
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -84,11 +85,56 @@
             <li class="nav-item active" style="margin-top:8px" th:if="${notLoggedIn}">
                 <a th:href="@{/}"><span class="fa fa-sign-in"></span> Login</a>
             </li>
+=======
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.13.5/dist/bootstrap-table.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.1.0/bootstrap.min.js"></script>
+    <style>
+        .navbar-inverse {background-color: #71eeb8; border:none}
+        .navbar-inverse .navbar-brand{color:black}
+        .navbar-inverse .navbar-right li a {color:black}
+        .navbar-inverse .navbar-left li a {color:black}
+        .navbar-inverse .navbar-left{padding-left:50px}
+
+        h2{text-align: center;padding-bottom:15px}
+        .col-md-3 > div > a > img{object-fit: cover; width:300px;height:150px}
+    </style>
+</head>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/home}"><span class="fa fa-puzzle-piece"></span>COMS</a>
+        </div>
+        <ul class="nav navbar-nav navbar-left">
+            <li><a href="searchResults.html">Genre</a></li>
+            <li><a href="searchResults.html">Recently Added</a></li>
+            <li><a href="searchResults.html">My List</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav">
+            <li>
+                <form action="searchResults.html">
+                    <input type="text" placeholder="" style="margin-left:50px;margin-top:10px;width:250px;">
+                    <button style="margin-top:10px;float:right" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                </form>
+            </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="createComic.html"><span class="glyphicon glyphicon-upload"></span> Upload</a></li>
+            <li><a href="account.html"><span class="glyphicon glyphicon-user"></span> Account</a></li>
+            <li><a href="index.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+>>>>>>> origin/master
         </ul>
     </div>
 </nav>
 
 <body>
+<<<<<<< HEAD
     <div class="container">
         <h2>Search Results for 'Funny'</h2>
 
@@ -174,6 +220,93 @@
             </div>
         </div>
     </div>
+=======
+<div class="container">
+    <h2>Search Results for 'Funny'</h2>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="viewComic.html">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+1.jpg">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="viewComic.html">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="viewComic.html">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+3.jpg">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="viewComic.html">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+4.jpg">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="viewComic.html">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="viewComic.html">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+8.jpg">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="viewComic.html">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="viewComic.html">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+7.png">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="viewComic.html">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+9.jpg">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="viewComic.html">
+                    <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+>>>>>>> origin/master
 
 </body>
 

@@ -10,28 +10,35 @@ public class Panel {
     @Id
     private String id;
     //User that owns this comic
-    private String userID;
+    private String username;
     //Comic in which panel belongs to
     private String comicID;
     //JSON data of the canvas
-    private String snapshotJSON;
+    private String fabricJSON;
+    //BLOB
+    private String blob;
 
-    public Panel(String userID, String comicID, String snapshotJSON) {
-        this.userID = userID;
+    public Panel(String username, String comicID, String fabricJSON, String blob) {
+        this.username = username;
         this.comicID = comicID;
-        this.snapshotJSON = snapshotJSON;
+        this.fabricJSON = fabricJSON;
+        this.blob = blob;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getUserID() {
-        return userID;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getComicID() {
@@ -42,21 +49,31 @@ public class Panel {
         this.comicID = comicID;
     }
 
-    public String getSnapshotJSON() {
-        return snapshotJSON;
+    public String getFabricJSON() {
+        return fabricJSON;
     }
 
-    public void setSnapshotJSON(String snapshotJSON) {
-        this.snapshotJSON = snapshotJSON;
+    public void setFabricJSON(String fabricJSON) {
+        this.fabricJSON = fabricJSON;
+    }
+
+    public String getBlob() {
+        return blob;
+    }
+
+    public void setBlob(String blob) {
+        this.blob = blob;
     }
 
     @Override
     public String toString() {
         return "Panel{" +
                 "id='" + id + '\'' +
-                ", userID='" + userID + '\'' +
+                ", username='" + username + '\'' +
                 ", comicID='" + comicID + '\'' +
-                ", snapshotJSON='" + snapshotJSON + '\'' +
+                ", fabricJSON='" + fabricJSON + '\'' +
+                ", blob='" + blob + '\'' +
                 '}';
     }
 }
+

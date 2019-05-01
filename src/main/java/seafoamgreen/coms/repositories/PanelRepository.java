@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PanelRepository extends MongoRepository<Panel, String> {
 
-    Panel findBysnapshotJSON(String JSON);
+    
 
     //This is a custom query where you can search for a Panel based on the Comic name
     //The Panel object has a nested Comic object ("comic"), and a comic object has "comicName" field

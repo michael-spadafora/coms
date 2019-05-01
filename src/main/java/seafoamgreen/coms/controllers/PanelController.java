@@ -2,6 +2,9 @@ package seafoamgreen.coms.controllers;
 
 
 
+import seafoamgreen.coms.model.Comic;
+import seafoamgreen.coms.model.Panel;
+import seafoamgreen.coms.services.ComicService;
 import seafoamgreen.coms.services.PanelService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
 
 @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*")
@@ -18,6 +22,9 @@ public class PanelController {
 
     @Autowired
     PanelService panelService;
+
+    @Autowired
+    ComicService comicService;
 
 
     /*
@@ -39,14 +46,25 @@ public class PanelController {
     @PostMapping("/savePanel")
     public String savePanel(HttpServletRequest request)
     {
+        HttpSession session = request.getSession();
         Enumeration params = request.getParameterNames();
+
+        String currentUser =(String) session.getAttribute("username");
         while(params.hasMoreElements()){
             String paramName = (String)params.nextElement();
             System.out.println(paramName + " = " + request.getParameter(paramName));
         }
 
-        System.out.println("current series: " + request.getSession().getAttribute("currentSeriesName"));
-        System.out.println("current comic: " + request.getSession().getAttribute("currentComicName"));
+        System.out.println("current series : " + request.getSession().getAttribute("currentSeries"));
+        System.out.println("current comic : " + request.getSession().getAttribute("currentComic"));
+
+        //Create the panel in the DB, add it to the comic
+        Comic currentComic = (Comic)session.getAttribute("currentComic");
+        Panel panel = panelService.create(currentUser, currentComic.getId(), request.getParameter("body"), request.getParameter("image"));
+
+        comicService.addPanel(currentComic.getId(), panel.getId());
+        //Update the Session Comic
+        session.setAttribute("currentComic", comicService.findById(currentComic.getId()));
         return "save triggered";
     }
 

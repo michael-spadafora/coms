@@ -19,4 +19,5 @@ public interface SeriesRepository extends MongoRepository<Series, String> {
 
     @Query("{ 'username' : ?0 }")
     public List<Series> findByUsername(String username);
+
 }
