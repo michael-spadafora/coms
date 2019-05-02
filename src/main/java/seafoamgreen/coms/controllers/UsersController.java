@@ -147,11 +147,19 @@ public class UsersController {
         mav.addObject("username", activeUsername);
         mav.addObject("userSeries", userSeries);
         //TODO: add list objects for popular, continue reading, recommended
-
+        
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
-        else
+            //TODO: this stuff
+            // List<Comic> popularComic = userService.getPopular();
+            // List<String> popularThumbnail = userService.getPopularThumbnails();
+            // userService.getContinueReading(activeUsername);
+
+        else {
             mav.addObject("isLoggedIn", true);
+            // List<Comic> popularComic = userService.getPopular();
+            // List<String> popularThumbnail = userService.getPopularThumbnails();
+        }
 
         return mav;
     }

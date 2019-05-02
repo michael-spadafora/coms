@@ -71,6 +71,18 @@ public class ComicController {
 
     }
 
+    @GetMapping("/view/thumbnail")
+    public ModelAndView viewComicThumbnail(HttpServletRequest request, HttpServletResponse response) {
+        String comicID = request.getParameter("comidID");
+        ModelAndView mav = new ModelAndView("comicView");
+        Comic c =  comicService.findById(comicID);
+        List<String> blobs = comicService.getPanelObjects(c);
+        mav.addObject("comic", c);
+        mav.addObject("thumbnail", blobs.get(0));
+        return mav;
+
+    }
+
     @GetMapping("/findById")
     public Comic findById(HttpServletRequest request, HttpServletResponse response )throws IOException {
 
