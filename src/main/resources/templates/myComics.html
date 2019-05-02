@@ -84,77 +84,47 @@
 
 <body>
     <div class="container">
-        <h2>My Comics</h2>
+        <h2>My Creations</h2>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createComicModal">Add New Series</button>
 
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+1.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Comic/Series Title</h5>
-                        <a id="edit" href="#" class="btn btn-primary">Edit</a>
-                        <a id="delete" href="#" class="btn btn-danger">Delete</a>
+        <div th:each="series: ${seriesMap}">
+            <h3 th:text="${series.key.getSeriesName()}"></h3>
+            <div class="row">
+                <div class="col-md-3" th:each="comic: ${series.value}">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" th:src="${comic.getAWSURL()}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                            <a id="edit" href="#" class="btn btn-primary">Edit</a>
+                            <a id="delete" href="#" class="btn btn-danger">Delete</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Comic/Series Title</h5>
-                        <a href="#" class="btn btn-primary">Edit</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+4.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Comic/Series Title</h5>
-                        <a href="#" class="btn btn-primary">Edit</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+3.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Comic/Series Title</h5>
-                        <a href="#" class="btn btn-primary">Edit</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Comic/Series Title</h5>
-                        <a href="#" class="btn btn-primary">Edit</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
+
+                <div class="col-md-3">
+                    <div class="card" style="width: 18rem;">
+                        <a href="#" style="margin:0 auto;padding:30px"><span class="fa fa-plus" style=""></span></a>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
     <div class="modal fade" id="createComicModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">New Comic</h4>
+                    <h4 class="modal-title">New Series</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <form action=""  method="post">
                         <input class="form-control input-large" name="recipient" type="text" placeholder="Series Name"><br/>
-                        <input class="form-control input-large" name="subject" type="text" placeholder="Comic Name"><br/>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
-                            <button type="submit" class="btn btn-danger" data-dismiss="modal">Next</button>
+                            <button type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
                         </div>
                     </form>
                 </div>

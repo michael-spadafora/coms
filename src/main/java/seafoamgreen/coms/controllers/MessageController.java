@@ -29,7 +29,7 @@ public class MessageController {
     MessageService service;
 
     @PostMapping("/messages/send")
-    public ModelAndView sendMessage(HttpServletRequest request, HttpServletResponse response, @RequestBody MessageBody msg) throws IOException {
+    public ModelAndView sendMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         HttpSession session = request.getSession(false);
 
@@ -41,14 +41,15 @@ public class MessageController {
 
         String fromN = (String) session.getAttribute("username");
         String toN = request.getParameter("to");
+        String title = request.getParameter("subject");
+        String body = request.getParameter("bodyMessage");
 
-
-        String title = msg.getTitle();
-        String body = msg.getBody();
+    //    String title = msg.getTitle();
+    //    String body = msg.getBody();
 
         String mg = service.sendMessage(title, body, fromN, toN);
 
-        ModelAndView mav = new ModelAndView("messages");
+        ModelAndView mav = new ModelAndView("inbox");
         mav.addObject("message", mg);
         return mav;
     }
