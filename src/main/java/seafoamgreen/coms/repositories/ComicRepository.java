@@ -35,4 +35,5 @@ public interface ComicRepository extends MongoRepository<Comic, String> {
 
     @Query("{ 'username' : ?0 }")
     List<Comic> findAllByUsername(String username);
+
 }

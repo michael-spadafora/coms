@@ -70,7 +70,7 @@
                 </form>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
-                <a data-toggle="modal" data-target="#createComicModal"><span class="fa fa-plus"></span> Create</a>
+                <a th:href="@{/series/mySeries}"><span class="fa fa-plus"></span> Create</a>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
                 <a th:href="@{/create}"><span class="fa fa-upload"></span> Upload</a>
@@ -212,7 +212,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="/series/create"  method="post" id = "newSeries">
+                    <form action="/series/mySeries"  method="get" id = "newSeries">
                         <div class="custom-control custom-radio custom-control-inline">
                             <input onclick = "showSeriesNameBox()" type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
                             <label class="custom-control-label" for="customRadioInline1">New Series</label>
