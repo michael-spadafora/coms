@@ -66,7 +66,7 @@
                 </form>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
-                <a data-toggle="modal" data-target="#createComicModal"><span class="fa fa-plus"></span> Create</a>
+                <a th:href="@{/series/mySeries}"> My Creations</a>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
                 <a th:href="@{/create}"><span class="fa fa-upload"></span> Upload</a>
@@ -74,9 +74,8 @@
             <li class="nav-item dropdown" th:if="${isLoggedIn}">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><span class="fa fa-user-circle-o" aria-hidden="true"  th:text=" ${username}"> </span></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" th:href="@{/profile/self}">My Profile</a>
-                    <a class="dropdown-item" href="myComics.html">My Comics</a>
                     <a class="dropdown-item" th:href="@{/profile/inbox}">Inbox</a>
+                    <a class="dropdown-item" th:href="@{/profile/self}">My Profile</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
                 </div>
