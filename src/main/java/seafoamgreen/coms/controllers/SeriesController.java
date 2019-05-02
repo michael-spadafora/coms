@@ -31,6 +31,83 @@ public class SeriesController {
     @Autowired
     ComicService comicService;
 
+    @GetMapping("/addComic")
+    public ModelAndView addNewComic(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView("myComics");
+        HttpSession session = request.getSession();
+
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+
+        String username = (String)session.getAttribute("username");
+        String seriesId= request.getParameter("seriesId");
+        String comicName = request.getParameter("comicName");
+        Series series = seriesService.findByID(seriesId).get();
+        String tagString = request.getParameter("tags");
+        Comic comic = comicService.create(username, comicName, seriesId, tagString);
+        seriesService.addComic(series.getId(), comic.getId());
+
+        List<Series> seriesList = seriesService.findAllByUsername(username);
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+
+        for(Series seriesElement : seriesList)
+        {
+            map.put(seriesElement, comicService.findAllBySeriesId(series.getId()));
+        }
+        //Get all of users series
+
+        mav.addObject("seriesMap", map);
+
+        //Map each series to a list of comics
+        return mav;
+
+    }
+
+    @GetMapping("/addSeries")
+    public ModelAndView addNewSeries(HttpServletRequest request)
+    {
+
+
+        ModelAndView mav = new ModelAndView("myComics");
+        HttpSession session = request.getSession();
+
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+
+        String username = (String)session.getAttribute("username");
+        String seriesName = request.getParameter("seriesName");
+
+        seriesService.create(seriesName, username);
+
+        List<Series> seriesList = seriesService.findAllByUsername(username);
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+
+        for(Series series : seriesList)
+        {
+            map.put(series, comicService.findAllBySeriesId(series.getId()));
+        }
+        //Get all of users series
+
+        mav.addObject("seriesMap", map);
+
+        System.out.println(map);
+
+        //Map each series to a list of comics
+
+        return mav;
+    }
+
     @GetMapping ("/mySeries")
     public ModelAndView viewMySeries(HttpServletRequest request)
     {
