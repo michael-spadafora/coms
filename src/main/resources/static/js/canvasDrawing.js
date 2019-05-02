@@ -1,8 +1,8 @@
 // <canvas id="canvas" width="300" height="300"></canvas>
 // import {fabric} from 'fabric';
 var canvas = this.__canvas = new fabric.Canvas('canvas', {
-    isDrawingMode: true,
-    backgroundColor : "white"
+    isDrawingMode: true
+    // backgroundColor : "white"
 });
 
 var $ = function(id) {
@@ -324,6 +324,7 @@ function deleteObject() {
 
 function changeStroke() {
     var x = document.getElementById("stroke").value;
+    console.log(x);
     canvas.getActiveObject().set("stroke", x);
     canvas.renderAll();
 }
@@ -590,6 +591,8 @@ function action() {
       top: 0
     })
     .setCoords();
+    loadedObject.set("stroke", "#000000");
+    loadedObject.set("fill", "#ffffff");
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
