@@ -46,6 +46,7 @@ public class SeriesController {
 
         String username = (String)session.getAttribute("username");
 
+
         List<Series> seriesList = seriesService.findAllByUsername(username);
         Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
 
