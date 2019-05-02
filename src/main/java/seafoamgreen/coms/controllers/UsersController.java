@@ -77,7 +77,7 @@ public class UsersController {
         HttpSession session;
 
         ModelAndView mav = new ModelAndView("index");
-
+        //TODO: get lists of comics for popular, continue, recommended
         if(login!=null)
         {
             //LOG IN BUTTON HIT
@@ -146,6 +146,7 @@ public class UsersController {
         mav.addObject("userComics", usersComics);
         mav.addObject("username", activeUsername);
         mav.addObject("userSeries", userSeries);
+        //TODO: add list objects for popular, continue reading, recommended
 
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);

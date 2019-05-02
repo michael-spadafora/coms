@@ -16,7 +16,6 @@ public class Panel {
     //JSON data of the canvas
     private String fabricJSON;
     //BLOB
-    //TODO: convert Panel's blob field to be AWSURL
     private String AWSURL;
 
     public Panel(String username, String comicID, String fabricJSON) {
