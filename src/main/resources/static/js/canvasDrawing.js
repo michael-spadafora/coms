@@ -597,3 +597,24 @@ function action() {
     canvas.add(loadedObject);
   });
 }
+
+
+// canvas.on('mouse:down', function(options) {
+//   console.log('canvas event');
+//   var keyCode = event.which || event.keyCode || 0;
+//   console.log(keyCode);
+// });
+
+
+var canvasWrapper = document.getElementById('mydiv');
+canvasWrapper.tabIndex = 1000;
+canvasWrapper.addEventListener("keydown", myfunc);
+function myfunc(e){
+  // console.log("key is pressed");
+  // console.log(e.keyCode);
+  if (e.keyCode == 46){
+    deleteObject();
+  }
+}
+
+// canvas.altActionKey
