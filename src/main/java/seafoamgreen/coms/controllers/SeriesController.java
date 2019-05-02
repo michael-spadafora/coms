@@ -56,6 +56,7 @@ public class SeriesController {
         //Get all of users series
 
         mav.addObject("seriesMap", map);
+        mav.addObject("username", username);
 
         System.out.println(map);
 
