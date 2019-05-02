@@ -227,7 +227,10 @@ public class ComicService {
 	}
 
 
+    public List<Comic> findAllBySeriesId(String id) {
 
+        return comicRepository.findBySeriesID(id);
+    }
 }
 
 
