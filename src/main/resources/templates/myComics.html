@@ -86,61 +86,21 @@
     <div class="container">
         <h2>My Creations</h2>
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createComicModal">Add New Series</button>
-        <br/>
 
-        <div>
-            <h3>Series Name</h3>
+        <div th:each="series: ${seriesMap}">
+            <h3 th:text="${series.key.getSeriesName()}"></h3>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3" th:each="comic: ${series.value}">
                     <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+1.jpg" alt="Card image cap">
+                        <img class="card-img-top" th:src="${comic.getAWSURL()}" alt="Card image cap">
                         <div class="card-body">
-                            <h5 class="card-title">Comic Title</h5>
+                            <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
                             <a id="edit" href="#" class="btn btn-primary">Edit</a>
                             <a id="delete" href="#" class="btn btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Comic/Series Title</h5>
-                            <a href="#" class="btn btn-primary">Edit</a>
-                            <a href="#" class="btn btn-danger">Delete</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+4.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Comic/Series Title</h5>
-                            <a href="#" class="btn btn-primary">Edit</a>
-                            <a href="#" class="btn btn-danger">Delete</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+3.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Comic/Series Title</h5>
-                            <a href="#" class="btn btn-primary">Edit</a>
-                            <a href="#" class="btn btn-danger">Delete</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Comic/Series Title</h5>
-                            <a href="#" class="btn btn-primary">Edit</a>
-                            <a href="#" class="btn btn-danger">Delete</a>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="col-md-3">
                     <div class="card" style="width: 18rem;">
                         <a href="#" style="margin:0 auto;padding:30px"><span class="fa fa-plus" style=""></span></a>
