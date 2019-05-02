@@ -1,5 +1,6 @@
 package seafoamgreen.coms.controllers;
 
+import org.springframework.ui.Model;
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.requestBodyTypes.SeriesBody;
@@ -12,10 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*")
 @RestController
@@ -27,6 +26,162 @@ public class SeriesController {
 
     @Autowired
     ComicService comicService;
+
+
+    @GetMapping("/deleteComic")
+    public ModelAndView deleteComic(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView("myComics");
+        String comicId = (String)request.getParameter("comicId");
+        comicService.deleteById(comicId);
+
+
+        HttpSession session = request.getSession();
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+
+        String username = (String)session.getAttribute("username");
+        List<Series> seriesList = seriesService.findAllByUsername(username);
+
+        //TODO: ADD SORT
+
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+
+        for(Series series : seriesList)
+        {
+            map.put(series, comicService.findAllBySeriesId(series.getId()));
+        }
+        //Get all of users series
+
+        mav.addObject("seriesMap", map);
+
+        System.out.println(map);
+
+        //Map each series to a list of comics
+
+        return mav;
+    }
+
+    @PostMapping("/addComic")
+    public ModelAndView addNewComic(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView("myComics");
+        HttpSession session = request.getSession();
+
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+
+        String username = (String)session.getAttribute("username");
+        String seriesId= request.getParameter("seriesId");
+        String comicName = request.getParameter("comicName");
+        String tagString = request.getParameter("tags");
+        Comic comic = comicService.create(username, comicName, seriesId, tagString);
+
+        Series series = seriesService.findByID(seriesId).get();
+        seriesService.addComic(series.getId(), comic.getId());
+
+        List<Series> seriesList = seriesService.findAllByUsername(username);
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+
+        for(Series seriesElement : seriesList)
+        {
+            map.put(seriesElement, comicService.findAllBySeriesId(series.getId()));
+        }
+        //Get all of users series
+
+        mav.addObject("seriesMap", map);
+
+        //Map each series to a list of comics
+        return mav;
+
+    }
+
+    @PostMapping("/addSeries")
+    public ModelAndView addNewSeries(HttpServletRequest request)
+    {
+
+
+        ModelAndView mav = new ModelAndView("myComics");
+        HttpSession session = request.getSession();
+
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+
+        String username = (String)session.getAttribute("username");
+        String seriesName = request.getParameter("seriesName");
+
+        seriesService.create(seriesName, username);
+
+        List<Series> seriesList = seriesService.findAllByUsername(username);
+
+        //TODO: ADD SORT
+
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+
+        for(Series series : seriesList)
+        {
+            map.put(series, comicService.findAllBySeriesId(series.getId()));
+        }
+        //Get all of users series
+
+        mav.addObject("seriesMap", map);
+
+        System.out.println(map);
+
+        //Map each series to a list of comics
+
+        return mav;
+    }
+
+    @GetMapping ("/mySeries")
+    public ModelAndView viewMySeries(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView("myComics");
+        HttpSession session = request.getSession();
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+
+        String username = (String)session.getAttribute("username");
+
+        List<Series> seriesList = seriesService.findAllByUsername(username);
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+
+        for(Series series : seriesList)
+        {
+            map.put(series, comicService.findAllBySeriesId(series.getId()));
+        }
+        //Get all of users series
+
+        mav.addObject("seriesMap", map);
+        mav.addObject("username", username);
+
+        System.out.println(map);
+
+        //Map each series to a list of comics
+
+        return mav;
+    }
+
 
     @PostMapping("/create")
     public ModelAndView createSeries(HttpServletRequest request, HttpServletResponse response) throws IOException
@@ -70,7 +225,17 @@ public class SeriesController {
         request.getSession().setAttribute("currentSeries", currentSeries);
         request.getSession().setAttribute("currentComic", newComic);
 
+        /* TODO
+
+            SEND COMIC TO MAV, SO THAT ON MAV WE CAN SHOW NUMBERS REPRESENTING PANELLIST
+            A NEW CONTROLLER THAT REACTS TO THE NEW PAGE BUTTON
+         */
+
         ModelAndView mav = new ModelAndView("createComic");
+        newComic.addPanel("fakepanel");
+        newComic.addPanel("fakepanel");
+        newComic.addPanel("fakepanel");
+        mav.addObject("comic", newComic);
         return mav;
 
     }

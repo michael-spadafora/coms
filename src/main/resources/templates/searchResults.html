@@ -61,12 +61,12 @@
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <form id="searchBox" action="searchResults.html">
-                    <input type="search">
+                <form id="searchBox" action="/search/keyword" method = "get">
+                    <input name = "searchWord" type="search">
                 </form>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
-                <a data-toggle="modal" data-target="#createComicModal"><span class="fa fa-plus"></span> Create</a>
+                <a th:href="@{/series/mySeries}"> My Creations</a>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
                 <a th:href="@{/create}"><span class="fa fa-upload"></span> Upload</a>
@@ -74,9 +74,8 @@
             <li class="nav-item dropdown" th:if="${isLoggedIn}">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><span class="fa fa-user-circle-o" aria-hidden="true"  th:text=" ${username}"> </span></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/profile/inbox}">Inbox</a>
                     <a class="dropdown-item" th:href="@{/profile/self}">My Profile</a>
-                    <a class="dropdown-item" href="#">My Comics</a>
-                    <a class="dropdown-item" th:href="@{/accountSettings}">Settings</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
                 </div>
@@ -89,19 +88,19 @@
 </nav>
 
 <body>
-<div class="container">
-    <h2>Search Results for '<span th:text="${searchWord}"></span>'</h2>
+    <div class="container">
+        <h2>Search Results for '<span th:text="${searchWord}"></span>'</h2>
 
-    <div class="row">
-        <div class="col-md-3" th:each="comic: ${comicList}">
-            <div class="thumbnail">
-                <a href="viewComic.html">
-                    <img th:src="${comic.AWSURL}">
-                </a>
+        <div class="row">
+            <div class="col-md-3" th:each="comic: ${comicList}">
+                <div class="thumbnail">
+                    <a href="viewComic.html">
+                        <img th:src="${comic.AWSURL}">
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 </body>
 

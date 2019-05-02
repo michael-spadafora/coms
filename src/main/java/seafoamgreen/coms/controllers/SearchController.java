@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("search")
@@ -69,6 +70,14 @@ public class SearchController {
         comics.addAll(searchService.findAllComicsByUsername(searchWord));
         mav.addObject("comicList" , comics);
         mav.addObject("searchWord",searchWord);
+
+        HttpSession session = request.getSession(false);
+        String activeUsername = (String)session.getAttribute("username");
+        mav.addObject("username", activeUsername);
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
 
         System.out.println(comics);
         return mav;

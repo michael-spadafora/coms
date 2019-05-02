@@ -257,6 +257,7 @@ public class UsersController {
 
         ModelAndView mav = new ModelAndView("inbox");
         mav.addObject("Messages" , userService.getInbox(username));
+        System.out.println(userService.getInbox(username));
         mav.addObject("username", username);
         if(username == null)
             mav.addObject("notLoggedIn", true);

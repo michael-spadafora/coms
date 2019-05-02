@@ -229,6 +229,7 @@ public class ComicService {
 	}
 
 
+
     public List<String> getPanelObjects(Comic c) {
         ArrayList<String> urls = new ArrayList<>();
         List<String> panels = c.getPanelList();
@@ -237,6 +238,11 @@ public class ComicService {
         }
 
         return urls;
+
+    public List<Comic> findAllBySeriesId(String id) {
+
+        return comicRepository.findBySeriesID(id);
+
     }
 }
 
