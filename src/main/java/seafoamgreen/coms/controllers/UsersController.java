@@ -260,12 +260,16 @@ public class UsersController {
     @GetMapping("/profile/inbox")
     public ModelAndView viewInbox(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = (String) request.getSession(false).getAttribute("username");
+
+        System.out.println("inbox username: "+ username);
         if (username == null) {
             response.sendError(401, "User not logged in");
         }
 
         ModelAndView mav = new ModelAndView("inbox");
         mav.addObject("Messages" , userService.getInbox(username));
+        System.out.println(userService.getInbox(username));
+        System.out.println(userService.getInbox(username));
         System.out.println(userService.getInbox(username));
         mav.addObject("username", username);
         if(username == null)

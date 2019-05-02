@@ -25,7 +25,53 @@ public class SeriesController {
     @Autowired
     ComicService comicService;
 
+    @PostMapping("/deleteSeries")
+    public ModelAndView deleteSeries(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView("myComics");
+        String seriesId = (String)request.getParameter("seriesId");
+        seriesService.deleteById(seriesId);
 
+
+        HttpSession session = request.getSession();
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+
+        String username = (String)session.getAttribute("username");
+        List<Series> seriesList = seriesService.findAllByUsername(username);
+
+        //TODO: ADD SORT
+
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+
+        for(Series series : seriesList)
+        {
+            map.put(series, comicService.findAllBySeriesId(series.getId()));
+        }
+        //Get all of users series
+
+        mav.addObject("seriesMap", map);
+
+        System.out.println(map);
+
+        //Map each series to a list of comics
+
+        return mav;
+    }
+
+    @PostMapping("/editComic")
+    public ModelAndView editComic(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView("createComic");
+        String comicId = request.getParameter("editComicId");
+        request.getSession().setAttribute("currentComicId", comicId);
+        return mav;
+    }
     @GetMapping("/deleteComic")
     public ModelAndView deleteComic(HttpServletRequest request)
     {
