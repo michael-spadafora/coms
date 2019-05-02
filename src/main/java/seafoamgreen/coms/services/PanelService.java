@@ -67,7 +67,7 @@ public class PanelService {
         
         s3client.putObject(bucketName, key, blob); //saves
         String urlstring = s3client.getUrl(bucketName, key).toString();
-
+        System.out.println(urlstring);
 
         return urlstring;
     }
