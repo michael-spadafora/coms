@@ -34,7 +34,7 @@ public class PanelService {
     public Panel create(String Username, String comicID, String fabricJSON, String blob)
     {
         
-        Panel panel = new Panel(Username, comicID, fabricJSON);
+        Panel panel = new Panel(Username, comicID, fabricJSON, blob);
         panelRepository.save(panel);
 
         String URL = storeBlobInAWS(panel, blob);

@@ -73,5 +73,6 @@ public class SearchService {
         List<Comic> comics = comicRepository.findAllByUsername(username);
         return comics;
     }
+
 }
 
