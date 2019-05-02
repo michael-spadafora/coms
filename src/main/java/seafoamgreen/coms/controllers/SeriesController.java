@@ -1,5 +1,6 @@
 package seafoamgreen.coms.controllers;
 
+import org.springframework.ui.Model;
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.requestBodyTypes.SeriesBody;
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*")
@@ -27,6 +30,40 @@ public class SeriesController {
 
     @Autowired
     ComicService comicService;
+
+    @GetMapping ("/mySeries")
+    public ModelAndView viewMySeries(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView("myComics");
+        HttpSession session = request.getSession();
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+
+        String username = (String)session.getAttribute("username");
+
+        List<Series> seriesList = seriesService.findAllByUsername(username);
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+
+        for(Series series : seriesList)
+        {
+            map.put(series, comicService.findAllBySeriesId(series.getId()));
+        }
+        //Get all of users series
+
+        mav.addObject("seriesMap", map);
+
+        System.out.println(map);
+
+        //Map each series to a list of comics
+
+        return mav;
+    }
+
 
     @PostMapping("/create")
     public ModelAndView createSeries(HttpServletRequest request, HttpServletResponse response) throws IOException
