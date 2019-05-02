@@ -40,6 +40,7 @@ public class SeriesService {
     {
         Optional<Series> series = seriesRepository.findById(seriesID);
         series.get().addComic(comicID);
+        System.out.println("Adding to series " + series.get().getSeriesName());
         seriesRepository.save(series.get());
         return series.get();
 

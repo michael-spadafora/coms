@@ -85,7 +85,7 @@
 <body>
     <div class="container">
         <h2>My Creations</h2>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createComicModal">Add New Series</button>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createSeriesModal">Add New Series</button>
 
         <div th:each="series: ${seriesMap}">
             <h3 th:text="${series.key.getSeriesName()}"></h3>
@@ -96,19 +96,41 @@
                         <div class="card-body">
                             <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
                             <a id="edit" href="#" class="btn btn-primary">Edit</a>
-                            <a id="delete" href="#" class="btn btn-danger">Delete</a>
+                            <a th:data-thing="${comic.getId()}" onclick="deleteComic(this.getAttribute('data-thing'));" id="delete" class="btn btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="card" style="width: 18rem;">
-                        <a href="#" style="margin:0 auto;padding:30px"><span class="fa fa-plus" style=""></span></a>
+                        <a th:data-thing="${series.key.getId()}" onclick="setSeriesID(this.getAttribute('data-thing'));" href="#" style="margin:0 auto;padding:30px" data-toggle="modal" data-target="#createComicModal"><span class="fa fa-plus" style=""></span></a>
                     </div>
                 </div>
             </div>
         </div>
 
+    </div>
+
+    <div class="modal fade" id="createSeriesModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Series</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/series/addSeries"  method="post" id = "newSeries">
+                        <input class="form-control input-large" name="seriesName" type="text" placeholder="Series Name"><br/>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                            <button onclick= "form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="createComicModal">
@@ -119,18 +141,43 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action=""  method="post">
-                        <input class="form-control input-large" name="recipient" type="text" placeholder="Series Name"><br/>
-
+                    <form action="/series/addComic"  method="post" id = "newComic">
+                        <input hidden id = "seriesID" name = "seriesId">
+                        <input class="form-control input-large" name="comicName" type="text" placeholder="Comic Name"><br/>
+                        <input id = "tagsBox" class= "hide form-control input-large" name="tags" type="text" placeholder="Tags"><br/>
+                        <input id = "datePicker" class= "hide" type="date" name="publishDate">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
-                            <button type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
+                            <button onclick= "form_submit_comic()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
                         </div>
                     </form>
                 </div>
 
             </div>
         </div>
+        <form id = "deleteForm" action = "/series/deleteComic" method = "get">
+            <input hidden id = "deleteComicId" name = "comicId">
+        </form>
     </div>
+
+    <script type="text/javascript">
+
+        function deleteComic(comicId)
+        {
+            document.getElementById("deleteComicId").value = comicId;
+            document.getElementById("deleteForm").submit();
+
+        }
+        function setSeriesID(id){
+            document.getElementById("seriesID").value = id;
+        }
+        function form_submit() {
+            document.getElementById("newSeries").submit();
+        }
+        function form_submit_comic() {
+            document.getElementById("newComic").submit();
+        }
+    </script>
 </body>
+
 </html>
