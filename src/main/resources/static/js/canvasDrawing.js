@@ -426,10 +426,12 @@ document.getElementById('imgLoader').onchange = function handleImage(e) {
                 padding: 10,
                 cornersize: 10
             });
-            image.width = image.width;
-            image.height = image.height;
-            image.scale(500/image.getScaledWidth());
-            console.log(image);
+            if (image.width > 350 && (image.width >= image.height)){
+              image.scale(350/image.getScaledWidth());
+            }
+            if (image.height > 1000 && (image.height >= image.width)){
+              image.scale(1050/image.getScaledHeight());
+            }
             canvas.add(image);
         }
 
@@ -440,23 +442,6 @@ document.getElementById('imgLoader').onchange = function handleImage(e) {
 
 function saveimaging(){
     var dataUrl=canvas.toDataURL();
-    // console.log(dataUrl);
-    // var imgObj = new Image();
-    // imgObj.src = dataUrl;
-    // imgObj.onload = function(event) {
-    //     var image = new fabric.Image(imgObj);
-    //     image.set({
-    //         left: 0,
-    //         top: 0,
-    //         padding: 10,
-    //         cornersize: 10
-    //     });
-    //     image.width = image.width;
-    //     image.height = image.height;
-    //     image.scale(1050/image.getScaledWidth());
-    //     // console.log(image);
-    //     canvas.add(image);
-    // }
     fetch('comic/createComic', {
         method: 'post',
         headers: {
@@ -476,13 +461,68 @@ function downloadImage(){
     console.log(x);
     console.log(x.get);
     canvas.getElement().toBlob(function(blob){
-        saveAs(blob, "myCanvas.png")
+        saveAs(blob, "myCanvasImage.png")
     });
     // var picsx = canvas.getElement().toBlob(function(blob){
     //   saveAs(blob, "myCanvas.png")
     // });
     // console.log(pics);
+    console.log("hello world");
 }
 
 
-//nothing
+function encode( s ) {
+    var out = [];
+    for ( var i = 0; i < s.length; i++ ) {
+        out[i] = s.charCodeAt(i);
+    }
+    return new Uint8Array( out );
+}
+
+function downloadJSON() {
+  var y = canvas.toJSON();
+  console.log(y);
+    var data = encode(JSON.stringify(y));
+
+    var blob = new Blob( [ data ], {
+        type: 'application/octet-stream'
+    });
+
+    url = URL.createObjectURL( blob );
+    var link = document.createElement( 'a' );
+    link.setAttribute( 'href', url );
+    link.setAttribute( 'download', 'example.json' );
+
+    var event = document.createEvent( 'MouseEvents' );
+    event.initMouseEvent( 'click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+    link.dispatchEvent( event );
+}
+
+
+
+function sendToBack() {
+  var activeObject = canvas.getActiveObject();
+    if (activeObject) {
+      canvas.sendToBack(activeObject);
+    }
+}
+
+function back() {
+  var activeObject = canvas.getActiveObject();
+    if (activeObject) {
+      canvas.sendBackwards(activeObject);
+    }
+}
+function front() {
+  var activeObject = canvas.getActiveObject();
+    if (activeObject) {
+      canvas.bringForward(activeObject);
+    }
+}
+
+function bringToFront() {
+  var activeObject = canvas.getActiveObject();
+    if (activeObject) {
+      canvas.bringToFront(activeObject);
+    }
+}
