@@ -1,7 +1,8 @@
 // <canvas id="canvas" width="300" height="300"></canvas>
 // import {fabric} from 'fabric';
 var canvas = this.__canvas = new fabric.Canvas('canvas', {
-    isDrawingMode: true
+    isDrawingMode: true,
+    backgroundColor : "white"
 });
 
 var $ = function(id) {
@@ -525,4 +526,71 @@ function bringToFront() {
     if (activeObject) {
       canvas.bringToFront(activeObject);
     }
+}
+
+function chat() {
+  console.log('adding chat svg');
+  fabric.loadSVGFromURL('./img/chat.svg', function(objects, options) {
+    var loadedObject = fabric.util.groupSVGElements(objects, options);
+    loadedObject.set({
+      left: 0,
+      top: 0
+    })
+    .setCoords();
+    loadedObject.scaleToWidth(100);
+    canvas.add(loadedObject);
+  });
+}
+function thought() {
+  console.log('adding chat svg');
+  fabric.loadSVGFromURL('./img/thought.svg', function(objects, options) {
+    var loadedObject = fabric.util.groupSVGElements(objects, options);
+    loadedObject.set({
+      left: 0,
+      top: 0
+    })
+    .setCoords();
+    loadedObject.scaleToWidth(100);
+    canvas.add(loadedObject);
+  });
+}
+function arrow() {
+  console.log('adding chat svg');
+  fabric.loadSVGFromURL('./img/arrow.svg', function(objects, options) {
+    var loadedObject = fabric.util.groupSVGElements(objects, options);
+    loadedObject.set({
+      left: 0,
+      top: 0
+    })
+    .setCoords();
+    loadedObject.scaleToWidth(100);
+    canvas.add(loadedObject);
+  });
+}
+function scream() {
+  console.log('adding chat svg');
+  fabric.loadSVGFromURL('./img/scream.svg', function(objects, options) {
+    var loadedObject = fabric.util.groupSVGElements(objects, options);
+    loadedObject.set({
+      left: 0,
+      top: 0
+    })
+    .setCoords();
+    loadedObject.scaleToWidth(100);
+    canvas.add(loadedObject);
+  });
+}
+
+function action() {
+  console.log('adding chat svg');
+  fabric.loadSVGFromURL('./img/action.svg', function(objects, options) {
+    var loadedObject = fabric.util.groupSVGElements(objects, options);
+    loadedObject.set({
+      left: 0,
+      top: 0
+    })
+    .setCoords();
+    loadedObject.scaleToWidth(100);
+    canvas.add(loadedObject);
+  });
 }
