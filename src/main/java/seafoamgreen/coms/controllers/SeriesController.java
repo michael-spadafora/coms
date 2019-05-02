@@ -70,7 +70,17 @@ public class SeriesController {
         request.getSession().setAttribute("currentSeries", currentSeries);
         request.getSession().setAttribute("currentComic", newComic);
 
+        /* TODO
+
+            SEND COMIC TO MAV, SO THAT ON MAV WE CAN SHOW NUMBERS REPRESENTING PANELLIST
+            A NEW CONTROLLER THAT REACTS TO THE NEW PAGE BUTTON
+         */
+
         ModelAndView mav = new ModelAndView("createComic");
+        newComic.addPanel("fakepanel");
+        newComic.addPanel("fakepanel");
+        newComic.addPanel("fakepanel");
+        mav.addObject("comic", newComic);
         return mav;
 
     }
