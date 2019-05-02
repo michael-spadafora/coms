@@ -39,6 +39,8 @@ public class ComicService {
     @Autowired
     private SeriesRepository seriesRepository;
 
+    @Autowired
+    private PanelService panelService;
 
     public Comic create(String Username, String comicName, String SeriesID, String tagString) //need to find a way to implement time
     {
@@ -227,7 +229,15 @@ public class ComicService {
 	}
 
 
+    public List<String> getPanelObjects(Comic c) {
+        ArrayList<String> urls = new ArrayList<>();
+        List<String> panels = c.getPanelList();
+        for (String s: panels) {
+            urls.add(panelService.getBlob(s));
+        }
 
+        return urls;
+    }
 }
 
 

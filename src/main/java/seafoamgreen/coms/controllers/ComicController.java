@@ -63,6 +63,19 @@ public class ComicController {
         return mav;
     };
 
+    @GetMapping("/view")
+    public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response) {
+        String comicID = request.getParameter("comidID");
+        ModelAndView mav = new ModelAndView("comicView");
+        Comic c =  comicService.findById(comicID);
+        List<String> blobs = comicService.getPanelObjects(c);
+        mav.addObject("comic", c);
+        mav.addObject("panels", blobs);
+
+        return mav;
+
+    }
+
     @GetMapping("/findById")
     public Comic findById(HttpServletRequest request, HttpServletResponse response )throws IOException {
 

@@ -43,6 +43,16 @@ public class PanelController {
         return mav;
     }
 
+    @GetMapping("/getBlob")
+    public String getPanelBlob(HttpServletRequest request) {
+        String panelId = request.getParameter("panelId");
+        if (panelId == null) {
+            panelId = request.getParameter("panelID");
+        }
+
+        return panelService.getBlob(panelId);
+    }
+
     @PostMapping("/savePanel")
     public String savePanel(HttpServletRequest request)
     {
