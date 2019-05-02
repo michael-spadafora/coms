@@ -48,6 +48,7 @@ public class PanelController {
     {
         HttpSession session = request.getSession();
         Enumeration params = request.getParameterNames();
+        String img = (String)request.getParameter("image");
 
         String currentUser =(String) session.getAttribute("username");
         while(params.hasMoreElements()){

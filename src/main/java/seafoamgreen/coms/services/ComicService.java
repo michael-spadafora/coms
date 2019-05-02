@@ -48,6 +48,17 @@ public class ComicService {
         return comic;
     }
 
+    public List<Comic> getEditableComicsByUsername(String username) {
+        List<Comic> comics = findAllByUsername(username);
+        List<Comic> ret = new ArrayList<Comic>();
+        for (Comic c: comics) {
+            if (!c.isPublished()) {
+                ret.add(c);
+            }
+        }
+        return ret;
+    }
+
 
     //TODO: implement create w/ publish time
     //TODO: how to check if time is reached for publishing?
@@ -204,6 +215,16 @@ public class ComicService {
 
         // TODO: get series of comic. notify subscribers.
     }
+
+	public Comic getEditComic(String username, String comicId) {
+        Comic c = comicRepository.findByComicId(comicId);
+        if (c.getUsername() != username) {
+            return null;
+        }
+
+
+		return c;
+	}
 
 
 
