@@ -1,12 +1,14 @@
 package seafoamgreen.coms.controllers;
 
 import seafoamgreen.coms.model.Comic;
+import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.services.ComicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import seafoamgreen.coms.model.Message;
 import seafoamgreen.coms.model.User;
+import seafoamgreen.coms.services.SeriesService;
 import seafoamgreen.coms.services.UserService;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,6 +30,9 @@ public class UsersController {
 
     @Autowired
     ComicService comicService;
+
+    @Autowired
+    SeriesService seriesService;
 
 
     @GetMapping("/")
@@ -133,11 +138,15 @@ public class UsersController {
         //RETURN THE DEFAULT MAV WHICH IS THE INDEX
         session = request.getSession();
         String activeUsername = (String)session.getAttribute("username");
+
         System.out.println("The current active username is: " + activeUsername);
 
         List<Comic> usersComics = comicService.findAllByUsername(activeUsername);
+        List<Series> userSeries = seriesService.findAllByUsername(activeUsername);
         mav.addObject("userComics", usersComics);
         mav.addObject("username", activeUsername);
+        mav.addObject("userSeries", userSeries);
+
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
         else

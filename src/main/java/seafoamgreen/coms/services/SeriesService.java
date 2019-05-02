@@ -2,6 +2,7 @@ package seafoamgreen.coms.services;
 
 
 
+import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
 
 import seafoamgreen.coms.repositories.SeriesRepository;
@@ -53,7 +54,7 @@ public class SeriesService {
         return seriesRepository.findByUserID(userId);
     }
 
-    public List<Series> findByUsername(String username) {
+    public List<Series> findAllByUsername(String username) {
         return seriesRepository.findByUsername(username);
     }
 
