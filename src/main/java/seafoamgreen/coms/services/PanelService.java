@@ -7,10 +7,13 @@ import org.springframework.stereotype.Service;
 
 import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.repositories.PanelRepository;
+<<<<<<< Updated upstream
 
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URL;
+=======
+>>>>>>> Stashed changes
 
 import java.util.List;
 

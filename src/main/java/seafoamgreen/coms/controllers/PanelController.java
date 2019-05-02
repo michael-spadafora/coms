@@ -2,7 +2,6 @@ package seafoamgreen.coms.controllers;
 
 
 
-import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.services.ComicService;
 import seafoamgreen.coms.services.PanelService;
