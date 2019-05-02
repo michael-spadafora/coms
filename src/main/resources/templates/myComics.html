@@ -95,7 +95,7 @@
                         <div class="card-body">
                             <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
                             <a id="edit" href="#" class="btn btn-primary">Edit</a>
-                            <a th:data-thing="${comic.getId()}" onclick="deleteComic(this.getAttribute('data-thing'));" id="delete" class="btn btn-danger">Delete</a>
+                            <a th:data-thing="${comic.getId()}" onclick="deleteComic(this.getAttribute('data-thing'))" id="delete" class="btn btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>
