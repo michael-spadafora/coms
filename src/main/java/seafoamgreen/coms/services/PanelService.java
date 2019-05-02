@@ -7,13 +7,11 @@ import org.springframework.stereotype.Service;
 
 import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.repositories.PanelRepository;
-<<<<<<< Updated upstream
 
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URL;
-=======
->>>>>>> Stashed changes
+
 
 import java.util.List;
 
@@ -61,11 +59,14 @@ public class PanelService {
         String seriesId = comic.getSeriesID();
         String panelId = panel.getId();
         // String key = "key";
-        // key = seriesId/comicId/panelNumber
-        String key = seriesId + "/" + comicId + "/" + panelId;
 
-        s3client.putObject(bucketName, key, blob); // saves
+        //key = seriesId/comicId/panelNumber
+        String key = seriesId + "/" + comicId + "/" + panelId; 
+        
+        s3client.putObject(bucketName, key, blob); //saves
         String urlstring = s3client.getUrl(bucketName, key).toString();
+        System.out.println(urlstring);
+
 
         return urlstring;
     }

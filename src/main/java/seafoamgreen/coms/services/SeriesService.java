@@ -46,6 +46,11 @@ public class SeriesService {
 
     }
 
+    public void deleteById(String id)
+    {
+        seriesRepository.deleteById(id);
+    }
+
     //Add comic to series list
 
     public void deleteAll() { seriesRepository.deleteAll(); }
