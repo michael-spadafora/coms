@@ -147,10 +147,16 @@ public class UsersController {
         mav.addObject("username", activeUsername);
         mav.addObject("userSeries", userSeries);
 
-        if(activeUsername == null)
+        if(activeUsername == null) {
             mav.addObject("notLoggedIn", true);
-        else
+            //TODO: this stuff
+            // List<String> popularThumbnail = userService.getThumbnails(popularComics);
+            // userService.getContinueReading(activeUsername);
+        }
+        else{
             mav.addObject("isLoggedIn", true);
+            List<Comic> popularComics = userService.getPopular();
+        }
 
         return mav;
     }
@@ -257,7 +263,6 @@ public class UsersController {
 
         ModelAndView mav = new ModelAndView("inbox");
         mav.addObject("Messages" , userService.getInbox(username));
-        System.out.println(userService.getInbox(username));
         mav.addObject("username", username);
         if(username == null)
             mav.addObject("notLoggedIn", true);

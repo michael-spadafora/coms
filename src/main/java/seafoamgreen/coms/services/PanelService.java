@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.repositories.PanelRepository;
-import java.net.URL;
 
 import java.util.List;
 
