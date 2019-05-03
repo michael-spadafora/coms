@@ -143,6 +143,14 @@ public class UserService {
     
 
 	public List<String> getThumbnails(List<Comic> popularComics) {
+        List<String> thumbs = new ArrayList<>();
+        for (Comic c: popularComics) {
+            List<String> panelIds = c.getPanelList();
+            String panel1 = panelIds.get(0);
+            if (panel1 == null) continue;
+            
+
+        }
 		return null;
 	}
 
