@@ -3,7 +3,6 @@ package seafoamgreen.coms.controllers;
 import org.springframework.ui.Model;
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
-import seafoamgreen.coms.requestBodyTypes.SeriesBody;
 import seafoamgreen.coms.services.ComicService;
 import seafoamgreen.coms.services.SeriesService;
 import org.springframework.beans.factory.annotation.Autowired;
