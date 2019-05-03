@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import seafoamgreen.coms.requestBodyTypes.MessageBody;
 import seafoamgreen.coms.services.MessageService;
-
+import seafoamgreen.coms.services.UserService;
 
 import java.io.IOException;
 
@@ -26,6 +26,10 @@ public class MessageController {
 
     @Autowired
     MessageService service;
+
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/messages/system")
     public void systemMessage(HttpServletRequest request, HttpServletResponse response, @RequestBody MessageBody msg) {
@@ -44,7 +48,7 @@ public class MessageController {
 
     }
 
-    @PostMapping("/messages/send")
+    @PostMapping("/profile/inbox")
     public ModelAndView sendMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         HttpSession session = request.getSession(false);
@@ -68,6 +72,13 @@ public class MessageController {
 
         ModelAndView mav = new ModelAndView("inbox");
         mav.addObject("message", mg);
+        String username = (String)session.getAttribute("username");
+        mav.addObject("Messages" , userService.getInbox(username));
+        mav.addObject("username",username);
+        if(username == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
     }
 
