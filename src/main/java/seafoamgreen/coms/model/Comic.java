@@ -42,6 +42,8 @@ public class Comic {
         this.seriesID = seriesID;
         this.panelList = new ArrayList<String>();
         this.tags = new ArrayList<String>();
+        this.upvoters =  new ArrayList<String>();
+        this.downvoters = new ArrayList<String>();
         this.score = 0;
     }
 

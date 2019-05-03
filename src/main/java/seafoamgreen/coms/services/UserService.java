@@ -1,10 +1,13 @@
 package seafoamgreen.coms.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Message;
 import seafoamgreen.coms.model.User;
+import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.repositories.MessageRepository;
 import seafoamgreen.coms.repositories.UserRepository;
 
@@ -21,6 +24,9 @@ public class UserService {
 
     @Autowired
     private MessageRepository messageRepository;
+
+    @Autowired
+    private ComicRepository comicRepository;
 
     // Create
     public User create(String username, String password) {
@@ -128,6 +134,17 @@ public class UserService {
 
         return ret;
     }
+
+	public List<Comic> getPopular() {
+        Sort sort = new Sort(Sort.Direction.DESC, "score");
+        List<Comic> popular = comicRepository.findMostPopular(sort);
+		return popular;
+    }
+    
+
+	public List<String> getThumbnails(List<Comic> popularComics) {
+		return null;
+	}
 
 
 }

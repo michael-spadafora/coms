@@ -39,6 +39,10 @@ public class Series {
         return username;
     }
 
+    public void addComic(String comicId) {
+        comicList.add(comicId);
+    }
+
     /**
      * @param username the username to set
      */
