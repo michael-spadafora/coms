@@ -11,6 +11,9 @@ var $ = function(id) {
     return document.getElementById(id)
 };
 
+var undoStack = [];
+var redoStack = [];
+
 
 fabric.Object.prototype.transparentCorners = false;
 
@@ -194,6 +197,7 @@ function drawRec() {
     }));
     canvas.renderAll();
     console.log("this is a rectangle");
+updateModifications(true);
 }
 
 function drawLine() {
@@ -201,6 +205,7 @@ function drawLine() {
         stroke: 'black',
         strokeWidth: 10
     }));
+updateModifications(true);
 }
 
 function drawTriangle() {
@@ -212,6 +217,7 @@ function drawTriangle() {
         fill: 'rgba(0,0,0,0)',
         backgroundColor: 'rgba(0,0,0,0)'
     }));
+updateModifications(true);
 }
 
 function drawSquare() {
@@ -225,6 +231,7 @@ function drawSquare() {
         fill: 'rgba(0,0,0,0)',
         backgroundColor: 'rgba(0,0,0,0)'
     }));
+updateModifications(true);
 }
 
 function drawCircle() {
@@ -237,6 +244,7 @@ function drawCircle() {
         fill: 'rgba(0,0,0,0)',
         backgroundColor: 'rgba(0,0,0,0)'
     }));
+updateModifications(true);
 }
 
 // function addTextbox() {
@@ -265,10 +273,12 @@ function addTextbox() {
         fontFamily: document.getElementById("fonts").value
         // fixedWidth: 150
     }));
+updateModifications(true);
 }
 
 function clearPane() {
     canvas.clear();
+updateModifications(true);
 }
 
 function deleteObject() {
@@ -305,6 +315,7 @@ function deleteObject() {
         console.log("is null");
     }
 
+updateModifications(true);
 }
 //
 // function deleteGroup() {
@@ -329,49 +340,52 @@ function changeStroke() {
     console.log(x);
     canvas.getActiveObject().set("stroke", x);
     canvas.renderAll();
+updateModifications(true);
 }
 
 function changeFill() {
     var x = document.getElementById("fill").value;
     canvas.getActiveObject().set("fill", x);
     canvas.renderAll();
+updateModifications(true);
 }
 
 function removeFill() {
     canvas.getActiveObject().set("fill", 'rgba(0,0,0,0)');
     canvas.renderAll();
+updateModifications(true);
 }
 
-function saveToBack() {
+// function saveToBack() {
 
 
-    var file = canvas.toJSON();
-    var json = {
-        fabricJSON: JSON.stringify(file),
-        image: canvas.toDataURL()
-    }
-    console.log(json);
-    fetch('savePanel', {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: json
-    });
+//     var file = canvas.toJSON();
+//     var json = {
+//         fabricJSON: JSON.stringify(file),
+//         image: canvas.toDataURL()
+//     }
+//     console.log(json);
+//     fetch('savePanel', {
+//         method: 'post',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: json
+//     });
 
-    // var imgObj = new Image();
-    // imgObj.src = dataUrl;
-    // imgObj.onload = function(event) {
-    //     var image = new fabric.Image(imgObj);
-    //     image.width = image.width;
-    //     image.height = image.height;
-    //     image.scale(1050/image.getScaledWidth());
-    //     // console.log(image);
-    //     canvas.add(image);
-    // }
-    // .then(res => res.json())
-    // .then(grid => reset_grid(grid));
-}
+//     // var imgObj = new Image();
+//     // imgObj.src = dataUrl;
+//     // imgObj.onload = function(event) {
+//     //     var image = new fabric.Image(imgObj);
+//     //     image.width = image.width;
+//     //     image.height = image.height;
+//     //     image.scale(1050/image.getScaledWidth());
+//     //     // console.log(image);
+//     //     canvas.add(image);
+//     // }
+//     // .then(res => res.json())
+//     // .then(grid => reset_grid(grid));
+// }
 
 function copy() {
     canvas.getActiveObject().clone(function(cloned) {
@@ -386,6 +400,7 @@ function cut() {
     deleteObject();
     // canvas.remove(canvas.getActiveObject());
 
+updateModifications(true);
 }
 
 function paste() {
@@ -412,6 +427,7 @@ function paste() {
         canvas.setActiveObject(clonedObj);
         canvas.requestRenderAll();
     });
+updateModifications(true);
 }
 
 document.getElementById('imgLoader').onchange = function handleImage(e) {
@@ -443,6 +459,7 @@ document.getElementById('imgLoader').onchange = function handleImage(e) {
     }
     reader.readAsDataURL(e.target.files[0]);
     document.getElementById("imgLoader").value = "";
+updateModifications(true);
 }
 
 function saveimaging(){
@@ -512,6 +529,7 @@ function sendToBack() {
     if (activeObject) {
       canvas.sendToBack(activeObject);
     }
+updateModifications(true);
 }
 
 function back() {
@@ -519,12 +537,14 @@ function back() {
     if (activeObject) {
       canvas.sendBackwards(activeObject);
     }
+updateModifications(true);
 }
 function front() {
   var activeObject = canvas.getActiveObject();
     if (activeObject) {
       canvas.bringForward(activeObject);
     }
+updateModifications(true);
 }
 
 function bringToFront() {
@@ -532,6 +552,7 @@ function bringToFront() {
     if (activeObject) {
       canvas.bringToFront(activeObject);
     }
+updateModifications(true);
 }
 
 function chat() {
@@ -546,6 +567,7 @@ function chat() {
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
+updateModifications(true);
 }
 function thought() {
   console.log('adding chat svg');
@@ -559,6 +581,7 @@ function thought() {
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
+updateModifications(true);
 }
 function arrow() {
   console.log('adding chat svg');
@@ -572,6 +595,7 @@ function arrow() {
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
+updateModifications(true);
 }
 function scream() {
   console.log('adding chat svg');
@@ -585,6 +609,8 @@ function scream() {
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
+updateModifications(true);
+
 }
 
 function action() {
@@ -601,6 +627,8 @@ function action() {
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
+updateModifications(true);
+
 }
 
 
@@ -655,6 +683,8 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
     }
     reader.readAsDataURL(e.target.files[0]);
     document.getElementById("jsonLoader").value = "";
+updateModifications(true);
+
 }
 
 
@@ -663,8 +693,7 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
 
 
 
-var undoStack = [];
-var redoStack = [];
+
 
 
 addrect = function addrect(top, left, width, height, fill) {
@@ -679,7 +708,6 @@ addrect = function addrect(top, left, width, height, fill) {
     backgroundColor: 'rgba(0,0,0,0)'
 }));
 updateModifications(true);
-canvas.counter++;
 }
 
 canvas.on(
@@ -720,59 +748,3 @@ function redo(){
 
 
 
-
-
-
-
-// canvas.counter = 0;
-// canvas.selection = false;
-
-// addrect = function addrect(top, left, width, height, fill) {
-// 		canvas.add(new fabric.Rect({
-//         top: 0,
-//         left: 0,
-//         width: 100,
-//         height: 50,
-//         stroke: 'black',
-//         strokeWidth: 1,
-//         fill: 'rgba(0,0,0,0)',
-//         backgroundColor: 'rgba(0,0,0,0)'
-//     }));
-//     updateModifications(true);
-//     canvas.counter++;
-// }
-// var state = [];
-// var mods = 0;
-// canvas.on(
-//     'object:modified', function () {
-//     updateModifications(true);
-// },
-//     'object:added', function () {
-//     updateModifications(true);
-// });
-
-// function updateModifications(savehistory) {
-//     if (savehistory === true) {
-//         myjson = JSON.stringify(canvas);
-//         state.push(myjson);
-//     }
-//     //mods = 0;
-// }
-
-// undo = function undo() {
-//     if (mods < state.length) {
-//         canvas.clear().renderAll();
-//         canvas.loadFromJSON(state[state.length - 1 - mods - 1]);
-//         canvas.renderAll();
-//         mods += 1;
-//     }
-// }
-
-// redo = function redo() {
-//     if (mods > 0) {
-//         canvas.clear().renderAll();
-//         canvas.loadFromJSON(state[state.length - 1 - mods + 1]);
-//         canvas.renderAll();
-//         mods -= 1;
-//     }
-// }
