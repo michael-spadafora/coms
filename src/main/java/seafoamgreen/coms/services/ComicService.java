@@ -3,7 +3,8 @@ package seafoamgreen.coms.services;
 
 
 import  seafoamgreen.coms.model.Comic;
-import  seafoamgreen.coms.model.Series;
+
+import seafoamgreen.coms.model.Series;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

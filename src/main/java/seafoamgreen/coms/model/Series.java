@@ -1,6 +1,5 @@
 package seafoamgreen.coms.model;
 
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,13 +15,12 @@ public class Series {
     //Name of the Series
     private String seriesName;
     //Owner of the Series
-    private String userID;
     //Owner of the series' username
     private String username;
     // List of comics within series
     private List<String> comicList;
     // List of collaborators in Series
-    private List<String> collaboratorList;
+    private List<User> collaboratorList;
     // List of subscribers
     private List<String> subscriberList;
 
@@ -30,7 +28,7 @@ public class Series {
         this.seriesName = seriesName;
         this.username = username;
         this.comicList = new ArrayList<String>();
-        this.collaboratorList = new ArrayList<String>();
+        this.collaboratorList = new ArrayList<User>();
         this.subscriberList = new ArrayList<String>();
     }
 
@@ -60,15 +58,6 @@ public class Series {
         this.seriesName = seriesName;
     }
 
-    public String getUserID() {
-        return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
-    public void addComic(String comicID) { this.comicList.add(comicID); }
 
     public List<String> getComicList() {
         return comicList;
@@ -78,11 +67,11 @@ public class Series {
         this.comicList = comicList;
     }
 
-    public List<String> getCollaboratorList() {
+    public List<User> getCollaboratorList() {
         return collaboratorList;
     }
 
-    public void setCollaboratorList(List<String> collaboratorList) {
+    public void setCollaboratorList(List<User> collaboratorList) {
         this.collaboratorList = collaboratorList;
     }
 
@@ -99,8 +88,6 @@ public class Series {
         return "Series{" +
                 "id='" + id + '\'' +
                 ", seriesName='" + seriesName + '\'' +
-                ", userID='" + userID + '\'' +
-                ", username='" + username + '\'' +
                 ", comicList=" + comicList +
                 ", collaboratorList=" + collaboratorList +
                 ", subscriberList=" + subscriberList +

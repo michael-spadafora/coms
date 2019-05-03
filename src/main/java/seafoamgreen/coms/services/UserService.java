@@ -1,7 +1,5 @@
 package seafoamgreen.coms.services;
 
-import org.jasypt.util.password.PasswordEncryptor;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +21,6 @@ public class UserService {
 
     @Autowired
     private MessageRepository messageRepository;
-
-    private PasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 
     // Create
     public User create(String username, String password) {
@@ -54,7 +50,6 @@ public class UserService {
             // String encrypted = passwordEncryptor.encryptPassword(password);
             return generatedPassword;
         } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
