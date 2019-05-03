@@ -1,6 +1,5 @@
 package seafoamgreen.coms.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -28,8 +27,26 @@ public class MessageController {
     @Autowired
     MessageService service;
 
+
     @Autowired
     UserService userService;
+
+    @PostMapping("/messages/system")
+    public void systemMessage(HttpServletRequest request, HttpServletResponse response, @RequestBody MessageBody msg) {
+        String toN = request.getParameter("to");
+        String title = msg.getTitle();
+        String body = msg.getBody();
+
+        service.sendSystemMessage(toN, title, body);
+    }
+
+    @PostMapping("/messages/system/subscription")
+    public void subscriptionupdate(HttpServletRequest request, HttpServletResponse response, @RequestBody MessageBody msg) {
+        String toN = request.getParameter("to");
+        String series =request.getParameter("series");
+        service.sendSubscriptionUpdate(toN, series);
+
+    }
 
     @PostMapping("/profile/inbox")
     public ModelAndView sendMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -44,6 +61,7 @@ public class MessageController {
 
         String fromN = (String) session.getAttribute("username");
         String toN = request.getParameter("to");
+
         String title = request.getParameter("subject");
         String body = request.getParameter("bodyMessage");
 
@@ -68,7 +86,7 @@ public class MessageController {
     public ModelAndView deleteMessage(HttpServletRequest request, HttpServletResponse response, @RequestBody MessageBody msg) throws IOException {
         service.delete(request.getParameter("deleteID"));
         ModelAndView mav = new ModelAndView("messages");
-
+        
         return mav;
     }
 

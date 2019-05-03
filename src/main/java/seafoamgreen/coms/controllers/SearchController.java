@@ -1,10 +1,10 @@
 package seafoamgreen.coms.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import org.springframework.web.servlet.ModelAndView;
 import seafoamgreen.coms.model.Comic;
@@ -53,10 +53,9 @@ public class SearchController {
         String seriesName = request.getParameter("seriesName");
         List<Series> series = searchService.findAllBySeriesName(seriesName);
         return series;
-        //TODO: search by series name
 
     }
-
+  
     @GetMapping("/keyword")
     public ModelAndView search(HttpServletRequest request)
     {

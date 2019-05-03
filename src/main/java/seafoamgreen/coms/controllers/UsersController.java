@@ -77,7 +77,7 @@ public class UsersController {
         HttpSession session;
 
         ModelAndView mav = new ModelAndView("index");
-
+        //TODO: get lists of comics for popular, continue, recommended
         if(login!=null)
         {
             //LOG IN BUTTON HIT
@@ -146,11 +146,27 @@ public class UsersController {
         mav.addObject("userComics", usersComics);
         mav.addObject("username", activeUsername);
         mav.addObject("userSeries", userSeries);
+        //TODO: add list objects for popular, continue reading, recommended
+        List<Comic> popularComics = userService.getPopular();
+        List<String> popularThumbnails = userService.getThumbnails(popularComics);
+        mav.addObject("popularComics", popularComics);
+        mav.addObject("popularThumbnails", popularThumbnails);
 
-        if(activeUsername == null)
+        if(activeUsername == null) {
             mav.addObject("notLoggedIn", true);
-        else
+            //TODO: this stuff
+            // userService.getContinueReading(activeUsername);
+        }
+        else {
+            List<Comic> history = userService.getUserHistory(activeUsername);
+            List<String> historyThumbnails = userService.getThumbnails(history);
+            mav.addObject("history", history);
+            mav.addObject("historyThumbnails", historyThumbnails);
+
             mav.addObject("isLoggedIn", true);
+        // List<Comic> popularComic = userService.getPopular();
+        // List<String> popularThumbnail = userService.getPopularThumbnails();
+        }
 
         return mav;
     }
@@ -176,6 +192,13 @@ public class UsersController {
         List<Comic> usersComics = comicService.findAllByUsername(activeUsername);
         mav.addObject("userComics", usersComics);
         mav.addObject("username",activeUsername);
+
+        List<Comic> popularComics = userService.getPopular();
+        List<String> popularThumbnails = userService.getThumbnails(popularComics);
+        mav.addObject("popularComics", popularComics);
+        mav.addObject("popularThumbnails", popularThumbnails);
+        
+
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
         else
@@ -251,13 +274,15 @@ public class UsersController {
     @GetMapping("/profile/inbox")
     public ModelAndView viewInbox(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = (String) request.getSession(false).getAttribute("username");
+
+        System.out.println("inbox username: "+ username);
         if (username == null) {
             response.sendError(401, "User not logged in");
         }
 
         ModelAndView mav = new ModelAndView("inbox");
         mav.addObject("Messages" , userService.getInbox(username));
-        System.out.println(userService.getInbox(username));
+
         mav.addObject("username", username);
         if(username == null)
             mav.addObject("notLoggedIn", true);
