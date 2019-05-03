@@ -486,8 +486,8 @@ function encode( s ) {
 
 function downloadJSON() {
   var y = canvas.toJSON();
-  console.log(y);
-  canvas.loadFromJSON(y)
+  // console.log(y);
+  // canvas.loadFromJSON(y)
     // var data = encode(JSON.stringify(y));
     var data = JSON.stringify(y);
 
@@ -705,10 +705,13 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
         request.responseType = 'json';
         request.send();
         request.onload = function() {
-          var superHeroes = request.response;
-          console.log(superHeroes);
-          console.log(superHeroes["objects"]);
-          json = {"objects": superHeroes["objects"]}
+          var oldJson = request.response;
+          console.log(oldJson);
+          console.log(oldJson["objects"]);
+          var old = oldJson["objects"];
+          var current = canvas.toJSON()["objects"];
+          var newcanvas = current.concat(old);
+          json = {"objects": newcanvas}
           canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function(o, object) {
           fabric.log(o, object);
       });
