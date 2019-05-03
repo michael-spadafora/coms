@@ -150,7 +150,8 @@ public class UsersController {
         List<Comic> popularComics = userService.getPopular();
         List<String> popularThumbnails = userService.getThumbnails(popularComics);
         mav.addObject("popularComics", popularComics);
-        mav.addObject("popularThumbnail", popularThumbnails);;
+        mav.addObject("popularThumbnail", popularThumbnails);
+
         if(activeUsername == null) {
             mav.addObject("notLoggedIn", true);
             //TODO: this stuff
@@ -186,6 +187,13 @@ public class UsersController {
         List<Comic> usersComics = comicService.findAllByUsername(activeUsername);
         mav.addObject("userComics", usersComics);
         mav.addObject("username",activeUsername);
+
+        List<Comic> popularComics = userService.getPopular();
+        List<String> popularThumbnails = userService.getThumbnails(popularComics);
+        mav.addObject("popularComics", popularComics);
+        mav.addObject("popularThumbnail", popularThumbnails);
+        
+
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
         else
