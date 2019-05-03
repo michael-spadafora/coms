@@ -28,6 +28,9 @@ public class UserService {
     @Autowired
     private ComicRepository comicRepository;
 
+    @Autowired
+    private PanelService panelService;
+
     // Create
     public User create(String username, String password) {
         String encrypted = encrypt(password);
@@ -148,7 +151,7 @@ public class UserService {
             List<String> panelIds = c.getPanelList();
             String panel1 = panelIds.get(0);
             if (panel1 == null) continue;
-            
+            panelService.getBlob(panel1);
 
         }
 		return null;
