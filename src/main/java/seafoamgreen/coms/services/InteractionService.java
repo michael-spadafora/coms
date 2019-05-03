@@ -43,6 +43,7 @@ public class InteractionService {
         }
 
         userRepository.save(user);
+        comic.calculateScore();
         comicRepository.save(comic);
 	}
 
@@ -58,6 +59,7 @@ public class InteractionService {
         comic.getDownvoters().remove(username);
 
         userRepository.save(user);
+        comic.calculateScore();
         comicRepository.save(comic);
         
     }
