@@ -159,9 +159,9 @@ public class UserService {
     }
     
 
-	public List<String> getThumbnails(List<Comic> popularComics) {
+	public List<String> getThumbnails(List<Comic> comicList) {
         List<String> thumbs = new ArrayList<>();
-        for (Comic c: popularComics) {
+        for (Comic c: comicList) {
             List<String> panelIds = c.getPanelList();
             String panel1 = panelIds.get(0);
             if (panel1 == null) continue;
