@@ -622,72 +622,6 @@ function myfunc(e){
   }
 }
 
-// fucntion load(){
-//   canvas.loadFromJSON()
-// }
-
-
-
-//
-// canvas.counter = 0;
-// var newleft = 0;
-// canvas.selection = false;
-//
-// addrect = function addrect(top, left, width, height, fill) {
-// 		canvas.add(new fabric.Rect({
-//         top: 0,
-//         left: 0,
-//         width: 100,
-//         height: 50,
-//         stroke: 'black',
-//         strokeWidth: 1,
-//         fill: 'rgba(0,0,0,0)',
-//         backgroundColor: 'rgba(0,0,0,0)'
-//     }));
-//     updateModifications(true);
-//     canvas.counter++;
-//     newleft += 100;
-// }
-// var state = [];
-// var mods = 0;
-// canvas.on(
-//     'object:modified', function () {
-//     updateModifications(true);
-// },
-//     'object:added', function () {
-//     updateModifications(true);
-// });
-//
-// function updateModifications(savehistory) {
-//     if (savehistory === true) {
-//         myjson = JSON.stringify(canvas);
-//         state.push(myjson);
-//     }
-//     //mods = 0;
-// }
-//
-// undo = function undo() {
-//     if (mods < state.length) {
-//         canvas.clear().renderAll();
-//         canvas.loadFromJSON(state[state.length - 1 - mods - 1]);
-//         canvas.renderAll();
-//         mods += 1;
-//     }
-// }
-//
-// redo = function redo() {
-//     if (mods > 0) {
-//         canvas.clear().renderAll();
-//         canvas.loadFromJSON(state[state.length - 1 - mods + 1]);
-//         canvas.renderAll();
-//         mods -= 1;
-//     }
-// }
-//
-// clearcan = function clearcan() {
-//     canvas.clear().renderAll();
-//     newleft = 0;
-// }
 
 
 document.getElementById('jsonLoader').onchange = function handleImage(e) {
@@ -722,3 +656,123 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
     reader.readAsDataURL(e.target.files[0]);
     document.getElementById("jsonLoader").value = "";
 }
+
+
+
+
+
+
+
+var undoStack = [];
+var redoStack = [];
+
+
+addrect = function addrect(top, left, width, height, fill) {
+    canvas.add(new fabric.Rect({
+    top: 0,
+    left: 0,
+    width: 100,
+    height: 50,
+    stroke: 'black',
+    strokeWidth: 1,
+    fill: 'rgba(0,0,0,0)',
+    backgroundColor: 'rgba(0,0,0,0)'
+}));
+updateModifications(true);
+canvas.counter++;
+}
+
+canvas.on(
+    'object:modified', function () {
+    updateModifications(true);
+},
+    'object:added', function () {
+    updateModifications(true);
+});
+
+function updateModifications(changes) {
+    if (changes === true) {
+        myjson = JSON.stringify(canvas);
+        undoStack.push(myjson);
+        redoStack = [];
+    }
+    //mods = 0;
+}
+
+
+function undo(){
+    if (undoStack.length > 0){
+        canvas.clear().renderAll();
+        redoStack.push(undoStack.pop());
+        canvas.loadFromJSON(undoStack[undoStack.length - 1]);
+        canvas.renderAll();
+    }
+}
+
+function redo(){
+    if (redoStack.length > 0){
+        canvas.clear().renderAll();
+        canvas.loadFromJSON(redoStack[redoStack.length - 1]);
+        undoStack.push(redoStack.pop());
+        canvas.renderAll();
+    }
+}
+
+
+
+
+
+
+
+// canvas.counter = 0;
+// canvas.selection = false;
+
+// addrect = function addrect(top, left, width, height, fill) {
+// 		canvas.add(new fabric.Rect({
+//         top: 0,
+//         left: 0,
+//         width: 100,
+//         height: 50,
+//         stroke: 'black',
+//         strokeWidth: 1,
+//         fill: 'rgba(0,0,0,0)',
+//         backgroundColor: 'rgba(0,0,0,0)'
+//     }));
+//     updateModifications(true);
+//     canvas.counter++;
+// }
+// var state = [];
+// var mods = 0;
+// canvas.on(
+//     'object:modified', function () {
+//     updateModifications(true);
+// },
+//     'object:added', function () {
+//     updateModifications(true);
+// });
+
+// function updateModifications(savehistory) {
+//     if (savehistory === true) {
+//         myjson = JSON.stringify(canvas);
+//         state.push(myjson);
+//     }
+//     //mods = 0;
+// }
+
+// undo = function undo() {
+//     if (mods < state.length) {
+//         canvas.clear().renderAll();
+//         canvas.loadFromJSON(state[state.length - 1 - mods - 1]);
+//         canvas.renderAll();
+//         mods += 1;
+//     }
+// }
+
+// redo = function redo() {
+//     if (mods > 0) {
+//         canvas.clear().renderAll();
+//         canvas.loadFromJSON(state[state.length - 1 - mods + 1]);
+//         canvas.renderAll();
+//         mods -= 1;
+//     }
+// }
