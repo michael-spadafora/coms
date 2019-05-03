@@ -62,9 +62,18 @@ public class ComicController {
     @GetMapping("/view")
     public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response) {
         String comicID = request.getParameter("comidID");
+        
         ModelAndView mav = new ModelAndView("comicView");
         Comic c =  comicService.findById(comicID);
         List<String> blobs = comicService.getPanelObjects(c);
+        //add to history
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String username = (String) session.getAttribute("username");
+            if (username != null) {
+                comicService.addToHistory(username, comicID);
+            }
+        }
         mav.addObject("comic", c);
         mav.addObject("panels", blobs);
 
@@ -105,6 +114,14 @@ public class ComicController {
     @GetMapping("/random")
     public ModelAndView randomComic(HttpServletRequest request, HttpServletResponse response) {
         Comic comic = comicService.getRandomComic();
+        //add to history
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String username = (String) session.getAttribute("username");
+            if (username != null) {
+                comicService.addToHistory(username, comic.getId());
+            }
+        }
 
         ModelAndView mav = new ModelAndView(comicViewName);
         mav.addObject("comic", comic);

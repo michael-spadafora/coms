@@ -134,7 +134,7 @@ public class UsersController {
                 return mav;
             }
         }
-
+s
         //RETURN THE DEFAULT MAV WHICH IS THE INDEX
         session = request.getSession();
         String activeUsername = (String)session.getAttribute("username");
