@@ -143,6 +143,20 @@ public class UserService {
         List<Comic> popular = comicRepository.findMostPopular(sort);
 		return popular;
     }
+
+    public List<Comic> getUserHistory(String username) {
+        List<Comic> comics = new ArrayList<>();
+
+        User user = userRepository.findByUsername(username);
+        List<String> comicIds = user.getComicIdHistory();
+
+        for (String id : comicIds) {
+            Comic c = comicRepository.findByComicId(id);
+            comics.add(c);
+        }
+
+        return comics;
+    }
     
 
 	public List<String> getThumbnails(List<Comic> popularComics) {
