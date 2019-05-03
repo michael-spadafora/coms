@@ -190,13 +190,24 @@
 
                     </div>
                  </span>
+
+                 <span class="dropdown">
+                    <button class="dropbtn"><img src="/img/image.png" alt="download" height="20" width="20"></button>
+                    <div class="dropdown-content">
+                      <button type="button" class="btn btn-info" onclick="document.getElementById('imgLoader').click();"><img src="/img/imagedownload.png" alt="Upload Image" height="20" width = "20"></button>
+                      <input type='file' id="imgLoader" style="display: none;"/> <br>
+
+                      <button type="button" class="btn btn-info" onclick="document.getElementById('jsonLoader').click();"><img src="/img/json.png" alt="Upload Image" height="20" width = "20"></button>
+                      <input type='file' id="jsonLoader" style="display: none;"/>
+
+                    </div>
+                 </span>
                   <!-- <button type="button" class="btn btn-info" onclick="drawRec()" id="rect"><img src="/img/rectangle.png" alt="Rectangle" height="20" width="30"> </button>
                   <button type="button" class="btn btn-info" onclick="drawSquare()"><img src="/img/square.png" alt="Square" height="20" width = "20"> </button>
                   <button type="button" class="btn btn-info" onclick="drawTriangle()"><img src="/img/triangle.png" alt="Triangle" height="20" width = "20"> </button>
                   <button type="button" class="btn btn-info" onclick="drawCircle()"><img src="/img/ellipse.png" alt="Circle" height="20" width = "20"></button>
                   <button type="button" class="btn btn-info" onclick="drawLine()"><img src="/img/line.png" alt="Line" height="20" width = "20"></button> -->
-                  <button type="button" class="btn btn-info" onclick="document.getElementById('imgLoader').click();"><img src="/img/image.png" alt="Upload Image" height="20" width = "20"></button>
-                  <input type='file' id="imgLoader" style="display: none;"/>
+
                   <button type="button" class="btn btn-info" onclick="copy()"><img src="/img/copy.png" alt="Copy" height="20" width = "20"></button>
                   <button type="button" class="btn btn-info" onclick="cut()"><img src="/img/cut.png" alt="Cut" height="20" width = "20"></button>
                   <button type="button" class="btn btn-info" onclick="paste()"><img src="/img/paste.png" alt="Paste" height="20" width = "20"></button>
@@ -210,8 +221,8 @@
                   <span class="dropdown">
                      <button class="dropbtn"><img src="/img/download.png" alt="download" height="20" width="20"></button>
                      <div class="dropdown-content">
+                       <button type="button" class="btn btn-info" onclick="downloadImage()"><img src="/img/imagedownload.png" alt="Download as an Image" height="20" width = "20"> </button><br>
                         <button type="button" class="btn btn-info" onclick="downloadJSON()" ><img src="/img/json.png" alt="Download as a JSON" height="15" width="20"> </button><br>
-                        <button type="button" class="btn btn-info" onclick="downloadImage()"><img src="/img/imagedownload.png" alt="Download as an Image" height="20" width = "20"> </button><br>
                      </div>
                   </span>
                   <!-- LAYERS -->
@@ -225,9 +236,7 @@
                      </div>
                   </span>
 
-                  <button type="button" class="btn btn-info" onclick="document.getElementById('jsonLoader').click();"><img src="/img/image.png" alt="Upload Image" height="20" width = "20"></button>
-                  <input type='file' id="jsonLoader" style="display: none;"/>
-                  <button type="button" class="btn btn-info" onclick="downloadJSON2()" ><img src="/img/json.png" alt="Download as a JSON" height="15" width="20"> </button><br>
+
 
 
 

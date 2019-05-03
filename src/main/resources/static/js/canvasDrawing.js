@@ -719,32 +719,3 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
     reader.readAsDataURL(e.target.files[0]);
     document.getElementById("jsonLoader").value = "";
 }
-function downloadJSON2() {
-  var y = canvas.toJSON();
-  console.log(y);
-  // canvas.loadFromJSON(y)
-  console.log(y["objects"]);
-    var data = JSON.stringify(y);
-console.log("-----");
-console.log(data);
-console.log(JSON.parse(data));
-console.log("-----");
-
-var json = {"objects":[{"type":"rect","version":"2.4.6","originX":"left","originY":"top","left":0,"top":0,"width":100,"height":50,"fill":"rgba(0,0,0,0)","stroke":"black","strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"clipTo":null,"backgroundColor":"rgba(0,0,0,0)","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","transformMatrix":null,"skewX":0,"skewY":0,"rx":0,"ry":0}]}
-    canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function(o, object) {
-    fabric.log(o, object);
-});
-console.log("this is crap")
-    var blob = new Blob( [ data ], {
-        type: 'application/octet-stream'
-    });
-
-    url = URL.createObjectURL( blob );
-    var link = document.createElement( 'a' );
-    link.setAttribute( 'href', url );
-    link.setAttribute( 'download', 'example.json' );
-
-    var event = document.createEvent( 'MouseEvents' );
-    event.initMouseEvent( 'click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-    link.dispatchEvent( event );
-}
