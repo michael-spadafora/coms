@@ -32,6 +32,7 @@ public class Comic {
 
     private List<String> upvoters;
     private List<String> downvoters;
+    private int score;
 
     // Panel and Tags are initalized as empty lists. They can be added within the
     // Service layer
@@ -41,6 +42,24 @@ public class Comic {
         this.seriesID = seriesID;
         this.panelList = new ArrayList<String>();
         this.tags = new ArrayList<String>();
+        this.upvoters =  new ArrayList<String>();
+        this.downvoters = new ArrayList<String>();
+        this.score = 0;
+    }
+
+
+    /**
+     * @return the score
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * @param score the score to set
+     */
+    public void setScore(int score) {
+        this.score = score;
     }
 
     /**
@@ -181,4 +200,8 @@ public class Comic {
                 ", dateTime='" + dateTime + '\'' +
                 '}';
     }
+
+	public void calculateScore() {
+        this.score = upvoters.size() - downvoters.size();
+	}
 }
