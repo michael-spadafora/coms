@@ -48,6 +48,7 @@ public class PanelController {
     {
         HttpSession session = request.getSession();
         Enumeration params = request.getParameterNames();
+        String img = (String)request.getParameter("image");
 
         String currentUser =(String) session.getAttribute("username");
         while(params.hasMoreElements()){
@@ -56,15 +57,15 @@ public class PanelController {
         }
 
         System.out.println("current series : " + request.getSession().getAttribute("currentSeries"));
-        System.out.println("current comic : " + request.getSession().getAttribute("currentComic"));
+        System.out.println("current comic id : " + request.getSession().getAttribute("currentComicId"));
 
         //Create the panel in the DB, add it to the comic
-        Comic currentComic = (Comic)session.getAttribute("currentComic");
-        Panel panel = panelService.create(currentUser, currentComic.getId(), request.getParameter("body"), request.getParameter("image"));
+        String currentComicId = (String)session.getAttribute("currentComicId");
+        Panel panel = panelService.create(currentUser, currentComicId, request.getParameter("body"), request.getParameter("image"));
 
-        comicService.addPanel(currentComic.getId(), panel.getId());
+        comicService.addPanel(currentComicId, panel.getId());
         //Update the Session Comic
-        session.setAttribute("currentComic", comicService.findById(currentComic.getId()));
+        session.setAttribute("currentComic", comicService.findById(currentComicId));
         return "save triggered";
     }
 

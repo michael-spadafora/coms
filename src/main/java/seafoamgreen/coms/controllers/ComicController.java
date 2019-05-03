@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -104,7 +105,7 @@ public class ComicController {
         String bucketName = "coms.com-comics";
         String key = "key";
 
-        s3client.putObject(bucketName, key, "content");
+        s3client.putObject(bucketName, key, "content"); 
 
         URL url = s3client.getUrl(bucketName, key);
         String urlstring = s3client.getUrl(bucketName, key).toString();
@@ -161,6 +162,50 @@ public class ComicController {
 
     }
 
+
+    @GetMapping("/editable")
+    public ModelAndView getEditableComics(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            //TODO: redirect to login page
+            return null;
+        }
+
+        String username = (String) session.getAttribute("username");
+        List<Comic> comics = comicService.getEditableComicsByUsername(username);
+
+        //TODO: change mav reference
+        ModelAndView mav = new ModelAndView("AllEditable");
+        mav.addObject("comics", comics);
+        return mav;
+    }
+
+    @GetMapping("/edit")
+    public ModelAndView getComicForEdit(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            //TODO: redirect to login page
+            return null;
+        }
+        String comicId = (String) request.getParameter("comicId");
+        
+        String username = (String) session.getAttribute("username");
+        
+        
+        Comic comic = comicService.getEditComic(username, comicId);
+        if (comic == null) {
+            //TODO: throw error?
+            return null;
+        }
+        //TODO: possibly add comic to session?
+
+        //TODO: change mav ref
+        ModelAndView mav = new ModelAndView("ComicEdit");
+        mav.addObject("comic", comic);
+
+        return mav;
+
+    }
 
 }
 
