@@ -151,10 +151,10 @@ public class UserService {
             List<String> panelIds = c.getPanelList();
             String panel1 = panelIds.get(0);
             if (panel1 == null) continue;
-            panelService.getBlob(panel1);
-
+            String blob  = panelService.getBlob(panel1);
+            thumbs.add(blob);
         }
-		return null;
+		return thumbs;
 	}
 
 
