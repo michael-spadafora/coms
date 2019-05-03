@@ -143,11 +143,25 @@ public class UserService {
         List<Comic> popular = comicRepository.findMostPopular(sort);
 		return popular;
     }
+
+    public List<Comic> getUserHistory(String username) {
+        List<Comic> comics = new ArrayList<>();
+
+        User user = userRepository.findByUsername(username);
+        List<String> comicIds = user.getComicIdHistory();
+
+        for (String id : comicIds) {
+            Comic c = comicRepository.findByComicId(id);
+            comics.add(c);
+        }
+
+        return comics;
+    }
     
 
-	public List<String> getThumbnails(List<Comic> popularComics) {
+	public List<String> getThumbnails(List<Comic> comicList) {
         List<String> thumbs = new ArrayList<>();
-        for (Comic c: popularComics) {
+        for (Comic c: comicList) {
             List<String> panelIds = c.getPanelList();
             String panel1 = panelIds.get(0);
             if (panel1 == null) continue;

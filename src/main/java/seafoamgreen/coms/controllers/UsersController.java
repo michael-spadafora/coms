@@ -158,6 +158,11 @@ public class UsersController {
             // userService.getContinueReading(activeUsername);
         }
         else {
+            List<Comic> history = userService.getUserHistory(activeUsername);
+            List<String> historyThumbnails = userService.getThumbnails(history);
+            mav.addObject("history", history);
+            mav.addObject("historyThumbnails", historyThumbnails);
+
             mav.addObject("isLoggedIn", true);
         // List<Comic> popularComic = userService.getPopular();
         // List<String> popularThumbnail = userService.getPopularThumbnails();

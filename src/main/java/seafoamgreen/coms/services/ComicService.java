@@ -1,17 +1,17 @@
 package seafoamgreen.coms.services;
 
-
-
-import  seafoamgreen.coms.model.Comic;
+import seafoamgreen.coms.model.Comic;
 
 import seafoamgreen.coms.model.Series;
+import seafoamgreen.coms.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import  seafoamgreen.coms.repositories.ComicRepository;
-import  seafoamgreen.coms.repositories.SeriesRepository;
+import seafoamgreen.coms.repositories.ComicRepository;
+import seafoamgreen.coms.repositories.SeriesRepository;
+import seafoamgreen.coms.repositories.UserRepository;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,6 +40,9 @@ public class ComicService {
 
     @Autowired
     private PanelService panelService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public Comic create(String Username, String comicName, String SeriesID, String tagString) //need to find a way to implement time
     {
@@ -236,6 +239,12 @@ public class ComicService {
 
         return comicRepository.findBySeriesID(id);
 
+    }
+
+	public void addToHistory(String username, String comicID) {
+        User user = userRepository.findByUsername(username);
+        user.addComicToHistory(comicID);
+        
     }
 }
 
