@@ -22,7 +22,30 @@ public class User {
     private boolean isAdmin;
     private ArrayList<String> subscriptions = new ArrayList<String>();
 
+    private ArrayList<String> comicIdHistory = new ArrayList<String>();
+
     public User() {
+    }
+
+    /**
+     * @return the comicIdHistory
+     */
+    public ArrayList<String> getComicIdHistory() {
+        return comicIdHistory;
+    }
+
+    /**
+     * @param comicIdHistory the comicIdHistory to set
+     */
+    public void setComicIdHistory(ArrayList<String> comicIdHistory) {
+        this.comicIdHistory = comicIdHistory;
+    }
+
+    public void addComicToHistory(String comicId){
+        comicIdHistory.add(0, comicId);
+        if (comicIdHistory.size() > 5) {
+            comicIdHistory.remove(5);
+        }
     }
 
     /**
