@@ -1,5 +1,6 @@
 package seafoamgreen.coms.controllers;
 
+import org.springframework.ui.Model;
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.services.ComicService;
@@ -112,7 +113,7 @@ public class SeriesController {
     }
 
     @PostMapping("/addComic")
-    public ModelAndView addNewComic(HttpServletRequest request)
+    public void addNewComic(HttpServletRequest request, HttpServletResponse response)
     {
         ModelAndView mav = new ModelAndView("myComics");
         HttpSession session = request.getSession();
@@ -143,15 +144,20 @@ public class SeriesController {
         }
         //Get all of users series
 
-        mav.addObject("seriesMap", map);
+
 
         //Map each series to a list of comics
-        return mav;
+        try {
+            response.sendRedirect("/series/mySeries");
+        }
+        catch(Exception e) {
+
+        }
 
     }
 
     @PostMapping("/addSeries")
-    public ModelAndView addNewSeries(HttpServletRequest request)
+    public ModelAndView addNewSeries(HttpServletRequest request, HttpServletResponse response)
     {
 
 
