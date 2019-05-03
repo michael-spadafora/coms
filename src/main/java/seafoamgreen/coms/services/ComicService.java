@@ -3,6 +3,7 @@ package seafoamgreen.coms.services;
 
 
 import  seafoamgreen.coms.model.Comic;
+
 import seafoamgreen.coms.model.Series;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import  seafoamgreen.coms.repositories.ComicRepository;
 import  seafoamgreen.coms.repositories.SeriesRepository;
 
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +38,8 @@ public class ComicService {
     @Autowired
     private SeriesRepository seriesRepository;
 
+    @Autowired
+    private PanelService panelService;
 
     public Comic create(String Username, String comicName, String SeriesID, String tagString) //need to find a way to implement time
     {
@@ -59,10 +61,7 @@ public class ComicService {
     }
 
 
-    //TODO: implement create w/ publish time
-    //TODO: how to check if time is reached for publishing?
-    //options: new repo of unpublished comics, stored in order of when we should publish, and call something every ~10 minutes to check if something needs publishing
-    // ^ probably the best option?
+  
 
 
     //Update
@@ -169,7 +168,6 @@ public class ComicService {
 
         s3client.putObject(bucketName, "key", content);
 
-        URL url = s3client.getUrl(bucketName, key);
         String urlstring = s3client.getUrl(bucketName, key).toString();
 
         c.setAWSURL(urlstring);
@@ -180,9 +178,7 @@ public class ComicService {
         //     "Document/hello.txt",
         //     new File("/Users/user/Document/hello.txt")
         // );
-        //TODO: save canvas as images
-        //TODO: add delayed publishing date
-        //TODO: add date field to comic
+        
 
 
         return c;
@@ -212,7 +208,6 @@ public class ComicService {
             comicRepository.save(c);
         }
 
-        // TODO: get series of comic. notify subscribers.
     }
 
 	public Comic getEditComic(String username, String comicId) {
@@ -226,9 +221,21 @@ public class ComicService {
 	}
 
 
+
+    public List<String> getPanelObjects(Comic c) {
+        ArrayList<String> urls = new ArrayList<>();
+        List<String> panels = c.getPanelList();
+        for (String s: panels) {
+            urls.add(panelService.getBlob(s));
+        }
+
+        return urls;
+    }
+
     public List<Comic> findAllBySeriesId(String id) {
 
         return comicRepository.findBySeriesID(id);
+
     }
 }
 

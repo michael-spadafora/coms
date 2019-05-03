@@ -20,7 +20,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*")
@@ -60,6 +59,31 @@ public class ComicController {
         return mav;
     };
 
+    @GetMapping("/view")
+    public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response) {
+        String comicID = request.getParameter("comidID");
+        ModelAndView mav = new ModelAndView("comicView");
+        Comic c =  comicService.findById(comicID);
+        List<String> blobs = comicService.getPanelObjects(c);
+        mav.addObject("comic", c);
+        mav.addObject("panels", blobs);
+
+        return mav;
+
+    }
+
+    @GetMapping("/view/thumbnail")
+    public ModelAndView viewComicThumbnail(HttpServletRequest request, HttpServletResponse response) {
+        String comicID = request.getParameter("comidID");
+        ModelAndView mav = new ModelAndView("comicView");
+        Comic c =  comicService.findById(comicID);
+        List<String> blobs = comicService.getPanelObjects(c);
+        mav.addObject("comic", c);
+        mav.addObject("thumbnail", blobs.get(0));
+        return mav;
+
+    }
+
     @GetMapping("/findById")
     public Comic findById(HttpServletRequest request, HttpServletResponse response )throws IOException {
 
@@ -88,33 +112,7 @@ public class ComicController {
         return mav;
     }
 
-    //THIS WORKS!!!
-    @PostMapping("/test")
-    public String test(HttpServletRequest request, HttpServletResponse response) {
-        AWSCredentials credentials = new BasicAWSCredentials(
-                "AKIAJIKZPRZSWRVS6SLQ",
-                "2IZ4gI/pxi8L82qeIWFl2txPIE1eslMxdbrHpYjq "
-        );
 
-        AmazonS3 s3client = AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(Regions.US_EAST_2)
-                .build();
-
-        String bucketName = "coms.com-comics";
-        String key = "key";
-
-        s3client.putObject(bucketName, key, "content"); 
-
-        URL url = s3client.getUrl(bucketName, key);
-        String urlstring = s3client.getUrl(bucketName, key).toString();
-
-        // S3Object s3object = s3client.getObject(bucketName, "key");
-        // S3ObjectInputStream inputStream = s3object.getObjectContent();
-        // inputStream.
-        return "huh";
-    }
 
     @PostMapping("/addTags")
     public ModelAndView addTag(HttpServletRequest request, HttpServletResponse response) {
@@ -122,11 +120,9 @@ public class ComicController {
         String comicId = request.getParameter("comicId");
         comicService.addTags(comicId, tags);
 
-        //
+    
         ModelAndView mav = new ModelAndView(comicViewName);
 
-        //TODO: determine if comic or comicId should be added to model
-        //probably comic
         Comic comic = comicService.findById(comicId);
         mav.addObject("comic", comic);
         return mav;

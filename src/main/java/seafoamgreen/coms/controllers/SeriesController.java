@@ -1,6 +1,5 @@
 package seafoamgreen.coms.controllers;
 
-import org.springframework.ui.Model;
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.services.ComicService;

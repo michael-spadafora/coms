@@ -77,7 +77,7 @@ public class UsersController {
         HttpSession session;
 
         ModelAndView mav = new ModelAndView("index");
-
+        //TODO: get lists of comics for popular, continue, recommended
         if(login!=null)
         {
             //LOG IN BUTTON HIT
@@ -146,16 +146,19 @@ public class UsersController {
         mav.addObject("userComics", usersComics);
         mav.addObject("username", activeUsername);
         mav.addObject("userSeries", userSeries);
-
-        if(activeUsername == null) {
+        //TODO: add list objects for popular, continue reading, recommended
+        
+        if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
             //TODO: this stuff
-            // List<String> popularThumbnail = userService.getThumbnails(popularComics);
+            // List<Comic> popularComic = userService.getPopular();
+            // List<String> popularThumbnail = userService.getPopularThumbnails();
             // userService.getContinueReading(activeUsername);
-        }
-        else{
+
+        else {
             mav.addObject("isLoggedIn", true);
-            List<Comic> popularComics = userService.getPopular();
+            // List<Comic> popularComic = userService.getPopular();
+            // List<String> popularThumbnail = userService.getPopularThumbnails();
         }
 
         return mav;
@@ -257,12 +260,15 @@ public class UsersController {
     @GetMapping("/profile/inbox")
     public ModelAndView viewInbox(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = (String) request.getSession(false).getAttribute("username");
+
+        System.out.println("inbox username: "+ username);
         if (username == null) {
             response.sendError(401, "User not logged in");
         }
 
         ModelAndView mav = new ModelAndView("inbox");
         mav.addObject("Messages" , userService.getInbox(username));
+
         mav.addObject("username", username);
         if(username == null)
             mav.addObject("notLoggedIn", true);
