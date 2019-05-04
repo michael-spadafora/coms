@@ -715,24 +715,6 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
 
 
 
-addrect = function addrect(top, left, width, height, fill) {
-    canvas.add(new fabric.Rect({
-    top: 0,
-    left: 0,
-    width: 100,
-    height: 50,
-    stroke: 'black',
-    strokeWidth: 1,
-    fill: 'rgba(0,0,0,0)',
-    backgroundColor: 'rgba(0,0,0,0)'
-}));
-// updateModifications(true);
-}
-
-
-
-
-
 
 
 
