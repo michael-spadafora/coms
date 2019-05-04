@@ -78,7 +78,7 @@
 <nav class="navbar navbar-toggleable-xs navbar-expand-md fixed-top">
     <div class="navbar-collapse collapse">
         <div class="navbar-header">
-            <a class="navbar-brand" href="index.html"><span class="fa fa-book"></span> COMS</a>
+            <a class="navbar-brand" th:href="@{/home}"><span class="fa fa-book"></span> COMS</a>
         </div>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active"><a href="searchResults.html">Genre</a></li>
@@ -89,22 +89,27 @@
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <form id="searchBox" action="searchResults.html">
-                    <input type="search">
+                <form id="searchBox" action="/search/keyword" method = "get">
+                    <input name = "searchWord" type="search">
                 </form>
             </li>
-            <li class="nav-item active" style="margin-top:8px">
+            <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
+                <a th:href="@{/series/mySeries}"> My Creations</a>
+            </li>
+            <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
                 <a th:href="@{/create}"><span class="fa fa-upload"></span> Upload</a>
             </li>
             <li class="nav-item dropdown" th:if="${isLoggedIn}">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><span class="fa fa-user-circle-o" aria-hidden="true"  th:text="${username}"> </span></a>
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><span class="fa fa-user-circle-o" aria-hidden="true"  th:text=" ${username}"> </span></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/profile/inbox}">Inbox</a>
                     <a class="dropdown-item" th:href="@{/profile/self}">My Profile</a>
-                    <a class="dropdown-item" href="#">My Comics</a>
-                    <a class="dropdown-item" th:href="@{/accountSettings}">Settings</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
                 </div>
+            </li>
+            <li class="nav-item active" style="margin-top:8px" th:if="${notLoggedIn}">
+                <a th:href="@{/}"><span class="fa fa-sign-in"></span> Login</a>
             </li>
         </ul>
     </div>
@@ -119,8 +124,8 @@
 
             <div class="list-group">
                 <a class="list-group-item" th:each="message: ${Messages}">
-                    <span class="sender" th:text="${message.getFromUsername}"></span>
-                    <span class="header" th:text="${message.getMessageTitle}"></span>
+                    <span class="sender" th:text="${message.getFromUsername()}"></span>
+                    <span class="header" th:text="${message.getMessageTitle()}"></span>
                 </a>
             </div>
 
@@ -132,21 +137,28 @@
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <form>
-                                <input class="form-control input-large" name="recipient" type="text" placeholder="Recipient"><br/>
+                            <form id="newMessage" action="/profile/inbox"  method="post">
+                                <input class="form-control input-large" name="to" type="text" placeholder="Recipient"><br/>
                                 <input class="form-control input-large" name="subject" type="text" placeholder="Subject"><br/>
                                 <textarea class="form-control input-large" name="bodyMessage" type="text"></textarea>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                                    <button onclick= "form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Send</button>
+                                </div>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Send</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function form_submit() {
+            document.getElementById("newMessage").submit();
+        }
+    </script>
 
 </body>
 

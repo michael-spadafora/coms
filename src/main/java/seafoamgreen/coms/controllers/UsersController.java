@@ -1,12 +1,14 @@
 package seafoamgreen.coms.controllers;
 
 import seafoamgreen.coms.model.Comic;
+import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.services.ComicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import seafoamgreen.coms.model.Message;
 import seafoamgreen.coms.model.User;
+import seafoamgreen.coms.services.SeriesService;
 import seafoamgreen.coms.services.UserService;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,6 +30,9 @@ public class UsersController {
 
     @Autowired
     ComicService comicService;
+
+    @Autowired
+    SeriesService seriesService;
 
 
     @GetMapping("/")
@@ -72,7 +77,7 @@ public class UsersController {
         HttpSession session;
 
         ModelAndView mav = new ModelAndView("index");
-
+        //TODO: get lists of comics for popular, continue, recommended
         if(login!=null)
         {
             //LOG IN BUTTON HIT
@@ -133,15 +138,35 @@ public class UsersController {
         //RETURN THE DEFAULT MAV WHICH IS THE INDEX
         session = request.getSession();
         String activeUsername = (String)session.getAttribute("username");
+
         System.out.println("The current active username is: " + activeUsername);
 
         List<Comic> usersComics = comicService.findAllByUsername(activeUsername);
+        List<Series> userSeries = seriesService.findAllByUsername(activeUsername);
         mav.addObject("userComics", usersComics);
         mav.addObject("username", activeUsername);
-        if(activeUsername == null)
+        mav.addObject("userSeries", userSeries);
+        //TODO: add list objects for popular, continue reading, recommended
+        List<Comic> popularComics = userService.getPopular();
+        //List<String> popularThumbnails = userService.getThumbnails(popularComics);
+        mav.addObject("popularComics", popularComics);
+        //mav.addObject("popularThumbnails", popularThumbnails);
+
+        if(activeUsername == null) {
             mav.addObject("notLoggedIn", true);
-        else
+            //TODO: this stuff
+            // userService.getContinueReading(activeUsername);
+        }
+        else {
+            List<Comic> history = userService.getUserHistory(activeUsername);
+            List<String> historyThumbnails = userService.getThumbnails(history);
+            mav.addObject("history", history);
+            mav.addObject("historyThumbnails", historyThumbnails);
+
             mav.addObject("isLoggedIn", true);
+        // List<Comic> popularComic = userService.getPopular();
+        // List<String> popularThumbnail = userService.getPopularThumbnails();
+        }
 
         return mav;
     }
@@ -167,6 +192,13 @@ public class UsersController {
         List<Comic> usersComics = comicService.findAllByUsername(activeUsername);
         mav.addObject("userComics", usersComics);
         mav.addObject("username",activeUsername);
+
+        List<Comic> popularComics = userService.getPopular();
+       // List<String> popularThumbnails = userService.getThumbnails(popularComics);
+        mav.addObject("popularComics", popularComics);
+        //mav.addObject("popularThumbnails", popularThumbnails);
+        
+
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
         else
@@ -242,12 +274,15 @@ public class UsersController {
     @GetMapping("/profile/inbox")
     public ModelAndView viewInbox(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = (String) request.getSession(false).getAttribute("username");
+
+        System.out.println("inbox username: "+ username);
         if (username == null) {
             response.sendError(401, "User not logged in");
         }
 
         ModelAndView mav = new ModelAndView("inbox");
         mav.addObject("Messages" , userService.getInbox(username));
+
         mav.addObject("username", username);
         if(username == null)
             mav.addObject("notLoggedIn", true);

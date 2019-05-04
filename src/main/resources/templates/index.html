@@ -14,6 +14,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <style>
+        .hide {
+            display: none;
+        }
         nav {background-color: #71eeb8; border:none;font-family:'Open Sans', sans-serif;position:relative;}
         .navbar-header{padding-right:50px}
         .navbar-brand{color:#08442a}
@@ -67,7 +70,7 @@
                 </form>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
-                <a data-toggle="modal" data-target="#createComicModal"><span class="fa fa-plus"></span> Create</a>
+                <a th:href="@{/series/mySeries}"> My Creations</a>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
                 <a th:href="@{/create}"><span class="fa fa-upload"></span> Upload</a>
@@ -75,9 +78,8 @@
             <li class="nav-item dropdown" th:if="${isLoggedIn}">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><span class="fa fa-user-circle-o" aria-hidden="true"  th:text=" ${username}"> </span></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" th:href="@{/profile/self}">My Profile</a>
-                    <a class="dropdown-item" href="myComics.html">My Comics</a>
                     <a class="dropdown-item" th:href="@{/profile/inbox}">Inbox</a>
+                    <a class="dropdown-item" th:href="@{/profile/self}">My Profile</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
                 </div>
@@ -90,145 +92,191 @@
 </nav>
 
 <body>
-<div class="container-fluid">
-    <div id="featuredCarousel" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#featuredCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#featuredCarousel" data-slide-to="1"></li>
-            <li data-target="#featuredCarousel" data-slide-to="2"></li>
-        </ol>
+    <div class="container-fluid">
+        <div id="featuredCarousel" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#featuredCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#featuredCarousel" data-slide-to="1"></li>
+                <li data-target="#featuredCarousel" data-slide-to="2"></li>
+            </ol>
 
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="img-fluid" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+1.jpg" alt="Slide 1">
+            <!-- TODO: make this link to actual comics  -->
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="img-fluid" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+1.jpg" alt="Slide 1">
+                </div>
+                <div class="carousel-item">
+                    <img class="img-fluid" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png" alt="Slide 2">
+                </div>
+                <div class="carousel-item">
+                    <img class="img-fluid" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+3.jpg" alt="Slide 3">
+                </div>
             </div>
-            <div class="carousel-item">
-                <img class="img-fluid" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png" alt="Slide 2">
-            </div>
-            <div class="carousel-item">
-                <img class="img-fluid" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+3.jpg" alt="Slide 3">
-            </div>
-        </div>
 
-        <a class="carousel-control-prev" href="#featuredCarousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
+            <a class="carousel-control-prev" href="#featuredCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
 
-        <a class="carousel-control-next" href="#featuredCarousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-</div>
-
-<div class="listOfComics">
-
-    <ul> <!-- REPLACE THE LI ELEMENTS BELOW -->
-        <li th:each="comic:${userComics}" th:text="${comic.getComicName()}"></li>
-    </ul>
-
-    <h3>Continue Reading</h3>
-    <div class="continue testimonial-group">
-        <div class="row text-center">
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+4.jpg"></a>
-            </div>
-            <div class="col-xs-4">
-                <a class="card card-block" href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+9.jpg"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+7.png"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+8.jpg"></a>
-            </div>
+            <a class="carousel-control-next" href="#featuredCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
     </div>
 
-    <h3>Popular on COMS</h3>
-    <div class="popular testimonial-group">
-        <div class="row text-center">
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg"></a>
+    <div class="listOfComics">
+
+        <h3>Continue Reading</h3>
+        <div class="continue testimonial-group">
+            <div class="row text-center">
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+4.jpg"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a class="card card-block" href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+9.jpg"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+7.png"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+8.jpg"></a>
+                </div>
             </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+7.png"></a>
+        </div>
+
+        <h3>Popular on COMS</h3>
+        <div class="popular testimonial-group">
+            <div class="row text-center">
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+7.png"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+8.jpg"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.png"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+11.jpg"></a>
+                </div>
             </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+8.jpg"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.png"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+11.jpg"></a>
+        </div>
+
+        <h3>Recommended for You</h3>
+        <div class="recommended testimonial-group">
+            <div class="row text-center">
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.png"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+11.jpg"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.png"></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+11.jpg"></a>
+                </div>
             </div>
         </div>
     </div>
 
-    <h3>Recommended for You</h3>
-    <div class="recommended testimonial-group">
-        <div class="row text-center">
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.png"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+11.jpg"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.png"></a>
-            </div>
-            <div class="col-xs-4">
-                <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+11.jpg"></a>
+    <div class="modal fade" id="createComicModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id = "create-title" class="modal-title">Create New</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/series/mySeries"  method="get" id = "newSeries">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input onclick = "showSeriesNameBox()" type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadioInline1">New Series</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input onclick = "showSeriesList()"type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadioInline2">Existing Series</label>
+                        </div>
+                        <input id = "seriesNameBox" class="hide form-control input-large" name="series" type="text" placeholder="Series Name"><br/>
+
+                        <select name = "existingSeries" style = "display:none;"id = "seriesList">
+                            <option disabled selected value> -- Select a Series -- </option>
+                            <option th:each="series : ${userSeries}" th:value="${series.getId()}" th:text="${series.getSeriesName()}"></option>
+                        </select>
+                        <input id = "comicNameBox" class= "hide form-control input-large" name="comic" type="text" placeholder="Comic Name"><br/>
+                        <input id = "tagsBox" class= "hide form-control input-large" name="tags" type="text" placeholder="Tags"><br/>
+                        <input id = "datePicker" class= "hide" type="date" name="publishDate">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                            <button onclick= "form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Create</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="createComicModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">New Comic</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form action="/series/create"  method="post" id = "newSeries">
-                    <input class="form-control input-large" name="series" type="text" placeholder="Series Name"><br/>
-                    <input class="form-control input-large" name="comic" type="text" placeholder="Comic Name"><br/>
+    <script type="text/javascript">
+        function form_submit() {
+            document.getElementById("newSeries").submit();
+        }
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
-                        <button onclick= "form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Create</button>
-                    </div>
-                </form>
-            </div>
+        function showSeriesNameBox(){
+            document.getElementById('seriesNameBox').style.display = 'block';
+            document.getElementById('comicNameBox').style.display ='block';
+            document.getElementById('tagsBox').style.display ='block';
+            document.getElementById('datePicker').style.display ='block';
+            document.getElementById('create-title').innerHTML = "Create New Series";
 
-        </div>
-    </div>
-</div>
+            document.getElementById('seriesNameBox').required = true;
+            document.getElementById('comicNameBox').required = true;
+            document.getElementById('tagsBox').required = true;
+            document.getElementById('datePicker').required = true;
 
-<script type="text/javascript">
-    function form_submit() {
-        document.getElementById("newSeries").submit();
-    }
-</script>
+
+            document.getElementById('seriesList').style.display = 'none';
+            document.getElementById('seriesList').required = false;
+        }
+
+        function showSeriesList(){
+            document.getElementById('seriesList').style.display = 'block';
+            document.getElementById('comicNameBox').style.display ='block';
+            document.getElementById('tagsBox').style.display ='block';
+            document.getElementById('datePicker').style.display ='block';
+            document.getElementById('create-title').innerHTML = "Create Under Existing Series";
+
+            document.getElementById('seriesList').required = true;
+            document.getElementById('comicNameBox').required = true;
+            document.getElementById('tagsBox').required = true;
+            document.getElementById('datePicker').required = true;
+
+
+
+            document.getElementById('seriesNameBox').style.display = 'none';
+            document.getElementById('seriesNameBox').required = false;
+        }
+    </script>
 
 </body>
 
