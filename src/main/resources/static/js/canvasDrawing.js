@@ -197,7 +197,7 @@ function drawRec() {
     }));
     canvas.renderAll();
     console.log("this is a rectangle");
-updateModifications(true);
+// updateModifications(true);
 }
 
 function drawLine() {
@@ -205,7 +205,7 @@ function drawLine() {
         stroke: 'black',
         strokeWidth: 10
     }));
-updateModifications(true);
+// updateModifications(true);
 }
 
 function drawTriangle() {
@@ -217,7 +217,7 @@ function drawTriangle() {
         fill: 'rgba(0,0,0,0)',
         backgroundColor: 'rgba(0,0,0,0)'
     }));
-updateModifications(true);
+// updateModifications(true);
 }
 
 function drawSquare() {
@@ -231,7 +231,7 @@ function drawSquare() {
         fill: 'rgba(0,0,0,0)',
         backgroundColor: 'rgba(0,0,0,0)'
     }));
-updateModifications(true);
+// updateModifications(true);
 }
 
 function drawCircle() {
@@ -244,7 +244,7 @@ function drawCircle() {
         fill: 'rgba(0,0,0,0)',
         backgroundColor: 'rgba(0,0,0,0)'
     }));
-updateModifications(true);
+// updateModifications(true);
 }
 
 // function addTextbox() {
@@ -273,12 +273,12 @@ function addTextbox() {
         fontFamily: document.getElementById("fonts").value
         // fixedWidth: 150
     }));
-updateModifications(true);
+// updateModifications(true);
 }
 
 function clearPane() {
     canvas.clear();
-updateModifications(true);
+// updateModifications(true);
 }
 
 function deleteObject() {
@@ -400,7 +400,7 @@ function cut() {
     deleteObject();
     // canvas.remove(canvas.getActiveObject());
 
-updateModifications(true);
+// updateModifications(true);
 }
 
 function paste() {
@@ -427,7 +427,7 @@ function paste() {
         canvas.setActiveObject(clonedObj);
         canvas.requestRenderAll();
     });
-updateModifications(true);
+// updateModifications(true);
 }
 
 document.getElementById('imgLoader').onchange = function handleImage(e) {
@@ -454,12 +454,12 @@ document.getElementById('imgLoader').onchange = function handleImage(e) {
               image.scale(1050/image.getScaledHeight());
             }
             canvas.add(image);
+            // updateModifications(true);
         }
 
     }
     reader.readAsDataURL(e.target.files[0]);
     document.getElementById("imgLoader").value = "";
-updateModifications(true);
 }
 
 function saveimaging(){
@@ -529,7 +529,7 @@ function sendToBack() {
     if (activeObject) {
       canvas.sendToBack(activeObject);
     }
-updateModifications(true);
+// updateModifications(true);
 }
 
 function back() {
@@ -537,14 +537,14 @@ function back() {
     if (activeObject) {
       canvas.sendBackwards(activeObject);
     }
-updateModifications(true);
+// updateModifications(true);
 }
 function front() {
   var activeObject = canvas.getActiveObject();
     if (activeObject) {
       canvas.bringForward(activeObject);
     }
-updateModifications(true);
+// updateModifications(true);
 }
 
 function bringToFront() {
@@ -552,7 +552,7 @@ function bringToFront() {
     if (activeObject) {
       canvas.bringToFront(activeObject);
     }
-updateModifications(true);
+// updateModifications(true);
 }
 
 function chat() {
@@ -567,7 +567,7 @@ function chat() {
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
-updateModifications(true);
+// updateModifications(true);
 }
 function thought() {
   console.log('adding chat svg');
@@ -581,7 +581,7 @@ function thought() {
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
-updateModifications(true);
+// updateModifications(true);
 }
 function arrow() {
   console.log('adding chat svg');
@@ -595,7 +595,7 @@ function arrow() {
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
-updateModifications(true);
+// updateModifications(true);
 }
 function scream() {
   console.log('adding chat svg');
@@ -609,7 +609,7 @@ function scream() {
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
-updateModifications(true);
+// updateModifications(true);
 
 }
 
@@ -627,7 +627,7 @@ function action() {
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
-updateModifications(true);
+// updateModifications(true);
 
 }
 
@@ -677,13 +677,14 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
           canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function(o, object) {
           fabric.log(o, object);
       });
+      // updateModifications(true);
         }
 
 
     }
     reader.readAsDataURL(e.target.files[0]);
     document.getElementById("jsonLoader").value = "";
-updateModifications(true);
+
 
 }
 
@@ -707,15 +708,125 @@ addrect = function addrect(top, left, width, height, fill) {
     fill: 'rgba(0,0,0,0)',
     backgroundColor: 'rgba(0,0,0,0)'
 }));
-updateModifications(true);
+// updateModifications(true);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var objectsFromUndoRedo = 0; 
+// canvas.on(
+//     'object:modified', function () {
+//     updateModifications(true);
+// });
+// canvas.on(
+//     'object:added', function () {
+//         if (objectsFromUndoRedo > 0){
+//             objectsFromUndoRedo -= 1;
+//         }else{
+//             updateModifications(true);
+//         }
+//     // updateModifications(true);
+// });
+
+// function updateModifications(changes) {
+//     if (changes === true) {
+//         myjson = JSON.stringify(canvas);
+//         undoStack.push(myjson);
+//         redoStack = [];
+//     }
+//     //mods = 0;
+// }
+
+
+// function undo(){
+//     if (undoStack.length > 0){
+//         canvas.clear().renderAll();
+//         redoStack.push(undoStack.pop());
+//         objectsFromUndoRedo = JSON.parse(undoStack[undoStack.length - 1])["objects"].length
+//         canvas.loadFromJSON(undoStack[undoStack.length - 1]);
+//         canvas.renderAll();
+//     }
+// }
+
+// function redo(){
+//     if (redoStack.length > 0){
+//         canvas.clear().renderAll();
+//         objectsFromUndoRedo = JSON.parse(redoStack[redoStack.length - 1])["objects"].length
+//         canvas.loadFromJSON(redoStack[redoStack.length - 1]);
+//         undoStack.push(redoStack.pop());
+//         canvas.renderAll();
+//     }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+// undo/redo for changing colors should only happen when a change occurs (nothing when erorr occurs)
+//check the previous state. if previous and current are the same, then no push, else push
+
+// undo/redo for lines
+
+// var canvas = new fabric.Canvas('c');
+// canvas.isDrawingMode = true;
+// canvas.on('object:added',function(){
+//   if(!isRedoing){
+//     h = [];
+//   }
+//   isRedoing = false;
+// });
+
+// var isRedoing = false;
+// var h = [];
+// function undo(){
+//   if(canvas._objects.length>0){
+//    h.push(canvas._objects.pop());
+//    canvas.renderAll();
+//   }
+// }
+// function redo(){
+  
+//   if(h.length>0){
+//     isRedoing = true;
+//    canvas.add(h.pop());
+//   }
+// }
+
+
+
+var donedrawing = false;
+
 
 canvas.on(
     'object:modified', function () {
     updateModifications(true);
-},
+});
+canvas.on(
     'object:added', function () {
-    updateModifications(true);
+      if (donedrawing == false){
+        updateModifications(true);
+      }
+//     updateModifications(true);
 });
 
 function updateModifications(changes) {
@@ -732,7 +843,9 @@ function undo(){
     if (undoStack.length > 0){
         canvas.clear().renderAll();
         redoStack.push(undoStack.pop());
+        donedrawing = true;
         canvas.loadFromJSON(undoStack[undoStack.length - 1]);
+        donedrawing = false;
         canvas.renderAll();
     }
 }
@@ -740,11 +853,10 @@ function undo(){
 function redo(){
     if (redoStack.length > 0){
         canvas.clear().renderAll();
+        donedrawing = true;
         canvas.loadFromJSON(redoStack[redoStack.length - 1]);
+        donedrawing = false;
         undoStack.push(redoStack.pop());
         canvas.renderAll();
     }
 }
-
-
-
