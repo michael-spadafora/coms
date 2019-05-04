@@ -13,6 +13,7 @@ var $ = function(id) {
 
 var undoStack = [];
 var redoStack = [];
+var redo_undo_status = false;
 
 
 fabric.Object.prototype.transparentCorners = false;
@@ -27,7 +28,9 @@ var drawingModeEl = $('drawing-mode'),
     clearEl = $('clear-canvas');
 
 clearEl.onclick = function() {
-    canvas.clear()
+    canvas.clear();
+    updateModifications(true);
+
 };
 
 drawingModeEl.onclick = function() {
@@ -288,8 +291,8 @@ function deleteObject() {
     // }else {
     //   console.log("false");
     // }
-    console.log("size of selected");
-    console.log(canvas.getActiveObject().length);
+    // console.log("size of selected");
+    // console.log(canvas.getActiveObject().length);
     // var count = 0;
     var grouping = canvas.getActiveObject();
     // for (let p in grouping){
@@ -345,15 +348,28 @@ updateModifications(true);
 
 function changeFill() {
     var x = document.getElementById("fill").value;
-    canvas.getActiveObject().set("fill", x);
-    canvas.renderAll();
-updateModifications(true);
+    // console.log(canvas.getActiveObject().get("fill"))
+    if (canvas.getActiveObject().get("fill") == x){
+        console.log("same color")
+    }else{
+        console.log("color change")
+        canvas.getActiveObject().set("fill", x);
+        canvas.renderAll();
+        updateModifications(true);
+    }
+
 }
 
 function removeFill() {
-    canvas.getActiveObject().set("fill", 'rgba(0,0,0,0)');
-    canvas.renderAll();
-updateModifications(true);
+    if (canvas.getActiveObject().get("fill") == 'rgba(0,0,0,0)'){
+        console.log("same color")
+    }else{
+        console.log("color change")
+        canvas.getActiveObject().set("fill", 'rgba(0,0,0,0)');
+        canvas.renderAll();
+        updateModifications(true);
+    }
+
 }
 
 // function saveToBack() {
@@ -529,7 +545,7 @@ function sendToBack() {
     if (activeObject) {
       canvas.sendToBack(activeObject);
     }
-// updateModifications(true);
+updateModifications(true);
 }
 
 function back() {
@@ -537,14 +553,14 @@ function back() {
     if (activeObject) {
       canvas.sendBackwards(activeObject);
     }
-// updateModifications(true);
+updateModifications(true);
 }
 function front() {
   var activeObject = canvas.getActiveObject();
     if (activeObject) {
       canvas.bringForward(activeObject);
     }
-// updateModifications(true);
+updateModifications(true);
 }
 
 function bringToFront() {
@@ -552,7 +568,7 @@ function bringToFront() {
     if (activeObject) {
       canvas.bringToFront(activeObject);
     }
-// updateModifications(true);
+updateModifications(true);
 }
 
 function chat() {
@@ -674,10 +690,12 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
           var current = canvas.toJSON()["objects"];
           var newcanvas = current.concat(old);
           json = {"objects": newcanvas}
+          redo_undo_status = true;
           canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function(o, object) {
           fabric.log(o, object);
       });
-      // updateModifications(true);
+      redo_undo_status = false;
+      updateModifications(true);
         }
 
 
@@ -814,7 +832,6 @@ addrect = function addrect(top, left, width, height, fill) {
 
 
 
-var donedrawing = false;
 
 
 canvas.on(
@@ -823,7 +840,7 @@ canvas.on(
 });
 canvas.on(
     'object:added', function () {
-      if (donedrawing == false){
+      if (redo_undo_status == false){
         updateModifications(true);
       }
 //     updateModifications(true);
@@ -843,9 +860,9 @@ function undo(){
     if (undoStack.length > 0){
         canvas.clear().renderAll();
         redoStack.push(undoStack.pop());
-        donedrawing = true;
+        redo_undo_status = true;
         canvas.loadFromJSON(undoStack[undoStack.length - 1]);
-        donedrawing = false;
+        redo_undo_status = false;
         canvas.renderAll();
     }
 }
@@ -853,9 +870,9 @@ function undo(){
 function redo(){
     if (redoStack.length > 0){
         canvas.clear().renderAll();
-        donedrawing = true;
+        redo_undo_status = true;
         canvas.loadFromJSON(redoStack[redoStack.length - 1]);
-        donedrawing = false;
+        redo_undo_status = false;
         undoStack.push(redoStack.pop());
         canvas.renderAll();
     }
