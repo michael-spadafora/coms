@@ -144,7 +144,7 @@
     </div>
 
     <div>
-        <a href="viewUser.html"><span style="padding-left:25px" th:text="${comic.getUsername()}"></span></a>
+        <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="${comic.getUsername()}"></span></a>
         <div style="padding-right:100px">
             <button id="subscribe">SUBSCRIBE</button>
         </div>
