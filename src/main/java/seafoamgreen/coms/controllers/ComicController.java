@@ -61,9 +61,9 @@ public class ComicController {
 
     @GetMapping("/view")
     public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response) {
-        String comicID = request.getParameter("comidID");
+        String comicID = request.getParameter("comicID");
 
-        ModelAndView mav = new ModelAndView("comicView");
+        ModelAndView mav = new ModelAndView("viewComic");
         Comic c =  comicService.findById(comicID);
         List<String> blobs = comicService.getPanelObjects(c);
         //add to history
