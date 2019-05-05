@@ -62,7 +62,7 @@ public class ComicController {
     @GetMapping("/view")
     public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response) {
         String comicID = request.getParameter("comidID");
-        
+
         ModelAndView mav = new ModelAndView("comicView");
         Comic c =  comicService.findById(comicID);
         List<String> blobs = comicService.getPanelObjects(c);

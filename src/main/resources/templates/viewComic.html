@@ -116,14 +116,10 @@
         </ol>
 
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="img-fluid" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+1.jpg" alt="Slide 1">
-            </div>
-            <div class="carousel-item">
-                <img class="img-fluid" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png" alt="Slide 2">
-            </div>
-            <div class="carousel-item">
-                <img class="img-fluid" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+3.jpg" alt="Slide 3">
+            <div th:each="panel: ${panels}">
+                <div class="carousel-item active">
+                    <img class="img-fluid" th:src="${panel}">
+                </div>
             </div>
         </div>
 
@@ -141,7 +137,7 @@
 
 <div class="bottom">
     <div class="heading">
-        <span id="comicTitle">CS Problems</span>
+        <span id="comicTitle" th:text="${comic.getComicName()}"></span>
         <div class="actionButtons">
             <button class="actions"><span class="fa fa-arrow-up"></span> 386</button>
             <button class="actions"><span class="fa fa-arrow-down"></span> 4</button>
@@ -152,7 +148,7 @@
     </div>
 
     <div>
-        <a href="viewUser.html"><span style="padding-left:25px">RandomUser</span></a>
+        <a href="viewUser.html"><span style="padding-left:25px" th:text="${comic.getUsername()}"></span></a>
         <div style="padding-right:100px">
             <button id="subscribe">SUBSCRIBE</button>
         </div>
