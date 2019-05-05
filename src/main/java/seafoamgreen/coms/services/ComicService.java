@@ -72,7 +72,7 @@ public class ComicService {
     }
 
 
-  
+
 
 
     //Update
@@ -189,7 +189,7 @@ public class ComicService {
         //     "Document/hello.txt",
         //     new File("/Users/user/Document/hello.txt")
         // );
-        
+
 
 
         return c;
@@ -221,15 +221,15 @@ public class ComicService {
 
     }
 
-	public Comic getEditComic(String username, String comicId) {
+    public Comic getEditComic(String username, String comicId) {
         Comic c = comicRepository.findByComicId(comicId);
         if (c.getUsername() != username) {
             return null;
         }
 
 
-		return c;
-	}
+        return c;
+    }
 
 
 
@@ -249,11 +249,10 @@ public class ComicService {
 
     }
 
-	public void addToHistory(String username, String comicID) {
+    public void addToHistory(String username, String comicID) {
         User user = userRepository.findByUsername(username);
         user.addComicToHistory(comicID);
-        
+
     }
 }
-
 

@@ -29,9 +29,7 @@ public class PanelController {
     /*
     @GetMapping
     public Panel panelFromID(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         request.getParameter("panelID")
-
     }
     */
 
@@ -121,60 +119,33 @@ public class PanelController {
     }
 
     /*
-
-
-
     @PostMapping("/create")
     public Panel create(HttpServletRequest request, HttpServletResponse response, @RequestBody PanelInfo panelInfo) throws IOException {
-
-
         String userID = panelInfo.getUserID();
         String comicID = panelInfo.getComicID();
         String snapshotJSON = panelInfo.getSnapshotJSON();
         Panel newPanel = new Panel(userID, comicID, snapshotJSON);
         return panelService.create(userID, comicID, snapshotJSON);
         //return panelService.create(userID, comicID, snapshotJSON);
-
     };
-
     @GetMapping("/deletePanel")
     public void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-
         String panelID = request.getParameter("panelID");
         panelService.deleteById(panelID);
-
-
         //return panelService.create(userID, comicID, snapshotJSON);
-
     };
-
     @GetMapping("/getAllByComicID")
     public List<Panel> getByComicID(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-
-
         String comicID = request.getParameter("comicID");
         return panelService.getByComicID(comicID);
-
-
         //return panelService.create(userID, comicID, snapshotJSON);
-
     };
-
     @GetMapping("/getAllByUserID")
     public List<Panel> getByUserID(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-
         String userID = request.getParameter("userID");
         return panelService.getByUserID(userID);
-
-
         //return panelService.create(userID, comicID, snapshotJSON);
-
     };
     */
 
 }
-
-
