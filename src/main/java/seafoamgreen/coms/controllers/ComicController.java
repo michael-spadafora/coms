@@ -22,6 +22,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import seafoamgreen.coms.services.PanelService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*")
@@ -71,9 +72,9 @@ public class ComicController {
         ModelAndView mav = new ModelAndView("viewComic");
         Comic c =  comicService.findById(comicID);
         //List<String> blobs = comicService.getPanelObjects(c);
-        List<Panel> panels = panelService.findAllByCoimcId(c.getId());
+        List<Panel> panelList = panelService.findAllByCoimcId(c.getId());
         //add to history
-        System.out.println("VIEW COMIC PANEL LIST: " + panels);
+        System.out.println("VIEW COMIC PANEL LIST: " + panelList);
         HttpSession session = request.getSession(false);
         if (session != null) {
             String username = (String) session.getAttribute("username");
@@ -88,8 +89,14 @@ public class ComicController {
             mav.addObject("isLoggedIn", true);
 
         mav.addObject("comic", c);
-        mav.addObject("panels", panels);
 
+        List<String> panels = new ArrayList<String>();
+        for(Panel panel : panelList)
+        {
+            panels.add(panelService.getBlob(panel.getId()));
+        }
+
+        mav.addObject("panels", panels);
         return mav;
 
     }

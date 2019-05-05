@@ -64,6 +64,8 @@ public class Panel {
         this.AWSURL = AWSURL;
     }
 
+
+
     @Override
     public String toString() {
         return "Panel{" +
