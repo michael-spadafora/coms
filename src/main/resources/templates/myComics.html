@@ -82,6 +82,7 @@
 </nav>
 
 <body>
+
 <div class="container">
     <h2>My Creations</h2>
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createSeriesModal">Add New Series</button>
@@ -98,6 +99,7 @@
                         <a id="edit" th:data-thing="${comic.getId()}" onclick="editComic(this.getAttribute('data-thing'));" class="btn btn-primary">Edit</a>
                         <a th:data-thing="${comic.getId()}" onclick="deleteComic(this.getAttribute('data-thing'));" id="delete" class="btn btn-danger">Delete</a>
 
+
                     </div>
                 </div>
             </div>
@@ -109,6 +111,25 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="createSeriesModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Series</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/series/addSeries"  method="post" id = "newSeries">
+                        <input value = "" id = "seriesNameBox" class="form-control input-large" name="seriesName" type="text" placeholder="Series Name"><br/>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                            <button onclick= "form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
+                        </div>
+                    </form>
+                </div>
 
 </div>
 
@@ -123,12 +144,34 @@
                 <form action="/series/addSeries"  method="post" id = "newSeries">
                     <input value = "" id = "seriesNameBox" class="form-control input-large" name="seriesName" type="text" placeholder="Series Name"><br/>
 
+
+    <div class="modal fade" id="createComicModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Series</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/series/addComic"  method="post" id = "newComic">
+                        <input hidden id = "seriesID" name = "seriesId" >
+                        <input value = "" id = "comicNameBox" class=" required form-control input-large" name="comicName" type="text" placeholder="Comic Name" required><br/>
+                        <input value = "" id = "tagsBox" class= "required hide form-control input-large" name="tags" type="text" placeholder="Tags" required><br/>
+                        <input value = "" id = "datePicker" class= "hide required" type="date" name="publishDate" required>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                            <button onclick= "form_submit_comic()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Comic</button>
+                        </div>
+                    </form>
+                </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
                         <button onclick= "form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
                     </div>
                 </form>
             </div>
+
 
         </div>
     </div>
@@ -155,6 +198,19 @@
             </div>
 
         </div>
+        <form id = "deleteForm" action = "/series/deleteComic" method = "get">
+            <input hidden id = "deleteComicId" name = "comicId">
+        </form>
+        <form id = "editForm" action = "/series/editComic" method = "post">
+            <input hidden id = "editComicId" name = "editComicId">
+        </form>
+        <form id = "deleteSeriesForm" action = "/series/deleteSeries" method = "post">
+            <input hidden id = "deleteSeriesId" name = "seriesId">
+        </form>
+        <form id = "viewComicForm" action = "/comic/view" method = "get">
+            <input hidden id = "viewComicId" name = "viewComicID">
+        </form>
+
     </div>
     <form id = "deleteForm" action = "/series/deleteComic" method = "get">
         <input hidden id = "deleteComicId" name = "comicId">
@@ -218,6 +274,25 @@
     function form_submit_comic() {
 
 
+        $(function() {
+            $("#datePicker").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+        });
+
+        function viewTheComic(comicId)
+        {
+            document.getElementById("viewComicId").value = comicId;
+            document.getElementById("viewComicForm").submit();
+        }
+        function editComic(comicId)
+        {
+
+
+            document.getElementById("editComicId").value = comicId;
+            document.getElementById("editForm").submit();
+
+
         if(document.getElementById("tagsBox").value == "" ||
             document.getElementById("comicNameBox") == "" ||
             document.getElementById("datePicker") == "" )
@@ -226,7 +301,38 @@
         }
         else
         {
-            document.getElementById("newComic").submit();
+
+            document.getElementById("deleteComicId").value = comicId;
+            document.getElementById("deleteForm").submit();
+
+        }
+        function setSeriesID(id){
+            document.getElementById("seriesID").value = id;
+        }
+        function form_submit() {
+            if(document.getElementById("seriesNameBox").value == "") {
+                alert("Must Have Series Name");
+            }
+            else{
+                document.getElementById("newSeries").submit();
+            }
+
+        }
+        function form_submit_comic() {
+
+
+            if(document.getElementById("tagsBox").value == "" ||
+                document.getElementById("comicNameBox") == "" ||
+                document.getElementById("datePicker") == "" )
+            {
+                alert("Must Fill Out All Fields");
+            }
+            else
+            {
+                document.getElementById("newComic").submit();
+            }
+
+
         }
 
 

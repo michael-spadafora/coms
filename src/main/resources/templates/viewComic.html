@@ -114,8 +114,10 @@
         </ol>
 
         <div class="carousel-inner">
+
             <div th:each="panel, iter: ${panels}" th:class="${iter.first}? 'carousel-item active' : 'carousel-item'">
-                <img class="img-fluid" th:src="${panel.getAWSURL()}">
+                <img class="img-fluid" th:src="${panel}">
+
             </div>
         </div>
 
