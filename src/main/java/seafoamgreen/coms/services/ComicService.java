@@ -2,6 +2,7 @@ package seafoamgreen.coms.services;
 
 import seafoamgreen.coms.model.Comic;
 
+import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.model.User;
 
@@ -10,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import seafoamgreen.coms.repositories.ComicRepository;
+import seafoamgreen.coms.repositories.PanelRepository;
 import seafoamgreen.coms.repositories.SeriesRepository;
 import seafoamgreen.coms.repositories.UserRepository;
 
@@ -39,6 +41,9 @@ public class ComicService {
     private SeriesRepository seriesRepository;
 
     @Autowired
+    private PanelRepository panelRepository;
+
+    @Autowired
     private PanelService panelService;
 
     @Autowired
@@ -49,7 +54,9 @@ public class ComicService {
         Comic comic = new Comic(Username, comicName, SeriesID);
         comic.setTags(tokenizeTagString(tagString));
         comic.setDateTime(publishDate);
-        comicRepository.save(comic);
+        Comic newComic = comicRepository.save(comic);
+        Panel firstPanel = new Panel(Username, newComic.getId(), "{\"version\":\"2.7.0\",\"objects\":[]}");
+        panelRepository.save(firstPanel);
         return comic;
     }
 

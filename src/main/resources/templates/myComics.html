@@ -172,6 +172,12 @@
 
     <script type="text/javascript">
 
+        $(function() {
+            $("#datePicker").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+        });
+
         function viewTheComic(comicId)
         {
             document.getElementById("viewComicId").value = comicId;

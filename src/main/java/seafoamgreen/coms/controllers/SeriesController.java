@@ -318,9 +318,6 @@ public class SeriesController {
          */
 
         ModelAndView mav = new ModelAndView("createComic");
-        newComic.addPanel("fakepanel");
-        newComic.addPanel("fakepanel");
-        newComic.addPanel("fakepanel");
         mav.addObject("comic", newComic);
         return mav;
 

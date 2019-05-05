@@ -81,6 +81,12 @@ public class ComicController {
                 comicService.addToHistory(username, comicID);
             }
         }
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
         mav.addObject("comic", c);
         mav.addObject("panels", panels);
 

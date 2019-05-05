@@ -143,6 +143,7 @@ public class UsersController {
         System.out.println("Updating all comics with publish dates");
 
 
+
         List<Comic> usersComics = comicService.findAllByUsername(activeUsername);
         List<Series> userSeries = seriesService.findAllByUsername(activeUsername);
         mav.addObject("userComics", usersComics);
@@ -199,7 +200,6 @@ public class UsersController {
        // List<String> popularThumbnails = userService.getThumbnails(popularComics);
         mav.addObject("popularComics", popularComics);
         //mav.addObject("popularThumbnails", popularThumbnails);
-        
 
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
