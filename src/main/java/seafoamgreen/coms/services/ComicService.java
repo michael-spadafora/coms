@@ -44,10 +44,11 @@ public class ComicService {
     @Autowired
     private UserRepository userRepository;
 
-    public Comic create(String Username, String comicName, String SeriesID, String tagString) //need to find a way to implement time
+    public Comic create(String Username, String comicName, String SeriesID, String tagString, String publishDate) //need to find a way to implement time
     {
         Comic comic = new Comic(Username, comicName, SeriesID);
         comic.setTags(tokenizeTagString(tagString));
+        comic.setDateTime(publishDate);
         comicRepository.save(comic);
         return comic;
     }

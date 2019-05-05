@@ -141,10 +141,10 @@
                 </div>
                 <div class="modal-body">
                     <form action="/series/addComic"  method="post" id = "newComic">
-                        <input hidden id = "seriesID" name = "seriesId">
-                        <input class="form-control input-large" name="comicName" type="text" placeholder="Comic Name"><br/>
-                        <input id = "tagsBox" class= "hide form-control input-large" name="tags" type="text" placeholder="Tags"><br/>
-                        <input id = "datePicker" class= "hide" type="date" name="publishDate">
+                        <input hidden id = "seriesID" name = "seriesId" >
+                        <input required class="form-control input-large" name="comicName" type="text" placeholder="Comic Name"><br/>
+                        <input required id = "tagsBox" class= "hide form-control input-large" name="tags" type="text" placeholder="Tags"><br/>
+                        <input required id = "datePicker" class= "hide" type="date" name="publishDate">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
                             <button onclick= "form_submit_comic()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>

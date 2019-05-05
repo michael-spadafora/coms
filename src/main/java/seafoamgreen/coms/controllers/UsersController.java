@@ -140,6 +140,8 @@ public class UsersController {
         String activeUsername = (String)session.getAttribute("username");
 
         System.out.println("The current active username is: " + activeUsername);
+        System.out.println("Updating all comics with publish dates");
+
 
         List<Comic> usersComics = comicService.findAllByUsername(activeUsername);
         List<Series> userSeries = seriesService.findAllByUsername(activeUsername);
