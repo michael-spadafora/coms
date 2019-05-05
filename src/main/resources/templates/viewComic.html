@@ -110,16 +110,12 @@
 <div class="container">
     <div id="featuredCarousel" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
-            <li data-target="#featuredCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#featuredCarousel" data-slide-to="1"></li>
-            <li data-target="#featuredCarousel" data-slide-to="2"></li>
+            <li th:each="panel, iter: ${panels}" data-target="#featuredCarousel" th:data-slide-to="${iter.index}" th:class="${iter.first}? 'active'"></li>
         </ol>
 
         <div class="carousel-inner">
-            <div th:each="panel: ${panels}">
-                <div class="carousel-item active">
-                    <img class="img-fluid" th:src="${panel}">
-                </div>
+            <div th:each="panel, iter: ${panels}" th:class="${iter.first}? 'carousel-item active' : 'carousel-item'">
+                <img class="img-fluid" th:src="${panel.getAWSURL()}">
             </div>
         </div>
 

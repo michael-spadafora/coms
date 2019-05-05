@@ -140,6 +140,9 @@ public class UsersController {
         String activeUsername = (String)session.getAttribute("username");
 
         System.out.println("The current active username is: " + activeUsername);
+        System.out.println("Updating all comics with publish dates");
+
+
 
         List<Comic> usersComics = comicService.findAllByUsername(activeUsername);
         List<Series> userSeries = seriesService.findAllByUsername(activeUsername);
@@ -164,8 +167,8 @@ public class UsersController {
             mav.addObject("historyThumbnails", historyThumbnails);
 
             mav.addObject("isLoggedIn", true);
-        // List<Comic> popularComic = userService.getPopular();
-        // List<String> popularThumbnail = userService.getPopularThumbnails();
+            // List<Comic> popularComic = userService.getPopular();
+            // List<String> popularThumbnail = userService.getPopularThumbnails();
         }
 
         return mav;
@@ -194,10 +197,9 @@ public class UsersController {
         mav.addObject("username",activeUsername);
 
         List<Comic> popularComics = userService.getPopular();
-       // List<String> popularThumbnails = userService.getThumbnails(popularComics);
+        // List<String> popularThumbnails = userService.getThumbnails(popularComics);
         mav.addObject("popularComics", popularComics);
         //mav.addObject("popularThumbnails", popularThumbnails);
-        
 
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);

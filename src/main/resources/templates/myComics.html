@@ -82,119 +82,156 @@
 </nav>
 
 <body>
-    <div class="container">
-        <h2>My Creations</h2>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createSeriesModal">Add New Series</button>
-        <div th:each="series: ${seriesMap}">
-            <h3 th:text="${series.key.getSeriesName()}"></h3>
-            <a th:data-thing="${series.key.getId()}" onclick="deleteSeries(this.getAttribute('data-thing'));" id="deleteSeries" class="btn btn-danger">Delete</a>
-            <div class="row">
-                <div class="col-md-3" th:each="comic: ${series.value}">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" th:src="${comic.getAWSURL()}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                            <a id="edit" th:data-thing="${comic.getId()}" onclick="editComic(this.getAttribute('data-thing'));" class="btn btn-primary">Edit</a>
-                            <a th:data-thing="${comic.getId()}" onclick="deleteComic(this.getAttribute('data-thing'));" id="delete" class="btn btn-danger">Delete</a>
-                        </div>
-                    </div>
-                </div>
+<div class="container">
+    <h2>My Creations</h2>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createSeriesModal">Add New Series</button>
+    <div th:each="series: ${seriesMap}">
+        <h3 th:text="${series.key.getSeriesName()}"></h3>
+        <a th:data-thing="${series.key.getId()}" onclick="deleteSeries(this.getAttribute('data-thing'));" id="deleteSeries" class="btn btn-danger">Delete</a>
+        <div class="row">
+            <div class="col-md-3" th:each="comic: ${series.value}">
+                <div class="card" style="width: 18rem;">
 
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <a th:data-thing="${series.key.getId()}" onclick="setSeriesID(this.getAttribute('data-thing'));" href="#" style="margin:0 auto;padding:30px" data-toggle="modal" data-target="#createComicModal"><span class="fa fa-plus" style=""></span></a>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                        <a id="view" th:href="@{'/comic/view/'+ ${comic.getId()}}"><img src=""></a>
+                        <a id="edit" th:data-thing="${comic.getId()}" onclick="editComic(this.getAttribute('data-thing'));" class="btn btn-primary">Edit</a>
+                        <a th:data-thing="${comic.getId()}" onclick="deleteComic(this.getAttribute('data-thing'));" id="delete" class="btn btn-danger">Delete</a>
+
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-
-    <div class="modal fade" id="createSeriesModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">New Series</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <a th:data-thing="${series.key.getId()}" onclick="setSeriesID(this.getAttribute('data-thing'));" href="#" style="margin:0 auto;padding:30px" data-toggle="modal" data-target="#createComicModal"><span class="fa fa-plus" style=""></span></a>
                 </div>
-                <div class="modal-body">
-                    <form action="/series/addSeries"  method="post" id = "newSeries">
-                        <input class="form-control input-large" name="seriesName" type="text" placeholder="Series Name"><br/>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
-                            <button onclick= "form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
-                        </div>
-                    </form>
-                </div>
-
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="createComicModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">New Series</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form action="/series/addComic"  method="post" id = "newComic">
-                        <input hidden id = "seriesID" name = "seriesId">
-                        <input class="form-control input-large" name="comicName" type="text" placeholder="Comic Name"><br/>
-                        <input id = "tagsBox" class= "hide form-control input-large" name="tags" type="text" placeholder="Tags"><br/>
-                        <input id = "datePicker" class= "hide" type="date" name="publishDate">
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
-                            <button onclick= "form_submit_comic()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
-                        </div>
-                    </form>
-                </div>
+</div>
 
+<div class="modal fade" id="createSeriesModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">New Series</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
+            <div class="modal-body">
+                <form action="/series/addSeries"  method="post" id = "newSeries">
+                    <input value = "" id = "seriesNameBox" class="form-control input-large" name="seriesName" type="text" placeholder="Series Name"><br/>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                        <button onclick= "form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
-        <form id = "deleteForm" action = "/series/deleteComic" method = "get">
-            <input hidden id = "deleteComicId" name = "comicId">
-        </form>
-        <form id = "editForm" action = "/series/editComic" method = "post">
-            <input hidden id = "editComicId" name = "editComicId">
-        </form>
-        <form id = "deleteSeriesForm" action = "/series/deleteSeries" method = "post">
-            <input hidden id = "deleteSeriesId" name = "seriesId">
-        </form>
     </div>
+</div>
 
-    <script type="text/javascript">
+<div class="modal fade" id="createComicModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">New Series</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="/series/addComic"  method="post" id = "newComic">
+                    <input hidden id = "seriesID" name = "seriesId" >
+                    <input value = "" id = "comicNameBox" class=" required form-control input-large" name="comicName" type="text" placeholder="Comic Name" required><br/>
+                    <input value = "" id = "tagsBox" class= "required hide form-control input-large" name="tags" type="text" placeholder="Tags" required><br/>
+                    <input value = "" id = "datePicker" class= "hide required" type="date" name="publishDate" required>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                        <button onclick= "form_submit_comic()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Comic</button>
+                    </div>
+                </form>
+            </div>
 
-        function editComic(comicId)
-        {
-            document.getElementById("editComicId").value = comicId;
-            document.getElementById("editForm").submit();
+        </div>
+    </div>
+    <form id = "deleteForm" action = "/series/deleteComic" method = "get">
+        <input hidden id = "deleteComicId" name = "comicId">
+    </form>
+    <form id = "editForm" action = "/series/editComic" method = "post">
+        <input hidden id = "editComicId" name = "editComicId">
+    </form>
+    <form id = "deleteSeriesForm" action = "/series/deleteSeries" method = "post">
+        <input hidden id = "deleteSeriesId" name = "seriesId">
+    </form>
+    <form id = "viewComicForm" action = "/comic/view" method = "get">
+        <input hidden id = "viewComicId" name = "viewComicID">
+    </form>
+</div>
 
+<script type="text/javascript">
+
+    $(function() {
+        $("#datePicker").datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+    });
+
+    function viewTheComic(comicId)
+    {
+        document.getElementById("viewComicId").value = comicId;
+        document.getElementById("viewComicForm").submit();
+    }
+    function editComic(comicId)
+    {
+
+
+        document.getElementById("editComicId").value = comicId;
+        document.getElementById("editForm").submit();
+
+    }
+    function deleteSeries(seriesId)
+    {
+        document.getElementById("deleteSeriesId").value = seriesId;
+        document.getElementById("deleteSeriesForm").submit();
+
+    }
+    function deleteComic(comicId)
+    {
+        document.getElementById("deleteComicId").value = comicId;
+        document.getElementById("deleteForm").submit();
+
+    }
+    function setSeriesID(id){
+        document.getElementById("seriesID").value = id;
+    }
+    function form_submit() {
+        if(document.getElementById("seriesNameBox").value == "") {
+            alert("Must Have Series Name");
         }
-        function deleteSeries(seriesId)
-        {
-            document.getElementById("deleteSeriesId").value = seriesId;
-            document.getElementById("deleteSeriesForm").submit();
-
-        }
-        function deleteComic(comicId)
-        {
-            document.getElementById("deleteComicId").value = comicId;
-            document.getElementById("deleteForm").submit();
-
-        }
-        function setSeriesID(id){
-            document.getElementById("seriesID").value = id;
-        }
-        function form_submit() {
+        else{
             document.getElementById("newSeries").submit();
         }
-        function form_submit_comic() {
+
+    }
+    function form_submit_comic() {
+
+
+        if(document.getElementById("tagsBox").value == "" ||
+            document.getElementById("comicNameBox") == "" ||
+            document.getElementById("datePicker") == "" )
+        {
+            alert("Must Fill Out All Fields");
+        }
+        else
+        {
             document.getElementById("newComic").submit();
         }
-    </script>
+
+
+    }
+</script>
 </body>
 
 </html>
