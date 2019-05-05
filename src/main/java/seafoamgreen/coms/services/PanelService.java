@@ -46,6 +46,27 @@ public class PanelService {
         return panel;
     }
 
+    public Panel update(String panelId, String fabricJSON, String blob)
+    {
+        Panel panel = panelRepository.findById(panelId).get();
+        String URL = storeBlobInAWS(panel, blob);
+        panel.setAWSURL(URL);
+        panel.setFabricJSON(fabricJSON);
+        panelRepository.save(panel);
+        return panel;
+
+    }
+
+    public List<Panel> findAllByCoimcId(String comicId)
+    {
+        return panelRepository.findByComicID(comicId);
+    }
+
+    public Panel findById(String panelId)
+    {
+        return panelRepository.findById(panelId).get();
+    }
+
     private String storeBlobInAWS(Panel panel, String blob) {
         AWSCredentials credentials = new BasicAWSCredentials("AKIAJIKZPRZSWRVS6SLQ",
                 "2IZ4gI/pxi8L82qeIWFl2txPIE1eslMxdbrHpYjq ");

@@ -24,6 +24,7 @@
         }
     </script>
 
+
     <style>
         .navbar-inverse {background-color: #71eeb8; border:none}
         .navbar-inverse .navbar-brand{color:black}
@@ -101,6 +102,8 @@
 <body>
     <div class="container">
         <div class="middle">
+    <h3 th:if="${currentPanel!=null}" th:text = "${currentPanel.getId()}"></h3>
+            <p th:if="${currentPanel!=null}" th:text = "${currentPanel.getFabricJSON()}"></p>
             <div id="mydiv" tabindex="0" />
             <canvas id="canvas" width="900px" height="350px" style="border:1px solid #000000;"></canvas>
         </div>
@@ -213,13 +216,18 @@
     </div>
 
     <div class="right">
-        <div th:if="${comic!=null}">
+        <div th:if="${panelList!=null}">
             <h1>Pages</h1>
             <ul>
-                <li th:each="panel : ${comic.getPanelList()}" th:text="${panelStat.index}">.</li>
+                <li th:each="panel : ${panelList}" th:text="${panelStat.index + 1} + ${panel.getId()}" th:data-thing="${panel.getId()}" onclick="form_edit_panel(this.getAttribute('data-thing'));">
+
+                </li>
             </ul>
         </div>
     </div>
+    <form action = "/series/editComic" method = "post" id = "editPanelForm">
+        <input name = "editPanelId" id = "editPanelId">
+    </form>
 
     <script src="/js/canvas-toBlob.js"></script>
     <script type="text/javascript" src = "/js/FileSaver.js"></script>
@@ -247,6 +255,12 @@
                 });
             });
         });
+
+
+        function form_edit_panel(panelId) {
+            document.getElementById("editPanelId").value = panelId
+            document.getElementById("editPanelForm").submit();
+        }
     </script>
 
 

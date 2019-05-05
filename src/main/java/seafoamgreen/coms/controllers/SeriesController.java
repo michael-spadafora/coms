@@ -2,8 +2,10 @@ package seafoamgreen.coms.controllers;
 
 import org.springframework.ui.Model;
 import seafoamgreen.coms.model.Comic;
+import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.services.ComicService;
+import seafoamgreen.coms.services.PanelService;
 import seafoamgreen.coms.services.SeriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,9 @@ public class SeriesController {
 
     @Autowired
     ComicService comicService;
+
+    @Autowired
+    PanelService panelService;
 
     @PostMapping("/deleteSeries")
     public ModelAndView deleteSeries(HttpServletRequest request)
@@ -70,7 +75,39 @@ public class SeriesController {
     {
         ModelAndView mav = new ModelAndView("createComic");
         String comicId = request.getParameter("editComicId");
-        request.getSession().setAttribute("currentComicId", comicId);
+        if(comicId != null) {
+            request.getSession().setAttribute("currentComicId", comicId);
+        }
+        else {
+            comicId = (String)request.getSession().getAttribute("currentComicId");
+        }
+
+        String editPanelId = request.getParameter("editPanelId");
+        System.out.println("edit Panel id shud be page 0 empty: " + editPanelId);
+
+        if(editPanelId == null)
+        {
+            List<Panel> panelList= panelService.findAllByCoimcId(comicId);
+            if(panelList.size() > 0 )
+            {
+                Panel currentPanel = panelService.findAllByCoimcId(comicId).get(0);
+                HttpSession session = request.getSession();
+                session.setAttribute("currentPanelId", currentPanel.getId());
+                mav.addObject("currentPanel", currentPanel);
+            }
+
+        }
+        else{
+            HttpSession session = request.getSession();
+            session.setAttribute("currentPanelId", editPanelId);
+            Panel currentPanel = panelService.findById(editPanelId);
+            mav.addObject("currentPanel", currentPanel);
+
+
+        }
+        //add panel list
+        List<Panel> panelList = panelService.findAllByCoimcId(comicId);
+        mav.addObject("panelList", panelList);
         return mav;
     }
     @GetMapping("/deleteComic")
