@@ -2,6 +2,7 @@ package seafoamgreen.coms.controllers;
 
 
 import seafoamgreen.coms.model.Comic;
+import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.services.ComicService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import seafoamgreen.coms.services.PanelService;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +34,9 @@ public class ComicController {
 
     @Autowired
     ComicService comicService;
+
+    @Autowired
+    PanelService panelService;
 
     @PostMapping("/create")
     public ModelAndView create(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -61,12 +66,14 @@ public class ComicController {
 
     @GetMapping("/view")
     public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response) {
-        String comicID = request.getParameter("comidID");
+        String comicID = request.getParameter("viewComicID");
         
-        ModelAndView mav = new ModelAndView("comicView");
+        ModelAndView mav = new ModelAndView("viewComic");
         Comic c =  comicService.findById(comicID);
-        List<String> blobs = comicService.getPanelObjects(c);
+        //List<String> blobs = comicService.getPanelObjects(c);
+        List<Panel> panels = panelService.findAllByCoimcId(c.getId());
         //add to history
+        System.out.println("VIEW COMIC PANEL LIST: " + panels);
         HttpSession session = request.getSession(false);
         if (session != null) {
             String username = (String) session.getAttribute("username");
@@ -75,7 +82,7 @@ public class ComicController {
             }
         }
         mav.addObject("comic", c);
-        mav.addObject("panels", blobs);
+        mav.addObject("panels", panels);
 
         return mav;
 

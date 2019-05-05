@@ -91,11 +91,13 @@
             <div class="row">
                 <div class="col-md-3" th:each="comic: ${series.value}">
                     <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" th:src="${comic.getAWSURL()}" alt="Card image cap">
+
                         <div class="card-body">
                             <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
                             <a id="edit" th:data-thing="${comic.getId()}" onclick="editComic(this.getAttribute('data-thing'));" class="btn btn-primary">Edit</a>
+                            <a id="view" th:data-thing="${comic.getId()}" onclick="viewTheComic(this.getAttribute('data-thing'));" class="btn btn-primary">View</a>
                             <a th:data-thing="${comic.getId()}" onclick="deleteComic(this.getAttribute('data-thing'));" id="delete" class="btn btn-danger">Delete</a>
+
                         </div>
                     </div>
                 </div>
@@ -119,7 +121,7 @@
                 </div>
                 <div class="modal-body">
                     <form action="/series/addSeries"  method="post" id = "newSeries">
-                        <input class="form-control input-large" name="seriesName" type="text" placeholder="Series Name"><br/>
+                        <input value = "" id = "seriesNameBox" class="form-control input-large" name="seriesName" type="text" placeholder="Series Name"><br/>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
@@ -142,12 +144,12 @@
                 <div class="modal-body">
                     <form action="/series/addComic"  method="post" id = "newComic">
                         <input hidden id = "seriesID" name = "seriesId" >
-                        <input required class="form-control input-large" name="comicName" type="text" placeholder="Comic Name"><br/>
-                        <input required id = "tagsBox" class= "hide form-control input-large" name="tags" type="text" placeholder="Tags"><br/>
-                        <input required id = "datePicker" class= "hide" type="date" name="publishDate">
+                        <input value = "" id = "comicNameBox" class=" required form-control input-large" name="comicName" type="text" placeholder="Comic Name" required><br/>
+                        <input value = "" id = "tagsBox" class= "required hide form-control input-large" name="tags" type="text" placeholder="Tags" required><br/>
+                        <input value = "" id = "datePicker" class= "hide required" type="date" name="publishDate" required>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
-                            <button onclick= "form_submit_comic()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
+                            <button onclick= "form_submit_comic()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Comic</button>
                         </div>
                     </form>
                 </div>
@@ -163,12 +165,22 @@
         <form id = "deleteSeriesForm" action = "/series/deleteSeries" method = "post">
             <input hidden id = "deleteSeriesId" name = "seriesId">
         </form>
+        <form id = "viewComicForm" action = "/comic/view" method = "get">
+            <input hidden id = "viewComicId" name = "viewComicID">
+        </form>
     </div>
 
     <script type="text/javascript">
 
+        function viewTheComic(comicId)
+        {
+            document.getElementById("viewComicId").value = comicId;
+            document.getElementById("viewComicForm").submit();
+        }
         function editComic(comicId)
         {
+
+
             document.getElementById("editComicId").value = comicId;
             document.getElementById("editForm").submit();
 
@@ -189,10 +201,29 @@
             document.getElementById("seriesID").value = id;
         }
         function form_submit() {
-            document.getElementById("newSeries").submit();
+            if(document.getElementById("seriesNameBox").value == "") {
+                alert("Must Have Series Name");
+            }
+            else{
+                document.getElementById("newSeries").submit();
+            }
+
         }
         function form_submit_comic() {
-            document.getElementById("newComic").submit();
+
+
+            if(document.getElementById("tagsBox").value == "" ||
+                document.getElementById("comicNameBox") == "" ||
+                document.getElementById("datePicker") == "" )
+            {
+                alert("Must Fill Out All Fields");
+            }
+            else
+            {
+                document.getElementById("newComic").submit();
+            }
+
+
         }
     </script>
 </body>

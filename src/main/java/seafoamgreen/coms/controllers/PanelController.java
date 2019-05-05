@@ -85,6 +85,7 @@ public class PanelController {
         comicService.addPanel(currentComicId, panel.getId());
         //Update the Session Comic
         session.setAttribute("currentComic", comicService.findById(currentComicId));
+        session.setAttribute("currentPanelId", panel.getId());
         ModelAndView mav = new ModelAndView("createComic");
 
         mav.addObject("currentPanel", panel);

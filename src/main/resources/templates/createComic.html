@@ -360,12 +360,18 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
 
-        var json = /*[[${currentPanel.getFabricJSON()}]]*/ null ;
-        canvas.loadFromJSON(json, function() {
-            canvas.renderAll();
-        },function(o,object){
-            console.log(o,object)
-        })
+        console.log(/*[[${currentPanel}]]*/ null);
+        if(/*[[${currentPanel}]]*/ null != null)
+        {
+            var json = /*[[${currentPanel.getFabricJSON()}]]*/ null ;
+
+            canvas.loadFromJSON(json, function() {
+                canvas.renderAll();
+            },function(o,object){
+                console.log(o,object)
+            })
+        }
+
 
         /*]]>*/
     </script>

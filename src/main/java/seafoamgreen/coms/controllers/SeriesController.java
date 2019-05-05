@@ -303,7 +303,7 @@ public class SeriesController {
             currentSeries = seriesService.findByID(existingSeriesId).get();
 
         }
-        Comic newComic = comicService.create(currentUser, comicName, currentSeries.getId(), "");
+        Comic newComic = comicService.create(currentUser, comicName, currentSeries.getId(), tags, publishDate);
         seriesService.addComic(currentSeries.getId(), newComic.getId());
         currentSeries = seriesService.findByID(currentSeries.getId()).get();
 
