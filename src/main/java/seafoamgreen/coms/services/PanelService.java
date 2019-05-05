@@ -46,6 +46,16 @@ public class PanelService {
         return panel;
     }
 
+    public Panel initalizeEmptyPanel(String Username, String comicID) {
+
+        Panel panel = new Panel(Username, comicID, null);
+        panelRepository.save(panel);
+
+        return panel;
+    }
+
+
+
     public Panel update(String panelId, String fabricJSON, String blob)
     {
         Panel panel = panelRepository.findById(panelId).get();

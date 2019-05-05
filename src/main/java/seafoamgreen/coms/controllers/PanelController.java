@@ -55,8 +55,8 @@ public class PanelController {
 
 
     //TODO: HAVE SEPARATE CONTROLLER CALLED ADD PANEL  THAT DOES SOMETHING SIMIALR TO THIS, CREATING A NEW PANEL
-    @PostMapping("/addPanel")
-    public String addPanel(HttpServletRequest request)
+    @GetMapping("/addPanel")
+    public ModelAndView addPanel(HttpServletRequest request)
     {
 
         //TODO: IN ORDER TO SAVE, SHOULD BE CALLED BY JAVASCRIPT FUNCTION THYMELEAF SHOULD HAVE PANELID . PANELID SHOULD BE PASSED AND UPDATED IN DB
@@ -73,14 +73,24 @@ public class PanelController {
         System.out.println("current series : " + request.getSession().getAttribute("currentSeries"));
         System.out.println("current comic id : " + request.getSession().getAttribute("currentComicId"));
 
+        System.out.println("=====================PANEL ADD DETAILS===================");
+        System.out.println("current series : " + request.getSession().getAttribute("currentSeries"));
+        System.out.println("current comic id : " + request.getSession().getAttribute("currentComicId"));
+        System.out.println("current panel id : " + request.getSession().getAttribute("currentPanelId"));
+        System.out.println("=====================PANEL ADD DETAILS===================");
         //Create the panel in the DB, add it to the comic
         String currentComicId = (String)session.getAttribute("currentComicId");
-        Panel panel = panelService.create(currentUser, currentComicId, request.getParameter("body"), request.getParameter("image"));
+        Panel panel = panelService.initalizeEmptyPanel(currentUser, currentComicId);
 
         comicService.addPanel(currentComicId, panel.getId());
         //Update the Session Comic
         session.setAttribute("currentComic", comicService.findById(currentComicId));
-        return "save triggered";
+        ModelAndView mav = new ModelAndView("createComic");
+
+        mav.addObject("currentPanel", panel);
+        mav.addObject("panelList", panelService.findAllByCoimcId(currentComicId));
+
+        return mav;
     }
 
     @PostMapping("/savePanel")

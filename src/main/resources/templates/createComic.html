@@ -222,6 +222,11 @@
                 <li th:each="panel : ${panelList}" th:text="${panelStat.index + 1} + ${panel.getId()}" th:data-thing="${panel.getId()}" onclick="form_edit_panel(this.getAttribute('data-thing'));">
 
                 </li>
+               <li>
+                   <form action = "/addPanel", method = "GET">
+                       <button type="submit">New Panel</button>
+                   </form>
+               </li>
             </ul>
         </div>
     </div>
