@@ -222,6 +222,8 @@ public class UsersController {
 
         ModelAndView mav = new ModelAndView("viewUser");
         String activeUsername = (String)session.getAttribute("username");
+        User user = userService.findByUsername(activeUsername);
+        mav.addObject("userProfile", user);
         mav.addObject("username", activeUsername);
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
@@ -259,16 +261,23 @@ public class UsersController {
 
 
     //this should be edited. im not sure what exactly should go here
-    @GetMapping("/profile")
-    public ModelAndView viewOther(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("username");
-        User usr = userService.findByUsername(username);
-        if (usr == null) {
+    @GetMapping("/profile/{userProfile}")
+    public ModelAndView viewOther(HttpServletRequest request, HttpServletResponse response, @PathVariable String userProfile) throws IOException {
+        User user = userService.findByUsername(userProfile);
+        if (userProfile == null) {
             response.sendError(401, "User not found");
-
         }
-        ModelAndView mav = new ModelAndView("profile");
-        mav.addObject("User", usr);
+
+        ModelAndView mav = new ModelAndView("viewUser");
+        mav.addObject("userProfile", user);
+
+        HttpSession session = request.getSession(false);
+        String activeUsername = (String)session.getAttribute("username");
+        mav.addObject("username", activeUsername);
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
 
     }
