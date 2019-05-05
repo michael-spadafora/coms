@@ -62,12 +62,18 @@ public class SearchController {
         ModelAndView mav = new ModelAndView("searchResults");
 
         List<Comic> comics = new ArrayList<Comic>();
+        List<Comic> publishedComics = new ArrayList<Comic>();
 
         String searchWord = request.getParameter("searchWord");
         comics.addAll(searchService.findAllByComicTitle(searchWord));
         comics.addAll(searchService.findAllByTag(searchWord));
         comics.addAll(searchService.findAllComicsByUsername(searchWord));
-        mav.addObject("comicList" , comics);
+
+        for(Comic comic: comics)
+            if(comic.isPublished())
+                publishedComics.add(comic);
+
+        mav.addObject("comicList" , publishedComics);
         mav.addObject("searchWord",searchWord);
 
         HttpSession session = request.getSession(false);

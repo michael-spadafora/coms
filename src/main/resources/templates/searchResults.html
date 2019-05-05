@@ -94,7 +94,7 @@
         <div class="row">
             <div class="col-md-3" th:each="comic: ${comicList}">
                 <div class="thumbnail">
-                    <a href="viewComic.html">
+                    <a th:href="@{'/comic/view/'+ ${comic.getId()}}" >
                         <img th:src="${comic.AWSURL}">
                     </a>
                 </div>
@@ -102,6 +102,17 @@
         </div>
     </div>
 
+    <form id = "viewComicForm" action = "/comic/view" method = "get">
+        <input hidden id = "viewComicId" name = "viewComicID">
+    </form>
+
+    <script type="text/javascript">
+        function viewTheComic(comicId)
+        {
+            document.getElementById("viewComicId").value = comicId;
+            document.getElementById("viewComicForm").submit();
+        }
+    </script>
 </body>
 
 </html>

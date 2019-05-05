@@ -2,6 +2,7 @@ package seafoamgreen.coms.controllers;
 
 
 import seafoamgreen.coms.model.Comic;
+import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.services.ComicService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import seafoamgreen.coms.services.PanelService;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +34,9 @@ public class ComicController {
 
     @Autowired
     ComicService comicService;
+
+    @Autowired
+    PanelService panelService;
 
     @PostMapping("/create")
     public ModelAndView create(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -59,14 +64,14 @@ public class ComicController {
         return mav;
     };
 
-    @GetMapping("/view")
-    public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response) {
-        String comicID = request.getParameter("comidID");
-        
-        ModelAndView mav = new ModelAndView("comicView");
+    @GetMapping("/view/{comicID}")
+    public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response, @PathVariable String comicID) {
+        ModelAndView mav = new ModelAndView("viewComic");
         Comic c =  comicService.findById(comicID);
-        List<String> blobs = comicService.getPanelObjects(c);
+        //List<String> blobs = comicService.getPanelObjects(c);
+        List<Panel> panels = panelService.findAllByCoimcId(c.getId());
         //add to history
+        System.out.println("VIEW COMIC PANEL LIST: " + panels);
         HttpSession session = request.getSession(false);
         if (session != null) {
             String username = (String) session.getAttribute("username");
@@ -74,8 +79,14 @@ public class ComicController {
                 comicService.addToHistory(username, comicID);
             }
         }
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
         mav.addObject("comic", c);
-        mav.addObject("panels", blobs);
+        mav.addObject("panels", panels);
 
         return mav;
 
@@ -137,7 +148,7 @@ public class ComicController {
         String comicId = request.getParameter("comicId");
         comicService.addTags(comicId, tags);
 
-    
+
         ModelAndView mav = new ModelAndView(comicViewName);
 
         Comic comic = comicService.findById(comicId);
@@ -201,10 +212,10 @@ public class ComicController {
             return null;
         }
         String comicId = (String) request.getParameter("comicId");
-        
+
         String username = (String) session.getAttribute("username");
-        
-        
+
+
         Comic comic = comicService.getEditComic(username, comicId);
         if (comic == null) {
             //TODO: throw error?
@@ -221,4 +232,3 @@ public class ComicController {
     }
 
 }
-

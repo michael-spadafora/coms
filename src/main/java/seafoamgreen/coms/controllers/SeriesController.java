@@ -166,7 +166,8 @@ public class SeriesController {
         String seriesId= request.getParameter("seriesId");
         String comicName = request.getParameter("comicName");
         String tagString = request.getParameter("tags");
-        Comic comic = comicService.create(username, comicName, seriesId, tagString);
+        String publishDate = request.getParameter("publishDate");
+        Comic comic = comicService.create(username, comicName, seriesId, tagString , publishDate);
 
         Series series = seriesService.findByID(seriesId).get();
         seriesService.addComic(series.getId(), comic.getId());
@@ -179,8 +180,6 @@ public class SeriesController {
             map.put(seriesElement, comicService.findAllBySeriesId(series.getId()));
         }
         //Get all of users series
-
-
 
         //Map each series to a list of comics
         try {
@@ -304,7 +303,7 @@ public class SeriesController {
             currentSeries = seriesService.findByID(existingSeriesId).get();
 
         }
-        Comic newComic = comicService.create(currentUser, comicName, currentSeries.getId(), "");
+        Comic newComic = comicService.create(currentUser, comicName, currentSeries.getId(), tags, publishDate);
         seriesService.addComic(currentSeries.getId(), newComic.getId());
         currentSeries = seriesService.findByID(currentSeries.getId()).get();
 
@@ -319,9 +318,6 @@ public class SeriesController {
          */
 
         ModelAndView mav = new ModelAndView("createComic");
-        newComic.addPanel("fakepanel");
-        newComic.addPanel("fakepanel");
-        newComic.addPanel("fakepanel");
         mav.addObject("comic", newComic);
         return mav;
 

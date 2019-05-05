@@ -124,7 +124,7 @@
 
             <div class="list-group">
                 <a class="list-group-item" th:each="message: ${Messages}">
-                    <a th:data-thing="${message.getId()}" onclick="deleteMessages(this.getAttribute('data-thing'))"><span class="fa fa-trash"></span></a>
+                    <span class="fa fa-trash" th:data-thing="${message.getId()}" onclick="deleteMessages(this.getAttribute('data-thing'))"></span>
                     <span class="sender" th:text="${message.getFromUsername()}"></span>
                     <span class="header" th:text="${message.getMessageTitle()}"></span>
                 </a>
