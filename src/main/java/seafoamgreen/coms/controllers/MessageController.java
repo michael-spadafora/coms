@@ -83,7 +83,7 @@ public class MessageController {
     }
 
     @PostMapping("/messages/delete")
-    public ModelAndView deleteMessage(HttpServletRequest request, HttpServletResponse response, @RequestBody MessageBody msg) throws IOException {
+    public ModelAndView deleteMessage(HttpServletRequest request) throws IOException {
         String messageId = (String)request.getParameter("messageId");
         service.delete(messageId);
 
