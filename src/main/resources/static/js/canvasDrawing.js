@@ -727,7 +727,7 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
 
 
 
-// var objectsFromUndoRedo = 0; 
+// var objectsFromUndoRedo = 0;
 // canvas.on(
 //     'object:modified', function () {
 //     updateModifications(true);
@@ -806,7 +806,7 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
 //   }
 // }
 // function redo(){
-  
+
 //   if(h.length>0){
 //     isRedoing = true;
 //    canvas.add(h.pop());
@@ -875,3 +875,51 @@ function loading(oldCanvas){
 }
 
 
+
+// document.getElementById('backgroundImage').onchange = function handleImage(e) {
+//     var reader = new FileReader();
+//     reader.onload = function(event) {
+//         console.log('fdsf');
+//         var imgObj = new Image();
+//         imgObj.src = event.target.result;
+//         console.log(imgObj.src);
+//         // console.log(imgObj.height);
+//         console.log(imgObj);
+//         imgObj.onload = function(event) {
+//             var image = new fabric.Image(imgObj);
+//             image.set({
+//                 left: 0,
+//                 top: 0,
+//                 padding: 10,
+//                 cornersize: 10
+//             });
+//             if (image.width > 350 && (image.width >= image.height)){
+//               image.scale(350/image.getScaledWidth());
+//             }
+//             if (image.height > 1000 && (image.height >= image.width)){
+//               image.scale(1050/image.getScaledHeight());
+//             }
+//             canvas.add(image);
+//             // updateModifications(true);
+//         }
+//
+//     }
+//     reader.readAsDataURL(e.target.files[0]);
+//     document.getElementById("backgroundImage").value = "";
+// }
+
+document.getElementById('backgroundImage').addEventListener("change", function(e) {
+   var file = e.target.files[0];
+   var reader = new FileReader();
+   reader.onload = function(f) {
+      var data = f.target.result;
+      fabric.Image.fromURL(data, function(img) {
+         // add background image
+         canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+            scaleX: canvas.width / img.width,
+            scaleY: canvas.height / img.height
+         });
+      });
+   };
+   reader.readAsDataURL(file);
+});
