@@ -151,12 +151,13 @@ public class ComicService {
     }
 
     public Comic publishComic(String comicId, String seriesName, String tagList, String dateTime) {
-        Comic c= publishComic(comicId, seriesName, tagList);
+        Comic c= publishComic(comicId, seriesName, tagList, false);
         c.setDateTime(dateTime);
+        comicRepository.save(c);
         return c;
     }
 
-    public Comic publishComic(String comicId, String seriesName, String tagList) {
+    public Comic publishComic(String comicId, String seriesName, String tagList, boolean publishNow) {
         Comic c = comicRepository.findById(comicId).get();
         List<String> tags = tokenizeTagString(tagList);
         c.setTags(tags);
@@ -183,6 +184,9 @@ public class ComicService {
         String urlstring = s3client.getUrl(bucketName, key).toString();
 
         c.setAWSURL(urlstring);
+        if (publishNow) {
+            c.setPublished(true);
+        }
         comicRepository.save(c);
 
         // s3client.putObject(

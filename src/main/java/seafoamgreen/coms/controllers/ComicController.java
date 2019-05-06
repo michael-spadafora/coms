@@ -185,7 +185,7 @@ public class ComicController {
         if (publishDate != null) {
             c = comicService.publishComic(comicId, seriesName, tagList, publishDate);
         } else {
-            c = comicService.publishComic(comicId, seriesName, tagList);
+            c = comicService.publishComic(comicId, seriesName, tagList, true);
         }
 
 
