@@ -141,7 +141,20 @@ public class UserService {
 	public List<Comic> getPopular() {
         Sort sort = new Sort(Sort.Direction.DESC, "score");
         List<Comic> popular = comicRepository.findMostPopular(sort);
-		return popular;
+        List<Comic> ret = getPublished(popular);
+
+		return ret;
+    }
+
+    public List<Comic> getPublished(List<Comic> lst) {
+        List<Comic> ret = new ArrayList<Comic>();
+        for (Comic c : lst) {
+            if (c.isPublished()) {
+                ret.add(c);
+            }
+        }
+        return ret;
+
     }
 
     public List<Comic> getUserHistory(String username) {
