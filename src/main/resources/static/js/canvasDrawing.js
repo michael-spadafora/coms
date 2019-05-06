@@ -479,19 +479,19 @@ document.getElementById('imgLoader').onchange = function handleImage(e) {
     document.getElementById("imgLoader").value = "";
 }
 
-function saveimaging(){
-    var dataUrl=canvas.toDataURL();
-    fetch('comic/createComic', {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataUrl)
-    });
-    console.log(JSON.stringify(dataUrl));
-    // canvas.getElement().toBlob(temp);
-    // console.log(pics);
-}
+// function saveimaging(){
+//     var dataUrl=canvas.toDataURL();
+//     fetch('comic/createComic', {
+//         method: 'post',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(dataUrl)
+//     });
+//     console.log(JSON.stringify(dataUrl));
+//     // canvas.getElement().toBlob(temp);
+//     // console.log(pics);
+// }
 
 
 
@@ -574,7 +574,7 @@ updateModifications(true);
 
 function chat() {
   console.log('adding chat svg');
-  fabric.loadSVGFromURL('./img/chat.svg', function(objects, options) {
+  fabric.loadSVGFromURL('/img/chat.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
       left: 0,
@@ -588,7 +588,7 @@ function chat() {
 }
 function thought() {
   console.log('adding chat svg');
-  fabric.loadSVGFromURL('./img/thought.svg', function(objects, options) {
+  fabric.loadSVGFromURL('/img/thought.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
       left: 0,
@@ -602,7 +602,7 @@ function thought() {
 }
 function arrow() {
   console.log('adding chat svg');
-  fabric.loadSVGFromURL('./img/arrow.svg', function(objects, options) {
+  fabric.loadSVGFromURL('/img/arrow.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
       left: 0,
@@ -616,7 +616,7 @@ function arrow() {
 }
 function scream() {
   console.log('adding chat svg');
-  fabric.loadSVGFromURL('./img/scream.svg', function(objects, options) {
+  fabric.loadSVGFromURL('/img/scream.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
       left: 0,
@@ -632,7 +632,7 @@ function scream() {
 
 function action() {
   console.log('adding chat svg');
-  fabric.loadSVGFromURL('./img/action.svg', function(objects, options) {
+  fabric.loadSVGFromURL('/img/action.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
       left: 0,
@@ -658,13 +658,59 @@ function action() {
 
 var canvasWrapper = document.getElementById('mydiv');
 canvasWrapper.tabIndex = 1000;
-canvasWrapper.addEventListener("keydown", myfunc);
-function myfunc(e){
-  // console.log("key is pressed");
-  // console.log(e.keyCode);
-  if (e.keyCode == 46){
-    deleteObject();
-  }
+canvasWrapper.addEventListener("keydown", keydown);
+canvasWrapper.addEventListener("keyup", keyup);
+var control = false;
+var shift = false;
+
+function keydown(e) {
+    // console.log("key is pressed");
+    // console.log(e.keyCode);
+    console.log("")
+    
+    if (e.keyCode == 46) {
+        deleteObject();
+        console.log("delete");
+    }
+    if (e.keyCode == 17){
+        control = true;
+        console.log("control key is pressed");
+    }
+    if (e.keyCode == 16){
+        shift = true;
+        console.log("shift key is pressed");
+    }
+    if (control && e.keyCode == 67) {
+        console.log("copy keys");
+        copy();
+    }
+    if (control && e.keyCode == 86) {
+        console.log("paste keys");
+        paste();
+    }
+    if (control && e.keyCode == 88) {
+        console.log("cut keys");
+        cut();
+    }
+    if (shift && control && e.keyCode == 90) {
+        console.log("redo keys");
+        redo();
+    }
+    else if (control && e.keyCode == 90) {
+        console.log("undo keys");
+        undo();
+    }
+}
+function keyup(e){
+    if (e.keyCode == 17){
+        control = false;
+        console.log("control key is let go");
+    }
+    if (e.keyCode == 16){
+        shift = false;
+        console.log("shift key is let go");
+    }
+    
 }
 
 
@@ -706,114 +752,6 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var objectsFromUndoRedo = 0;
-// canvas.on(
-//     'object:modified', function () {
-//     updateModifications(true);
-// });
-// canvas.on(
-//     'object:added', function () {
-//         if (objectsFromUndoRedo > 0){
-//             objectsFromUndoRedo -= 1;
-//         }else{
-//             updateModifications(true);
-//         }
-//     // updateModifications(true);
-// });
-
-// function updateModifications(changes) {
-//     if (changes === true) {
-//         myjson = JSON.stringify(canvas);
-//         undoStack.push(myjson);
-//         redoStack = [];
-//     }
-//     //mods = 0;
-// }
-
-
-// function undo(){
-//     if (undoStack.length > 0){
-//         canvas.clear().renderAll();
-//         redoStack.push(undoStack.pop());
-//         objectsFromUndoRedo = JSON.parse(undoStack[undoStack.length - 1])["objects"].length
-//         canvas.loadFromJSON(undoStack[undoStack.length - 1]);
-//         canvas.renderAll();
-//     }
-// }
-
-// function redo(){
-//     if (redoStack.length > 0){
-//         canvas.clear().renderAll();
-//         objectsFromUndoRedo = JSON.parse(redoStack[redoStack.length - 1])["objects"].length
-//         canvas.loadFromJSON(redoStack[redoStack.length - 1]);
-//         undoStack.push(redoStack.pop());
-//         canvas.renderAll();
-//     }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-// undo/redo for changing colors should only happen when a change occurs (nothing when erorr occurs)
-//check the previous state. if previous and current are the same, then no push, else push
-
-// undo/redo for lines
-
-// var canvas = new fabric.Canvas('c');
-// canvas.isDrawingMode = true;
-// canvas.on('object:added',function(){
-//   if(!isRedoing){
-//     h = [];
-//   }
-//   isRedoing = false;
-// });
-
-// var isRedoing = false;
-// var h = [];
-// function undo(){
-//   if(canvas._objects.length>0){
-//    h.push(canvas._objects.pop());
-//    canvas.renderAll();
-//   }
-// }
-// function redo(){
-
-//   if(h.length>0){
-//     isRedoing = true;
-//    canvas.add(h.pop());
-//   }
-// }
-
-
 
 
 
@@ -875,39 +813,6 @@ function loading(oldCanvas){
 }
 
 
-
-// document.getElementById('backgroundImage').onchange = function handleImage(e) {
-//     var reader = new FileReader();
-//     reader.onload = function(event) {
-//         console.log('fdsf');
-//         var imgObj = new Image();
-//         imgObj.src = event.target.result;
-//         console.log(imgObj.src);
-//         // console.log(imgObj.height);
-//         console.log(imgObj);
-//         imgObj.onload = function(event) {
-//             var image = new fabric.Image(imgObj);
-//             image.set({
-//                 left: 0,
-//                 top: 0,
-//                 padding: 10,
-//                 cornersize: 10
-//             });
-//             if (image.width > 350 && (image.width >= image.height)){
-//               image.scale(350/image.getScaledWidth());
-//             }
-//             if (image.height > 1000 && (image.height >= image.width)){
-//               image.scale(1050/image.getScaledHeight());
-//             }
-//             canvas.add(image);
-//             // updateModifications(true);
-//         }
-//
-//     }
-//     reader.readAsDataURL(e.target.files[0]);
-//     document.getElementById("backgroundImage").value = "";
-// }
-
 document.getElementById('backgroundImage').addEventListener("change", function(e) {
    var file = e.target.files[0];
    var reader = new FileReader();
@@ -932,5 +837,36 @@ function removeBackground() {
      updateModifications(true);
      document.getElementById("backgroundImage").value = "";
   }
+
+}
+
+function save() {
+    console.log(canvas.toJSON());
+    console.log(canvas.toDataURL);
+    var requestBody = {
+        body: JSON.stringify(canvas.toJSON()),
+        image: canvas.toDataURL()
+    }
+    $.ajax({
+        type: 'POST',
+        url: "/savePanel",
+        data: requestBody,
+        success: [function(data) {
+            console.log(data);
+            //$("body").html(data);
+        }],
+        error: function(exception) {
+            alert('Exeption:' + exception);
+        }
+    });
+
+    // fetch('/savePanel', {
+    //     method: 'POST',
+    //     headers: {
+    //     'Content-Type': 'application/json', 
+    //     },
+    //     body: requestBody
+    // }).then(res => res.json()).then(res => console.log(res)).catch(error => alert('Exeption:' + error));
+    
 
 }
