@@ -142,7 +142,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            
+
             <a class="navbar-brand" th:href="@{/home}"><span class="fa fa-puzzle-piece"></span>COMS</a>
         </div>
         <ul class="nav navbar-nav navbar-left">
@@ -364,12 +364,12 @@
         if(/*[[${currentPanel}]]*/ null != null)
         {
             var json = /*[[${currentPanel.getFabricJSON()}]]*/ null ;
-
-            canvas.loadFromJSON(json, function() {
-                canvas.renderAll();
-            },function(o,object){
-                console.log(o,object)
-            })
+            loading(json);
+            // canvas.loadFromJSON(json, function() {
+            //     canvas.renderAll();
+            // },function(o,object){
+            //     console.log(o,object)
+            // })
         }
 
 

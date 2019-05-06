@@ -12,6 +12,7 @@ var $ = function(id) {
 };
 
 var undoStack = [];
+undoStack.push(JSON.stringify(canvas));
 var redoStack = [];
 var redo_undo_status = false;
 
@@ -839,7 +840,7 @@ function updateModifications(changes) {
 
 
 function undo(){
-    if (undoStack.length > 0){
+    if (undoStack.length > 1){
         canvas.clear().renderAll();
         redoStack.push(undoStack.pop());
         redo_undo_status = true;
@@ -861,4 +862,16 @@ function redo(){
 }
 
 
-//nothing
+function loading(oldCanvas){
+    redo_undo_status = true;
+    canvas.loadFromJSON(oldCanvas, function() {
+        canvas.renderAll();
+    },function(o,object){
+        console.log(o,object)
+    });
+    undoStack[0] = JSON.stringify(canvas);
+    redo_undo_status = false;
+
+}
+
+
