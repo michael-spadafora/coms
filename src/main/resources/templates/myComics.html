@@ -120,7 +120,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="/series/addSeries"  method="post" id = "newSeries">
+                <form action="/series/create"  method="post" id = "newSeries">
                     <input value = "" id = "seriesNameBox" class="form-control input-large" name="seriesName" type="text" placeholder="Series Name"><br/>
 
                     <div class="modal-footer">
@@ -142,7 +142,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="/series/addComic"  method="post" id = "newComic">
+                <form action="/comic/create"  method="post" id = "newComic">
                     <input hidden id = "seriesID" name = "seriesId" >
                     <input value = "" id = "comicNameBox" class=" required form-control input-large" name="comicName" type="text" placeholder="Comic Name" required><br/>
                     <input value = "" id = "tagsBox" class= "required hide form-control input-large" name="tags" type="text" placeholder="Tags" required><br/>
@@ -156,13 +156,13 @@
 
         </div>
     </div>
-    <form id = "deleteForm" action = "/series/deleteComic" method = "get">
+    <form id = "deleteForm" action = "/comic/delete" method = "get">
         <input hidden id = "deleteComicId" name = "comicId">
     </form>
-    <form id = "editForm" action = "/series/editComic" method = "post">
+    <form id = "editForm" action = "/comic/edit" method = "post">
         <input hidden id = "editComicId" name = "editComicId">
     </form>
-    <form id = "deleteSeriesForm" action = "/series/deleteSeries" method = "post">
+    <form id = "deleteSeriesForm" action = "/series/delete" method = "post">
         <input hidden id = "deleteSeriesId" name = "seriesId">
     </form>
     <form id = "viewComicForm" action = "/comic/view" method = "get">
