@@ -176,6 +176,7 @@ public class UserService {
         List<String> thumbs = new ArrayList<>();
         for (Comic c: comicList) {
             List<String> panelIds = c.getPanelList();
+            if (panelIds.size() == 0) continue;
             String panel1 = panelIds.get(0);
             if (panel1 == null) continue;
             String blob  = panelService.getBlob(panel1);
