@@ -916,18 +916,29 @@ document.getElementById('backgroundImage').addEventListener("change", function(e
       var data = f.target.result;
       fabric.Image.fromURL(data, function(img) {
          // add background image
-         if (canvas.backgroundImage == img){
-           console.log("same background img");
-         }else {
-           console.log("different background img");
-           console.log(canvas.backgroundImage);
-           console.log(img);
-         }
+         // if (canvas.backgroundImage == img){
+         //   console.log("same background img");
+         // }else {
+         //   console.log("different background img");
+         //   console.log(canvas.backgroundImage);
+         //   console.log(img);
+         // }
+         var old = canvas.backgroundImage;
          canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
             scaleX: canvas.width / img.width,
             scaleY: canvas.height / img.height
          });
-         updateModifications(true);
+         var newthang = canvas.backgroundImage;
+         if (old == null){
+           updateModifications(true);
+         }else{
+           old["cacheKey"] = null;
+         newthang["cacheKey"] = null;
+         if (JSON.stringify(newthang) != JSON.stringify(old)){
+           updateModifications(true);
+         }
+         }
+
       });
    };
    reader.readAsDataURL(file);
