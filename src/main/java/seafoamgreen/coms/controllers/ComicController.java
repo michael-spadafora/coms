@@ -176,11 +176,19 @@ public class ComicController {
         String seriesName = request.getParameter("seriesName");
         String tagList = (String) request.getParameter("tagList");
         String comicId = request.getParameter("comicId");
+        String publishDate = request.getParameter("publishDate");
+
 
         // request.getParameter("panelList");
         //Date posttime = request.getParameter("postTime"); still gotta figure this out for rn
+        Comic c = null;
+        if (publishDate != null) {
+            c = comicService.publishComic(comicId, seriesName, tagList, publishDate);
+        } else {
+            c = comicService.publishComic(comicId, seriesName, tagList, true);
+        }
 
-        Comic c = comicService.publishComic(comicId, seriesName, tagList);
+
 
 
         //returns the view of the comic
