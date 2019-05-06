@@ -290,9 +290,9 @@ public class ComicController {
         //Date posttime = request.getParameter("postTime"); still gotta figure this out for rn
         Comic c = null;
         if (publishDate != null) {
-            c = comicService.publishComic(comicId, seriesName, tagList, publishDate);
+            c = comicService.publishComic(comicId, publishDate);
         } else {
-            c = comicService.publishComic(comicId, seriesName, tagList, true);
+            c = comicService.publishComic(comicId, true);
         }
 
 

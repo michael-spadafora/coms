@@ -150,57 +150,22 @@ public class ComicService {
 
     }
 
-    public Comic publishComic(String comicId, String seriesName, String tagList, String dateTime) {
-        Comic c= publishComic(comicId, seriesName, tagList, false);
+    public Comic publishComic(String comicId, String dateTime) {
+        Comic c= publishComic(comicId, false);
         c.setDateTime(dateTime);
         comicRepository.save(c);
         return c;
     }
 
-    public Comic publishComic(String comicId, String seriesName, String tagList, boolean publishNow) {
+    public Comic publishComic(String comicId, boolean publishNow) {
         Comic c = comicRepository.findById(comicId).get();
-        List<String> tags = tokenizeTagString(tagList);
-        c.setTags(tags);
-        Series s = seriesRepository.findBySeriesName(seriesName);
-        c.setSeriesID(s.getId());
 
-        AWSCredentials credentials = new BasicAWSCredentials(
-                "AKIAJIKZPRZSWRVS6SLQ",
-                "2IZ4gI/pxi8L82qeIWFl2txPIE1eslMxdbrHpYjq "
-        );
-
-        AmazonS3 s3client = AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(Regions.US_EAST_2)
-                .build();
-
-        String bucketName = "coms.com-comics";
-        String key = "key";
-        String content = "content";
-
-        s3client.putObject(bucketName, "key", content);
-
-        String urlstring = s3client.getUrl(bucketName, key).toString();
-
-        c.setAWSURL(urlstring);
         if (publishNow) {
             c.setPublished(true);
         }
         comicRepository.save(c);
 
-        // s3client.putObject(
-        //     bucketName,
-        //     "Document/hello.txt",
-        //     new File("/Users/user/Document/hello.txt")
-        // );
-
-
-
         return c;
-
-
-
     }
 
 
