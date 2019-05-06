@@ -95,7 +95,8 @@
             <div class="col-md-3" th:each="comic: ${comicList}">
                 <div class="thumbnail">
                     <a th:href="@{'/comic/view/'+ ${comic.getId()}}" >
-                        <img th:src="${comic.AWSURL}">
+                        <h3 th:text = "${comic.getComicName()}"></h3>
+                        <img th:src="${comic.getThumbnailBlob()}">
                     </a>
                 </div>
             </div>
