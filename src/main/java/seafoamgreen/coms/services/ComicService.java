@@ -204,7 +204,8 @@ public class ComicService {
     @Scheduled(cron = "0 * * ? * *")
     public void scheduleCheck() {
         Date date = new Date();
-        String strDateTimeFormat = "MM-dd-yyyy hh:mm a";
+        // String strDateTimeFormat = "MM-dd-yyyy hh:mm a";
+        String strDateTimeFormat = "yyyy-MM-dd";
         DateFormat dateTimeFormat = new SimpleDateFormat(strDateTimeFormat);
 
         String currDateTime = dateTimeFormat.format(date);
