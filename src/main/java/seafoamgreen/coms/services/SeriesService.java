@@ -2,6 +2,7 @@ package seafoamgreen.coms.services;
 
 
 
+import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
 
 import seafoamgreen.coms.repositories.SeriesRepository;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 //TODO: let user subscribe to series
-//TODO: notify all users on new comic post in series
 @Service
 public class SeriesService {
 
@@ -37,11 +37,18 @@ public class SeriesService {
 
     public Series addComic(String seriesID, String comicID)
     {
+
         Optional<Series> series = seriesRepository.findById(seriesID);
         series.get().addComic(comicID);
+        System.out.println("Adding to series " + series.get().getSeriesName());
         seriesRepository.save(series.get());
         return series.get();
 
+    }
+
+    public void deleteById(String id)
+    {
+        seriesRepository.deleteById(id);
     }
 
     //Add comic to series list
@@ -53,7 +60,7 @@ public class SeriesService {
         return seriesRepository.findByUserID(userId);
     }
 
-    public List<Series> findByUsername(String username) {
+    public List<Series> findAllByUsername(String username) {
         return seriesRepository.findByUsername(username);
     }
 

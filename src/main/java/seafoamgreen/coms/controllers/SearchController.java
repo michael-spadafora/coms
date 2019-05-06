@@ -1,10 +1,10 @@
 package seafoamgreen.coms.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import org.springframework.web.servlet.ModelAndView;
 import seafoamgreen.coms.model.Comic;
@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("search")
@@ -52,10 +53,9 @@ public class SearchController {
         String seriesName = request.getParameter("seriesName");
         List<Series> series = searchService.findAllBySeriesName(seriesName);
         return series;
-        //TODO: search by series name
 
     }
-
+  
     @GetMapping("/keyword")
     public ModelAndView search(HttpServletRequest request)
     {
@@ -69,6 +69,14 @@ public class SearchController {
         comics.addAll(searchService.findAllComicsByUsername(searchWord));
         mav.addObject("comicList" , comics);
         mav.addObject("searchWord",searchWord);
+
+        HttpSession session = request.getSession(false);
+        String activeUsername = (String)session.getAttribute("username");
+        mav.addObject("username", activeUsername);
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
 
         System.out.println(comics);
         return mav;

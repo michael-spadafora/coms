@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -17,12 +18,8 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*")
@@ -62,6 +59,40 @@ public class ComicController {
         return mav;
     };
 
+    @GetMapping("/view")
+    public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response) {
+        String comicID = request.getParameter("comidID");
+        
+        ModelAndView mav = new ModelAndView("comicView");
+        Comic c =  comicService.findById(comicID);
+        List<String> blobs = comicService.getPanelObjects(c);
+        //add to history
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String username = (String) session.getAttribute("username");
+            if (username != null) {
+                comicService.addToHistory(username, comicID);
+            }
+        }
+        mav.addObject("comic", c);
+        mav.addObject("panels", blobs);
+
+        return mav;
+
+    }
+
+    @GetMapping("/view/thumbnail")
+    public ModelAndView viewComicThumbnail(HttpServletRequest request, HttpServletResponse response) {
+        String comicID = request.getParameter("comidID");
+        ModelAndView mav = new ModelAndView("comicView");
+        Comic c =  comicService.findById(comicID);
+        List<String> blobs = comicService.getPanelObjects(c);
+        mav.addObject("comic", c);
+        mav.addObject("thumbnail", blobs.get(0));
+        return mav;
+
+    }
+
     @GetMapping("/findById")
     public Comic findById(HttpServletRequest request, HttpServletResponse response )throws IOException {
 
@@ -83,6 +114,14 @@ public class ComicController {
     @GetMapping("/random")
     public ModelAndView randomComic(HttpServletRequest request, HttpServletResponse response) {
         Comic comic = comicService.getRandomComic();
+        //add to history
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String username = (String) session.getAttribute("username");
+            if (username != null) {
+                comicService.addToHistory(username, comic.getId());
+            }
+        }
 
         ModelAndView mav = new ModelAndView(comicViewName);
         mav.addObject("comic", comic);
@@ -90,33 +129,7 @@ public class ComicController {
         return mav;
     }
 
-    //THIS WORKS!!!
-    @PostMapping("/test")
-    public String test(HttpServletRequest request, HttpServletResponse response) {
-        AWSCredentials credentials = new BasicAWSCredentials(
-                "AKIAJIKZPRZSWRVS6SLQ",
-                "2IZ4gI/pxi8L82qeIWFl2txPIE1eslMxdbrHpYjq "
-        );
 
-        AmazonS3 s3client = AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(Regions.US_EAST_2)
-                .build();
-
-        String bucketName = "coms.com-comics";
-        String key = "key";
-
-        s3client.putObject(bucketName, key, "content");
-
-        URL url = s3client.getUrl(bucketName, key);
-        String urlstring = s3client.getUrl(bucketName, key).toString();
-
-        // S3Object s3object = s3client.getObject(bucketName, "key");
-        // S3ObjectInputStream inputStream = s3object.getObjectContent();
-        // inputStream.
-        return "huh";
-    }
 
     @PostMapping("/addTags")
     public ModelAndView addTag(HttpServletRequest request, HttpServletResponse response) {
@@ -124,11 +137,9 @@ public class ComicController {
         String comicId = request.getParameter("comicId");
         comicService.addTags(comicId, tags);
 
-        //
+    
         ModelAndView mav = new ModelAndView(comicViewName);
 
-        //TODO: determine if comic or comicId should be added to model
-        //probably comic
         Comic comic = comicService.findById(comicId);
         mav.addObject("comic", comic);
         return mav;
@@ -164,6 +175,50 @@ public class ComicController {
 
     }
 
+
+    @GetMapping("/editable")
+    public ModelAndView getEditableComics(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            //TODO: redirect to login page
+            return null;
+        }
+
+        String username = (String) session.getAttribute("username");
+        List<Comic> comics = comicService.getEditableComicsByUsername(username);
+
+        //TODO: change mav reference
+        ModelAndView mav = new ModelAndView("AllEditable");
+        mav.addObject("comics", comics);
+        return mav;
+    }
+
+    @GetMapping("/edit")
+    public ModelAndView getComicForEdit(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            //TODO: redirect to login page
+            return null;
+        }
+        String comicId = (String) request.getParameter("comicId");
+        
+        String username = (String) session.getAttribute("username");
+        
+        
+        Comic comic = comicService.getEditComic(username, comicId);
+        if (comic == null) {
+            //TODO: throw error?
+            return null;
+        }
+        //TODO: possibly add comic to session?
+
+        //TODO: change mav ref
+        ModelAndView mav = new ModelAndView("ComicEdit");
+        mav.addObject("comic", comic);
+
+        return mav;
+
+    }
 
 }
 

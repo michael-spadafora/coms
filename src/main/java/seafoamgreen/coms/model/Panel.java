@@ -16,13 +16,12 @@ public class Panel {
     //JSON data of the canvas
     private String fabricJSON;
     //BLOB
-    private String blob;
+    private String AWSURL;
 
-    public Panel(String username, String comicID, String fabricJSON, String blob) {
+    public Panel(String username, String comicID, String fabricJSON) {
         this.username = username;
         this.comicID = comicID;
         this.fabricJSON = fabricJSON;
-        this.blob = blob;
     }
 
     public String getId() {
@@ -57,12 +56,12 @@ public class Panel {
         this.fabricJSON = fabricJSON;
     }
 
-    public String getBlob() {
-        return blob;
+    public String getAWSURL() {
+        return AWSURL;
     }
 
-    public void setBlob(String blob) {
-        this.blob = blob;
+    public void setAWSURL(String AWSURL) {
+        this.AWSURL = AWSURL;
     }
 
     @Override
@@ -72,7 +71,7 @@ public class Panel {
                 ", username='" + username + '\'' +
                 ", comicID='" + comicID + '\'' +
                 ", fabricJSON='" + fabricJSON + '\'' +
-                ", blob='" + blob + '\'' +
+                ", AWSURL='" + AWSURL + '\'' +
                 '}';
     }
 }

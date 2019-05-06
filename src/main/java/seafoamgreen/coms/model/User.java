@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class User {
-
+ 
     @Id
     private String id;
     private String username;
@@ -16,9 +16,78 @@ public class User {
     private ArrayList<String> messagesSentIds = new ArrayList<String>();
     private ArrayList<String> messagesReceivedIds= new ArrayList<String>();
 
+    private ArrayList<String> upvotedComicIds = new ArrayList<String>();
+    private ArrayList<String> downvotedComicIds = new ArrayList<String>();
+
     private boolean isAdmin;
+    private ArrayList<String> subscriptions = new ArrayList<String>();
+
+    private ArrayList<String> comicIdHistory = new ArrayList<String>();
 
     public User() {
+    }
+
+    /**
+     * @return the comicIdHistory
+     */
+    public ArrayList<String> getComicIdHistory() {
+        return comicIdHistory;
+    }
+
+    /**
+     * @param comicIdHistory the comicIdHistory to set
+     */
+    public void setComicIdHistory(ArrayList<String> comicIdHistory) {
+        this.comicIdHistory = comicIdHistory;
+    }
+
+    public void addComicToHistory(String comicId){
+        comicIdHistory.add(0, comicId);
+        if (comicIdHistory.size() > 5) {
+            comicIdHistory.remove(5);
+        }
+    }
+
+    /**
+     * @return the subscriptions
+     */
+    public ArrayList<String> getSubscriptions() {
+        return subscriptions;
+    }
+
+    /**
+     * @param subscriptions the subscriptions to set
+     */
+    public void setSubscriptions(ArrayList<String> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    /**
+     * @return the downvotedComicIds
+     */
+    public ArrayList<String> getDownvotedComicIds() {
+        return downvotedComicIds;
+    }
+
+    /**
+     * @param downvotedComicIds the downvotedComicIds to set
+     */
+    public void setDownvotedComicIds(ArrayList<String> downvotedComicIds) {
+        this.downvotedComicIds = downvotedComicIds;
+    }
+
+    /**
+     * @return the upvotedComicIds
+     */
+    public ArrayList<String> getUpvotedComicIds() {
+        return upvotedComicIds;
+    }
+
+    /**
+     * @param upvotedComicIds the upvotedComicIds to set
+     */
+    public void setUpvotedComicIds(ArrayList<String> upvotedComicIds) {
+        this.upvotedComicIds = upvotedComicIds;
     }
 
     /**
@@ -49,7 +118,7 @@ public class User {
         this.messagesReceivedIds = messagesRecieved;
     }
 
-
+    
 
     /**
      * @return the messages
