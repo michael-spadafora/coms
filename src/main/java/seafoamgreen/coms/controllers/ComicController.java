@@ -280,8 +280,6 @@ public class ComicController {
     @PostMapping("/publish")
     public ModelAndView publishComic(HttpServletRequest request, HttpServletResponse response) {
         //what does this return?? I guess a view
-        String seriesName = request.getParameter("seriesName");
-        String tagList = (String) request.getParameter("tagList");
         String comicId = request.getParameter("comicId");
         String publishDate = request.getParameter("publishDate");
 
