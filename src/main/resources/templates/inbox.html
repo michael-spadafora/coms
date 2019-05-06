@@ -118,12 +118,13 @@
 <body>
     <div id="inbox" class="tabcontent" style="display:block">
         <input id="checkAll" type="checkbox">
-        <button id="deleteAll" class="actions">Delete</button>
+        <button id="deleteAll" class="actions" onclick="deleteMessages();">Delete</button>
         <button id="createMessage" data-toggle="modal" data-target="#myModal">New Message</button>
         <div class="messages">
 
             <div class="list-group">
                 <a class="list-group-item" th:each="message: ${Messages}">
+                    <span class="fa fa-trash" th:data-thing="${message.getId()}" onclick="deleteMessages(this.getAttribute('data-thing'))"></span>
                     <span class="sender" th:text="${message.getFromUsername()}"></span>
                     <span class="header" th:text="${message.getMessageTitle()}"></span>
                 </a>
@@ -152,11 +153,20 @@
                 </div>
             </div>
         </div>
+
+        <form id = "deleteMessagesForm" action = "/messages/delete" method = "post">
+            <input hidden id = "deleteMessageId" name = "messageId">
+        </form>
     </div>
 
     <script type="text/javascript">
         function form_submit() {
             document.getElementById("newMessage").submit();
+        }
+
+        function deleteMessages(messageId){
+            document.getElementById("deleteMessageId").value = messageId;
+            document.getElementById("deleteMessagesForm").submit();
         }
     </script>
 

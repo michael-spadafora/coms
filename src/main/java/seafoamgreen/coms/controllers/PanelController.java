@@ -29,9 +29,7 @@ public class PanelController {
     /*
     @GetMapping
     public Panel panelFromID(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         request.getParameter("panelID")
-
     }
     */
 
@@ -52,9 +50,14 @@ public class PanelController {
         return panelService.getBlob(panelId);
     }
 
-    @PostMapping("/savePanel")
-    public String savePanel(HttpServletRequest request)
+
+
+    //TODO: HAVE SEPARATE CONTROLLER CALLED ADD PANEL  THAT DOES SOMETHING SIMIALR TO THIS, CREATING A NEW PANEL
+    @GetMapping("/addPanel")
+    public ModelAndView addPanel(HttpServletRequest request)
     {
+
+        //TODO: IN ORDER TO SAVE, SHOULD BE CALLED BY JAVASCRIPT FUNCTION THYMELEAF SHOULD HAVE PANELID . PANELID SHOULD BE PASSED AND UPDATED IN DB
         HttpSession session = request.getSession();
         Enumeration params = request.getParameterNames();
         String img = (String)request.getParameter("image");
@@ -68,72 +71,81 @@ public class PanelController {
         System.out.println("current series : " + request.getSession().getAttribute("currentSeries"));
         System.out.println("current comic id : " + request.getSession().getAttribute("currentComicId"));
 
+        System.out.println("=====================PANEL ADD DETAILS===================");
+        System.out.println("current series : " + request.getSession().getAttribute("currentSeries"));
+        System.out.println("current comic id : " + request.getSession().getAttribute("currentComicId"));
+        System.out.println("current panel id : " + request.getSession().getAttribute("currentPanelId"));
+        System.out.println("=====================PANEL ADD DETAILS===================");
         //Create the panel in the DB, add it to the comic
         String currentComicId = (String)session.getAttribute("currentComicId");
-        Panel panel = panelService.create(currentUser, currentComicId, request.getParameter("body"), request.getParameter("image"));
+        Panel panel = panelService.initalizeEmptyPanel(currentUser, currentComicId);
 
         comicService.addPanel(currentComicId, panel.getId());
         //Update the Session Comic
         session.setAttribute("currentComic", comicService.findById(currentComicId));
+        session.setAttribute("currentPanelId", panel.getId());
+        ModelAndView mav = new ModelAndView("createComic");
+
+        mav.addObject("currentPanel", panel);
+        mav.addObject("panelList", panelService.findAllByCoimcId(currentComicId));
+
+        return mav;
+    }
+
+    @PostMapping("/savePanel")
+    public String savePanel(HttpServletRequest request)
+    {
+
+        //TODO: IN ORDER TO SAVE, SHOULD BE CALLED BY JAVASCRIPT FUNCTION THYMELEAF SHOULD HAVE PANELID . PANELID SHOULD BE PASSED AND UPDATED IN DB
+        HttpSession session = request.getSession();
+        Enumeration params = request.getParameterNames();
+
+        String currentUser =(String) session.getAttribute("username");
+        System.out.println("=====================PANEL SAVE DETAILS===================");
+        System.out.println("current series : " + request.getSession().getAttribute("currentSeries"));
+        System.out.println("current comic id : " + request.getSession().getAttribute("currentComicId"));
+        System.out.println("current panel id : " + request.getSession().getAttribute("currentPanelId"));
+        System.out.println("=====================PANEL SAVE DETAILS===================");
+
+        // Get the Panel, update all the information
+        String currentPanelId = (String)session.getAttribute("currentPanelId");
+        String blob = request.getParameter("image");
+        String json = request.getParameter("body");
+
+        Panel panel = panelService.update(currentPanelId, json, blob);
+
+
         return "save triggered";
     }
 
-
     /*
-
-
-
     @PostMapping("/create")
     public Panel create(HttpServletRequest request, HttpServletResponse response, @RequestBody PanelInfo panelInfo) throws IOException {
-
-
         String userID = panelInfo.getUserID();
         String comicID = panelInfo.getComicID();
         String snapshotJSON = panelInfo.getSnapshotJSON();
         Panel newPanel = new Panel(userID, comicID, snapshotJSON);
         return panelService.create(userID, comicID, snapshotJSON);
         //return panelService.create(userID, comicID, snapshotJSON);
-
     };
-
     @GetMapping("/deletePanel")
     public void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-
         String panelID = request.getParameter("panelID");
         panelService.deleteById(panelID);
-
-
         //return panelService.create(userID, comicID, snapshotJSON);
-
     };
-
     @GetMapping("/getAllByComicID")
     public List<Panel> getByComicID(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-
-
         String comicID = request.getParameter("comicID");
         return panelService.getByComicID(comicID);
-
-
         //return panelService.create(userID, comicID, snapshotJSON);
-
     };
-
     @GetMapping("/getAllByUserID")
     public List<Panel> getByUserID(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-
         String userID = request.getParameter("userID");
         return panelService.getByUserID(userID);
-
-
         //return panelService.create(userID, comicID, snapshotJSON);
-
     };
     */
 
 }
-
-

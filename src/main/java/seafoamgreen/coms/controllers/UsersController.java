@@ -140,6 +140,9 @@ public class UsersController {
         String activeUsername = (String)session.getAttribute("username");
 
         System.out.println("The current active username is: " + activeUsername);
+        System.out.println("Updating all comics with publish dates");
+
+
 
         List<Comic> usersComics = comicService.findAllByUsername(activeUsername);
         List<Series> userSeries = seriesService.findAllByUsername(activeUsername);
@@ -164,8 +167,8 @@ public class UsersController {
             mav.addObject("historyThumbnails", historyThumbnails);
 
             mav.addObject("isLoggedIn", true);
-        // List<Comic> popularComic = userService.getPopular();
-        // List<String> popularThumbnail = userService.getPopularThumbnails();
+            // List<Comic> popularComic = userService.getPopular();
+            // List<String> popularThumbnail = userService.getPopularThumbnails();
         }
 
         return mav;
@@ -194,10 +197,9 @@ public class UsersController {
         mav.addObject("username",activeUsername);
 
         List<Comic> popularComics = userService.getPopular();
-       // List<String> popularThumbnails = userService.getThumbnails(popularComics);
+        // List<String> popularThumbnails = userService.getThumbnails(popularComics);
         mav.addObject("popularComics", popularComics);
         //mav.addObject("popularThumbnails", popularThumbnails);
-        
 
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
@@ -220,6 +222,8 @@ public class UsersController {
 
         ModelAndView mav = new ModelAndView("viewUser");
         String activeUsername = (String)session.getAttribute("username");
+        User user = userService.findByUsername(activeUsername);
+        mav.addObject("userProfile", user);
         mav.addObject("username", activeUsername);
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
@@ -257,16 +261,23 @@ public class UsersController {
 
 
     //this should be edited. im not sure what exactly should go here
-    @GetMapping("/profile")
-    public ModelAndView viewOther(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("username");
-        User usr = userService.findByUsername(username);
-        if (usr == null) {
+    @GetMapping("/profile/{userProfile}")
+    public ModelAndView viewOther(HttpServletRequest request, HttpServletResponse response, @PathVariable String userProfile) throws IOException {
+        User user = userService.findByUsername(userProfile);
+        if (userProfile == null) {
             response.sendError(401, "User not found");
-
         }
-        ModelAndView mav = new ModelAndView("profile");
-        mav.addObject("User", usr);
+
+        ModelAndView mav = new ModelAndView("viewUser");
+        mav.addObject("userProfile", user);
+
+        HttpSession session = request.getSession(false);
+        String activeUsername = (String)session.getAttribute("username");
+        mav.addObject("username", activeUsername);
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
 
     }

@@ -46,6 +46,37 @@ public class PanelService {
         return panel;
     }
 
+    public Panel initalizeEmptyPanel(String Username, String comicID) {
+
+        Panel panel = new Panel(Username, comicID, null);
+        panelRepository.save(panel);
+
+        return panel;
+    }
+
+
+
+    public Panel update(String panelId, String fabricJSON, String blob)
+    {
+        Panel panel = panelRepository.findById(panelId).get();
+        String URL = storeBlobInAWS(panel, blob);
+        panel.setAWSURL(URL);
+        panel.setFabricJSON(fabricJSON);
+        panelRepository.save(panel);
+        return panel;
+
+    }
+
+    public List<Panel> findAllByCoimcId(String comicId)
+    {
+        return panelRepository.findByComicID(comicId);
+    }
+
+    public Panel findById(String panelId)
+    {
+        return panelRepository.findById(panelId).get();
+    }
+
     private String storeBlobInAWS(Panel panel, String blob) {
         AWSCredentials credentials = new BasicAWSCredentials("AKIAJIKZPRZSWRVS6SLQ",
                 "2IZ4gI/pxi8L82qeIWFl2txPIE1eslMxdbrHpYjq ");
@@ -61,8 +92,8 @@ public class PanelService {
         // String key = "key";
 
         //key = seriesId/comicId/panelNumber
-        String key = seriesId + "/" + comicId + "/" + panelId; 
-        
+        String key = seriesId + "/" + comicId + "/" + panelId;
+
         s3client.putObject(bucketName, key, blob); //saves
         String urlstring = s3client.getUrl(bucketName, key).toString();
         System.out.println(urlstring);
@@ -73,11 +104,11 @@ public class PanelService {
 
     public String getBlob(String panelId) {
         AWSCredentials credentials = new BasicAWSCredentials("AKIAJIKZPRZSWRVS6SLQ",
-        "2IZ4gI/pxi8L82qeIWFl2txPIE1eslMxdbrHpYjq ");
-        
+                "2IZ4gI/pxi8L82qeIWFl2txPIE1eslMxdbrHpYjq ");
+
         AmazonS3 s3client = AmazonS3ClientBuilder.standard()
-        .withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.US_EAST_2).build();
-        
+                .withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.US_EAST_2).build();
+
         Panel panel = panelRepository.findById(panelId).get();
         String bucketName = "coms.com-comics";
         String comicId = panel.getComicID();
@@ -127,6 +158,5 @@ public class PanelService {
 
 
 }
-
 
 

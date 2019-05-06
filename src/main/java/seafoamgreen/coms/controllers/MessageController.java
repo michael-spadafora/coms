@@ -83,10 +83,19 @@ public class MessageController {
     }
 
     @PostMapping("/messages/delete")
-    public ModelAndView deleteMessage(HttpServletRequest request, HttpServletResponse response, @RequestBody MessageBody msg) throws IOException {
-        service.delete(request.getParameter("deleteID"));
-        ModelAndView mav = new ModelAndView("messages");
-        
+    public ModelAndView deleteMessage(HttpServletRequest request) throws IOException {
+        String messageId = (String)request.getParameter("messageId");
+        service.delete(messageId);
+
+        ModelAndView mav = new ModelAndView("inbox");
+        HttpSession session = request.getSession(false);
+        String username = (String)session.getAttribute("username");
+        mav.addObject("Messages" , userService.getInbox(username));
+        mav.addObject("username",username);
+        if(username == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
     }
 
