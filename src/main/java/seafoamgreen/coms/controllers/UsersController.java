@@ -276,8 +276,18 @@ public class UsersController {
             response.sendError(401, "User not found");
         }
 
+        //mav add my comics
+        //mav add my list
+
+        List<Comic> madeComics = userService.getUsersComics(user.getUsername());
+        List<Comic> myList = userService.getComicsFromSubscriptions(user);
+
+        
+
         ModelAndView mav = new ModelAndView("viewUser");
         mav.addObject("userProfile", user);
+        mav.addObject("myComics", madeComics);
+        mav.addObject("myList", myList);
 
         HttpSession session = request.getSession(false);
         String activeUsername = (String)session.getAttribute("username");
@@ -313,14 +323,36 @@ public class UsersController {
 
     @GetMapping("/profile/sent")
     public ModelAndView viewSentMessages(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = (String) request.getSession(false).getAttribute("username");
-        if (username == null) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
             response.sendError(401, "User not logged in");
         }
+
+        String username = (String) session.getAttribute("username");
+        
         List<Message> sent = userService.getSent(username);
         ModelAndView mav = new ModelAndView("messages");
         mav.addObject("Messages", sent);
         return mav;
 
+    }
+
+    
+    @GetMapping ("/subscriptions") 
+    public ModelAndView viewList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendError(401, "User not logged in");
+        }
+        String username = (String) session.getAttribute("username");
+        
+
+
+        List<Comic> myList = userService.getComicsFromSubscriptions(username);
+
+        ModelAndView mav = new ModelAndView("myList");
+        mav.addObject("myList", myList);
+        return mav;
     }
 }

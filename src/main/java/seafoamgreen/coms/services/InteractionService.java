@@ -89,6 +89,10 @@ public class InteractionService {
         Comic c = comicRepository.findByComicId(comicId);
         //get series
         Series s = seriesRepository.findById(c.getSeriesID()).get();
+
+        if (s.getSubscriberList().contains(username)) {
+            return;
+        }
         s.getSubscriberList().add(username);
 
         User user = userRepository.findByUsername(username);
@@ -106,7 +110,7 @@ public class InteractionService {
         Comic c = comicRepository.findByComicId(comicId);
         //get series
         Series s = seriesRepository.findById(c.getSeriesID()).get();
-        s.getSubscriberList().add(username);
+        s.getSubscriberList().remove(username);
 
         User user = userRepository.findByUsername(username);
         user.getSubscriptions().remove(c.getSeriesID());
@@ -119,6 +123,11 @@ public class InteractionService {
 	public void subscribe(String seriesId, String username) {
         //get series
         Series s = seriesRepository.findById(seriesId).get();
+
+        if (s.getSubscriberList().contains(username)) {
+            return;
+        }
+        
         s.getSubscriberList().add(username);
 
         User user = userRepository.findByUsername(username);

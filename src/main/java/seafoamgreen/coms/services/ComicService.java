@@ -106,7 +106,16 @@ public class ComicService {
         return comics;
     }
 
-    public void deleteById(String id) { comicRepository.deleteById(id) ;}
+    public void deleteById(String id) { 
+        comicRepository.deleteById(id);
+        List<User> allUsers = userRepository.findAll();
+        for (User u: allUsers) {
+            if (u.getComicIdHistory().contains(id)) {
+                u.getComicIdHistory().remove(id);
+                userRepository.save(u);
+            }
+        }    
+    }
 
 
 
