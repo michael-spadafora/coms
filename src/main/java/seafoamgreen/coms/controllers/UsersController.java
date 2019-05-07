@@ -280,9 +280,7 @@ public class UsersController {
         //mav add my list
 
         List<Comic> madeComics = userService.getUsersComics(user.getUsername());
-        List<Comic> myList = userService.getComicsFromSubscriptions(user);
-
-        
+        List<Comic> myList = userService.getUsersMyList(user.getUsername());
 
         ModelAndView mav = new ModelAndView("viewUser");
         mav.addObject("userProfile", user);
@@ -339,7 +337,7 @@ public class UsersController {
 
     
     @GetMapping ("/subscriptions") 
-    public ModelAndView viewList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ModelAndView viewSubList(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -349,10 +347,47 @@ public class UsersController {
         
 
 
-        List<Comic> myList = userService.getComicsFromSubscriptions(username);
+        List<Comic> mySubs = userService.getComicsFromSubscriptions(username);
 
+        ModelAndView mav = new ModelAndView("mySubscriptions");
+        mav.addObject("mySubs", mySubs);
+        return mav;
+    }
+
+    @PostMapping("/mylist/add") 
+    public ModelAndView addToMyList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendError(401, "User not logged in");
+        }
+        String username = (String) session.getAttribute("username");
+        String comicId = request.getParameter("comicId");
+
+        userService.addToMyList(username, comicId);
+
+        //TODO: figure out what to return here
+        //idk if this is the right mav to return
+        //or if i should return anything tbh
         ModelAndView mav = new ModelAndView("myList");
+        mav.addObject("myList", userService.getUsersMyList(username));
+        return mav;
+
+    }
+
+
+    @GetMapping("/mylist")
+    public ModelAndView viewMyList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendError(401, "User not logged in");
+        }
+        String username = (String) session.getAttribute("username");
+
+        List<Comic> myList = userService.getUsersMyList(username);
+        ModelAndView mav = new ModelAndView("mySubscriptions");
         mav.addObject("myList", myList);
         return mav;
     }
+
 }

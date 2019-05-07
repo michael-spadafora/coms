@@ -1,16 +1,18 @@
 package seafoamgreen.coms.services;
 
 import seafoamgreen.coms.model.Comic;
-
+import seafoamgreen.coms.model.Comment;
 import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import seafoamgreen.coms.repositories.ComicRepository;
+import seafoamgreen.coms.repositories.CommentRepository;
 import seafoamgreen.coms.repositories.PanelRepository;
 import seafoamgreen.coms.repositories.SeriesRepository;
 import seafoamgreen.coms.repositories.UserRepository;
@@ -45,6 +47,9 @@ public class ComicService {
 
     @Autowired
     private PanelService panelService;
+
+    @Autowired
+    CommentRepository commentRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -110,10 +115,16 @@ public class ComicService {
         comicRepository.deleteById(id);
         List<User> allUsers = userRepository.findAll();
         for (User u: allUsers) {
+            boolean saveFlag = false;
             if (u.getComicIdHistory().contains(id)) {
                 u.getComicIdHistory().remove(id);
-                userRepository.save(u);
+                saveFlag = true;
             }
+            if (u.getMyList().contains(id)) {
+                u.getMyList().remove(id);
+                saveFlag = true;
+            }
+            if (saveFlag) userRepository.save(u);
         }    
     }
 
@@ -187,7 +198,7 @@ public class ComicService {
     //this will be checking if we have any comics ready to be published. if so, we set published to true.
     //will check every 15 minutes
     @Scheduled(cron = "0 * * ? * *")
-    public void scheduleCheck() {
+    public void scheduleCheck() { 
         Date date = new Date();
         // String strDateTimeFormat = "MM-dd-yyyy hh:mm a";
         String strDateTimeFormat = "yyyy-MM-dd";
@@ -241,4 +252,11 @@ public class ComicService {
         userRepository.save(user);
 
     }
+
+    public List<Comment> getCommentsForComicid(String comicId) {
+        Sort sort = new Sort(Sort.Direction.DESC, "dateTime");
+        
+        List<Comment> comments = commentRepository.findAllByComicId(comicId, sort);
+        return comments;
+	}
 }
