@@ -77,8 +77,6 @@ public class SeriesController {
 
         ModelAndView mav = new ModelAndView("myComics");
         HttpSession session = request.getSession();
-
-
         String activeUsername = (String)session.getAttribute("username");
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
@@ -197,6 +195,7 @@ public class SeriesController {
 
         }
         */
+
     @GetMapping("/getById")
     public Optional<Series> getById(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
