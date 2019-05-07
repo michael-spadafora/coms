@@ -77,8 +77,6 @@ public class SeriesController {
 
         ModelAndView mav = new ModelAndView("myComics");
         HttpSession session = request.getSession();
-
-
         String activeUsername = (String)session.getAttribute("username");
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
@@ -147,56 +145,7 @@ public class SeriesController {
         return mav;
     }
 
-/*
-    @PostMapping("/create")
-    public ModelAndView createSeries(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
 
-        HttpSession session = request.getSession();
-
-        String seriesName = request.getParameter("series");
-        String existingSeriesId = request.getParameter("existingSeries");
-        String comicName = request.getParameter("comic");
-        String tags = request.getParameter("tags");
-        String publishDate = request.getParameter("publishDate");
-
-        String currentUser = (String)session.getAttribute("username");
-        System.out.println(currentUser);
-        System.out.println(seriesName);
-        System.out.println(existingSeriesId);
-        System.out.println(comicName);
-        System.out.println(tags);
-        System.out.println(publishDate);
-
-        request.getSession().setAttribute("currentSeriesName", seriesName);
-        request.getSession().setAttribute("currentComicName", comicName);
-
-        Series currentSeries;
-        //Initialize the new Series and Comic Issue inside the DB
-        if(existingSeriesId == null) {
-            currentSeries = seriesService.create(seriesName, currentUser);
-
-        }
-        else
-        {
-            currentSeries = seriesService.findByID(existingSeriesId).get();
-
-        }
-        Comic newComic = comicService.create(currentUser, comicName, currentSeries.getId(), tags, publishDate);
-        seriesService.addComic(currentSeries.getId(), newComic.getId());
-        currentSeries = seriesService.findByID(currentSeries.getId()).get();
-
-        //Get the fully initialized objects from the DB and then set it into the session before going to create comic page
-        request.getSession().setAttribute("currentSeries", currentSeries);
-        request.getSession().setAttribute("currentComic", newComic);
-
-
-        ModelAndView mav = new ModelAndView("createComic");
-        mav.addObject("comic", newComic);
-        return mav;
-
-    }
-    */
     @GetMapping("/getById")
     public Optional<Series> getById(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
