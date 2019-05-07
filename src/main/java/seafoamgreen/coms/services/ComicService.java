@@ -110,10 +110,16 @@ public class ComicService {
         comicRepository.deleteById(id);
         List<User> allUsers = userRepository.findAll();
         for (User u: allUsers) {
+            boolean saveFlag = false;
             if (u.getComicIdHistory().contains(id)) {
                 u.getComicIdHistory().remove(id);
-                userRepository.save(u);
+                saveFlag = true;
             }
+            if (u.getMyList().contains(id)) {
+                u.getMyList().remove(id);
+                saveFlag = true;
+            }
+            if (saveFlag) userRepository.save(u);
         }    
     }
 
