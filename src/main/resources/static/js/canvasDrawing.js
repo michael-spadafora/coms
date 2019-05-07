@@ -7,7 +7,8 @@ var canvas = new fabric.Canvas('canvas', {
 
 canvas.setDimensions({width: 1050, height: 350});
 
-
+var strokeColor = 'black';
+var fillColor = 'white';
 
 var $ = function(id) {
     return document.getElementById(id)
@@ -196,9 +197,9 @@ function drawRec() {
         left: 0,
         width: 100,
         height: 50,
-        stroke: 'black',
+        stroke: strokeColor,
         strokeWidth: 1,
-        fill: 'rgba(0,0,0,0)',
+        fill: fillColor,
         backgroundColor: 'rgba(0,0,0,0)'
     }));
     canvas.renderAll();
@@ -208,8 +209,8 @@ function drawRec() {
 
 function drawLine() {
     canvas.add(new fabric.Line([0, 50, 50, 50], {
-        stroke: 'black',
-        strokeWidth: 10
+        stroke: strokeColor,
+        strokeWidth: 3
     }));
 // updateModifications(true);
 }
@@ -218,9 +219,9 @@ function drawTriangle() {
     canvas.add(new fabric.Triangle({
         top: 0,
         left: 0,
-        stroke: 'black',
+        stroke: strokeColor,
         strokeWidth: 1,
-        fill: 'rgba(0,0,0,0)',
+        fill: fillColor,
         backgroundColor: 'rgba(0,0,0,0)'
     }));
 // updateModifications(true);
@@ -232,9 +233,9 @@ function drawSquare() {
         left: 0,
         width: 100,
         height: 100,
-        stroke: 'black',
+        stroke: strokeColor,
         strokeWidth: 1,
-        fill: 'rgba(0,0,0,0)',
+        fill: fillColor,
         backgroundColor: 'rgba(0,0,0,0)'
     }));
 // updateModifications(true);
@@ -242,12 +243,12 @@ function drawSquare() {
 
 function drawCircle() {
     canvas.add(new fabric.Circle({
-        radius: 10,
+        radius: 50,
         left: 0,
         top: 0,
-        stroke: 'black',
+        stroke: strokeColor,
         strokeWidth: 1,
-        fill: 'rgba(0,0,0,0)',
+        fill: fillColor,
         backgroundColor: 'rgba(0,0,0,0)'
     }));
 // updateModifications(true);
@@ -309,24 +310,18 @@ updateModifications(true);
 
 function changeStroke() {
     var x = document.getElementById("stroke").value;
-    console.log(x);
+    strokeColor = x;
     canvas.getActiveObject().set("stroke", x);
     canvas.renderAll();
-updateModifications(true);
+    updateModifications(true);
 }
 
 function changeFill() {
     var x = document.getElementById("fill").value;
-    // console.log(canvas.getActiveObject().get("fill"))
-    if (canvas.getActiveObject().get("fill") == x){
-        console.log("same color")
-    }else{
-        console.log("color change")
-        canvas.getActiveObject().set("fill", x);
-        canvas.renderAll();
-        updateModifications(true);
-    }
-
+    fillColor = x;
+    canvas.getActiveObject().set("fill", x);
+    canvas.renderAll();
+    updateModifications(true);
 }
 
 function removeFill() {
