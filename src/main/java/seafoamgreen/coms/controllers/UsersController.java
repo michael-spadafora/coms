@@ -115,8 +115,7 @@ public class UsersController {
             String password = request.getParameter("password");
 
             //After register it should return index
-            if (userService.findByUsername(username) == null){
-                userService.create(username, password);
+            if (userService.create(username, password) != null){
                 User usr = userService.login(username, password);
                 response.setStatus(200);
                 session = request.getSession();

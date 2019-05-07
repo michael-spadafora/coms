@@ -33,6 +33,11 @@ public class UserService {
 
     // Create
     public User create(String username, String password) {
+        username = username.toLowerCase();
+        if (userRepository.findByUsername(username) != null) {
+            return null;
+        }
+
         String encrypted = encrypt(password);
         User user = new User(username, encrypted);
         userRepository.save(user);
@@ -65,6 +70,7 @@ public class UserService {
     }
 
     public User login(String username, String password) {
+        username = username.toLowerCase();
         User usr = userRepository.findByUsername(username);
         if (usr == null) {
             return null;
