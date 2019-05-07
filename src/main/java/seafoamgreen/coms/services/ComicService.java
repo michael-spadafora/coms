@@ -229,6 +229,7 @@ public class ComicService {
     public void addToHistory(String username, String comicID) {
         User user = userRepository.findByUsername(username);
         user.addComicToHistory(comicID);
+        userRepository.save(user);
 
     }
 }
