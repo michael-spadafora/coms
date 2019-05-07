@@ -10,7 +10,8 @@ import seafoamgreen.coms.repositories.MessageRepository;
 import seafoamgreen.coms.repositories.SeriesRepository;
 import seafoamgreen.coms.repositories.UserRepository;
 
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -44,8 +45,14 @@ public class MessageService {
         return "successfully sent message to " + toUsername;
     }
 
-    public void delete(String messageID) {
+    public void delete(String username, String messageID) {
         messageRepository.deleteById(messageID);
+        User user = userRepository.findByUsername(username);
+        ArrayList<String> messages = user.getMessagesReceived();
+        messages.remove(messageID);
+        user.setMessagesRecieved(messages);
+        userRepository.save(user);
+
     }
 
    

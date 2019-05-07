@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Message;
+import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.model.User;
 import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.repositories.MessageRepository;
@@ -110,6 +111,8 @@ public class UserService {
 
         List<String> msgIds = usr.getMessagesReceived();
 
+        System.out.println("User messages " + msgIds);
+
 
         List<Message> ret = new ArrayList<>();
 
@@ -118,6 +121,12 @@ public class UserService {
         }
 
         return ret;
+
+    }
+    public User update(User user)
+    {
+        userRepository.save(user);
+        return user;
 
     }
 
