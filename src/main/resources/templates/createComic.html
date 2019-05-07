@@ -53,12 +53,10 @@
         #collaborate{color:white;background-color:#779ecb ;border:1px #779ecb  solid;padding:5px 10px;font-size: 16px}
         #publish{color:white;background-color:#FF6D33;border:1px #FF6D33 solid;padding:5px 10px;font-size: 16px;margin-left:10px}
         .container{width:100%;display: table}
-        .left{float:left;width:20%;margin-top:58px}
         table, td{border:2px black solid;width:100%;padding:10px 10px;}
-        .middle{margin: auto;
+        .middle{
             display: block;
-            width:59%;
-            padding:0px 10px}
+            width:59%;}
         #tools{text-align: center}
         .right{float:right;width:20%;margin-top:13px}
         .canvasTools{font-size: 20px;border:none;background-color:white;padding:0px 20px;width:50px;}
@@ -165,7 +163,7 @@
         <p th:if="${currentPanel!=null}" th:text = "${currentPanel.getFabricJSON()}"></p>
         <div class="btn-group">
             <div id="mydiv" tabindex="0" />
-            <canvas id="canvas" width="1050px" height="350px" style="border:1px solid #000000;"></canvas>
+            <canvas id="canvas" width="800px" height="350px" style="border:1px solid #000000;"></canvas>
         </div>
         <div class="middleTop">
             <div class="middleToold">
