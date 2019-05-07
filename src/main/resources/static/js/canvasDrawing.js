@@ -1,6 +1,6 @@
 // <canvas id="canvas" width="300" height="300"></canvas>
 // import {fabric} from 'fabric';
-var canvas = this.__canvas = new fabric.Canvas('canvas', {
+var canvas = new fabric.Canvas('canvas', {
     isDrawingMode: true
     // backgroundColor : "white"
 });
@@ -251,19 +251,6 @@ function drawCircle() {
 // updateModifications(true);
 }
 
-// function addTextbox() {
-//     var x = document.getElementById("fonts").value;
-//     canvas.add(new fabric.IText('this is my text box', {
-//         // width: 150,
-//         top: 50,
-//         left: 50,
-//         fontSize: 60,
-//         textAlign: 'center',
-//         // fontFamily: 'Arial'
-//         fontFamily: document.getElementById("fonts").value
-//         // fixedWidth: 150
-//     }));
-// }
 
 function addTextbox() {
     var x = document.getElementById("fonts").value;
@@ -280,10 +267,6 @@ function addTextbox() {
 // updateModifications(true);
 }
 
-function clearPane() {
-    canvas.clear();
-// updateModifications(true);
-}
 
 function deleteObject() {
     // console.log(canvas.getActiveObject());
@@ -321,23 +304,6 @@ function deleteObject() {
 
 updateModifications(true);
 }
-//
-// function deleteGroup() {
-//   console.log("delete group");
-//   console.log(canvas.getActiveObject());
-//   console.log(typeof(canvas.getActiveObject()));
-//   // console.log(canvas.getActiveObject().length);
-//   // var objects = canvas.getActiveObject();
-//   // canvas.discardActiveObject();
-//   //
-//   //   canvas.remove(objects);
-//   var group = canvas.getActiveObject().getObjects();
-//   console.log(group);
-//   for (let i in group){
-//     // console.log(group[i]);
-//     canvas.remove(group[i])
-//   }
-// }
 
 function changeStroke() {
     var x = document.getElementById("stroke").value;
@@ -373,36 +339,6 @@ function removeFill() {
 
 }
 
-// function saveToBack() {
-
-
-//     var file = canvas.toJSON();
-//     var json = {
-//         fabricJSON: JSON.stringify(file),
-//         image: canvas.toDataURL()
-//     }
-//     console.log(json);
-//     fetch('savePanel', {
-//         method: 'post',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: json
-//     });
-
-//     // var imgObj = new Image();
-//     // imgObj.src = dataUrl;
-//     // imgObj.onload = function(event) {
-//     //     var image = new fabric.Image(imgObj);
-//     //     image.width = image.width;
-//     //     image.height = image.height;
-//     //     image.scale(1050/image.getScaledWidth());
-//     //     // console.log(image);
-//     //     canvas.add(image);
-//     // }
-//     // .then(res => res.json())
-//     // .then(grid => reset_grid(grid));
-// }
 
 function copy() {
     canvas.getActiveObject().clone(function(cloned) {
@@ -478,21 +414,6 @@ document.getElementById('imgLoader').onchange = function handleImage(e) {
     reader.readAsDataURL(e.target.files[0]);
     document.getElementById("imgLoader").value = "";
 }
-
-// function saveimaging(){
-//     var dataUrl=canvas.toDataURL();
-//     fetch('comic/createComic', {
-//         method: 'post',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(dataUrl)
-//     });
-//     console.log(JSON.stringify(dataUrl));
-//     // canvas.getElement().toBlob(temp);
-//     // console.log(pics);
-// }
-
 
 
 function downloadImage(){
@@ -648,12 +569,6 @@ function action() {
 
 }
 
-
-// canvas.on('mouse:down', function(options) {
-//   console.log('canvas event');
-//   var keyCode = event.which || event.keyCode || 0;
-//   console.log(keyCode);
-// });
 
 
 var canvasWrapper = document.getElementById('mydiv');
@@ -844,29 +759,98 @@ function save() {
     console.log(canvas.toJSON());
     console.log(canvas.toDataURL);
     var requestBody = {
-        body: JSON.stringify(canvas.toJSON()),
-        image: canvas.toDataURL()
+        "body": JSON.stringify(canvas.toJSON()),
+        "image": canvas.toDataURL()
     }
-    $.ajax({
-        type: 'POST',
-        url: "/savePanel",
-        data: requestBody,
-        success: [function(data) {
-            console.log(data);
-            //$("body").html(data);
-        }],
-        error: function(exception) {
-            alert('Exeption:' + exception);
-        }
-    });
+    // $.ajax({
+    //     type: 'POST',
+    //     url: "/savePanel",
+    //     data: requestBody,
+    //     success: [function(data) {
+    //         console.log(data);
+    //         //$("body").html(data);
+    //     }],
+    //     error: function(exception) {
+    //         alert('Exeption:' + exception);
+    //     }
+    // });
 
-    // fetch('/savePanel', {
-    //     method: 'POST',
-    //     headers: {
-    //     'Content-Type': 'application/json', 
-    //     },
-    //     body: requestBody
-    // }).then(res => res.json()).then(res => console.log(res)).catch(error => alert('Exeption:' + error));
+    fetch('/savePanel', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify(requestBody)
+    }).then(res => res.json()).then(res => console.log(res)).catch(error => alert('Exeption:' + error));
     
 
 }
+
+
+function group() {
+    if (!canvas.getActiveObject()) {
+      return;
+    }
+    if (canvas.getActiveObject().type !== 'activeSelection') {
+      return;
+    }
+    canvas.getActiveObject().toGroup();
+    canvas.requestRenderAll();
+  }
+
+ function ungroup() {
+    if (!canvas.getActiveObject()) {
+      return;
+    }
+    if (canvas.getActiveObject().type !== 'group') {
+      return;
+    }
+    canvas.getActiveObject().toActiveSelection();
+    canvas.requestRenderAll();
+  }
+
+  canvas.on('mouse:wheel', function(opt) {
+    var delta = opt.e.deltaY;
+    var pointer = canvas.getPointer(opt.e);
+    var zoom = canvas.getZoom();
+    zoom = zoom + delta/500;
+    if (zoom > 20) zoom = 20;
+    if (zoom < 1) zoom = 1;
+    canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+    opt.e.preventDefault();
+    opt.e.stopPropagation();
+  });
+  canvas.on('mouse:down', function(opt) {
+    var evt = opt.e;
+    if (evt.altKey === true) {
+      this.isDragging = true;
+      this.selection = false;
+      this.lastPosX = evt.clientX;
+      this.lastPosY = evt.clientY;
+    }
+  });
+  canvas.on('mouse:move', function(opt) {
+    if (this.isDragging) {
+      var e = opt.e;
+      this.viewportTransform[4] += e.clientX - this.lastPosX;
+      this.viewportTransform[5] += e.clientY - this.lastPosY;
+      this.requestRenderAll();
+      this.lastPosX = e.clientX;
+      this.lastPosY = e.clientY;
+    }
+  });
+  canvas.on('mouse:up', function(opt) {
+    this.isDragging = false;
+    this.selection = true;
+  });
+
+  function recenter (){
+    canvas.setZoom(1);
+    var img = canvas.getActiveObject();
+    canvas.remove(img);
+    canvas.centerObject(img);
+    canvas.setActiveObject(img);
+    canvas.add(img);
+  
+    canvas.renderAll();
+  }
