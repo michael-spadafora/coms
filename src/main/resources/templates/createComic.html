@@ -191,12 +191,71 @@
             </div>
          </div>
 
+         <!-- ADD TEXTBOX -->
+         <button class="btn btn-info" onclick="addTextbox()">
+            <img src="/img/text.png" alt="Text" height="20" width="20">
+         </button>
+
          <!-- UPLOAD BUTTONS -->
          <div class="dropdown">
             <button class="btn btn-info dropdown-toggle" type="button" id="uploadButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <img src="/img/image.png" alt="upload" height="20" width="20">
             </button>
+            <div class="dropdown-menu" aria-labelledby="uploadButton">
+               <button type="button" class="btn btn-info" onclick="document.getElementById('imgLoader').click();">
+                  <img src="/img/imagedownload.png" alt="Upload Image" height="20" width = "20">
+               </button>
+               <input type='file' id="imgLoader" style="display: none;"/>
+               <button type="button" class="btn btn-info" onclick="document.getElementById('jsonLoader').click();">
+                  <img src="/img/json.png" alt="Upload Json" height="20" width = "20">
+               </button>
+               <input type='file' id="jsonLoader" style="display: none;"/>
+            </div>
          </div>
 
+         <!-- BACKGROUND BUTTONS -->
+         <button type="button" class="btn btn-info" onclick="document.getElementById('backgroundImage').click();">
+            <img src="/img/add.png" alt="Upload Download Image" height="20" width = "20">
+         </button>
+         <input type='file' id="backgroundImage" style="display: none;"/>
+         <button type="button" class="btn btn-info" onclick="removeBackground()">
+            <img src="/img/remove.png" alt="Remove Background" height="20" width = "20">
+         </button>
+
+         <!-- LAYER BUTTONS -->
+         <button type="button" class="btn btn-info" onclick="sendToBack()" >
+            <img src="/img/back.png" alt="Send To Back" height="15" width="20">
+         </button>
+         <button type="button" class="btn btn-info" onclick="back()" >
+            <img src="/img/backward.png" alt="Send Back One" height="15" width="20">
+         </button>
+         <button type="button" class="btn btn-info" onclick="front()" >
+            <img src="/img/forward.png" alt="Send Front One" height="15" width="20">
+         </button>
+         <button type="button" class="btn btn-info" onclick="bringToFront()">
+            <img src="/img/front.png" alt="Send To Front" height="20" width = "20">
+         </button>
+
+      </div>
+
+      <div class="btn-toolbar" role="toolbar">
+         <div class="btn-group mr-2" role="group">
+            <button type="button" class="btn btn-info" onclick="undo()">
+               <img src="/img/undo.png" alt="Undo" height="20" width = "20">
+            </button>
+            <button type="button" class="btn btn-info" onclick="redo()">
+               <img src="/img/redo.png" alt="Redo" height="20" width = "20">
+            </button>
+            <button type="button" class="btn btn-info" onclick="deleteObject()">
+               <img src="/img/trash.png" alt="Delete" height="20" width = "20">
+            </button>
+            <button  type="button" class="btn btn-info" onclick="group()">
+               <img src="/img/group.png" alt="Group" height="20" width = "20">
+            </button>
+            <button type="button" class="btn btn-info" onclick="ungroup()">
+               <img src="/img/ungroup.png" alt="Ungroup" height="20" width = "20">
+            </button>
+         </div>
       </div>
 
    <div class="middle">
@@ -208,8 +267,7 @@
             <div class="middleToold">
                <!-- TEXT -->
                <span class="dropdown">
-                  <!-- <button class="btn btn-info" onclick="addTextbox()"><img src="/img/text.png" alt="Text" height="20" width = "20"></button> -->
-                  <button class="btn btn-info" onclick="addTextbox()"><img src="/img/text.png" alt="Text" height="20" width="20"></button>
+
                   <div class="dropdown-content">
                      <label for="font">Font:</label><br>
                      <select id="fonts" onchange="fontchange()">
@@ -234,46 +292,8 @@
                      <input type="number"min="0" max="500" value="30" id="font-size">
                   </div>
                </span>
-               <!-- <button type="button" class="btn btn-info" onclick="drawRec()" id="rect"><img src="/img/rectangle.png" alt="Rectangle" height="20" width="30"> </button>
-                  <button type="button" class="btn btn-info" onclick="drawSquare()"><img src="/img/square.png" alt="Square" height="20" width = "20"> </button>
-                  <button type="button" class="btn btn-info" onclick="drawTriangle()"><img src="/img/triangle.png" alt="Triangle" height="20" width = "20"> </button>
-                  <button type="button" class="btn btn-info" onclick="drawCircle()"><img src="/img/ellipse.png" alt="Circle" height="20" width = "20"></button>
-                  <button type="button" class="btn btn-info" onclick="drawLine()"><img src="/img/line.png" alt="Line" height="20" width = "20"></button> -->
-               <!-- <button type="button" class="btn btn-info" onclick="copy()"><img src="/img/copy.png" alt="Copy" height="20" width = "20"></button>
-                  <button type="button" class="btn btn-info" onclick="cut()"><img src="/img/cut.png" alt="Cut" height="20" width = "20"></button>
-                  <button type="button" class="btn btn-info" onclick="paste()"><img src="/img/paste.png" alt="Paste" height="20" width = "20"></button> -->
-               <!-- LAYERS -->
-               <span class="dropdown">
-                  <button class="btn btn-info"><img src="/img/layers.png" alt="download" height="20" width="20"></button>
-                  <div class="dropdown-content">
-                     <button type="button" class="btn btn-info" onclick="back()" ><img src="/img/backward.png" alt="Send Back One" height="15" width="20"> </button><br>
-                     <button type="button" class="btn btn-info" onclick="sendToBack()" ><img src="/img/back.png" alt="Send To Back" height="15" width="20"> </button><br>
-                     <button type="button" class="btn btn-info" onclick="front()" ><img src="/img/forward.png" alt="Send Front One" height="15" width="20"> </button><br>
-                     <button type="button" class="btn btn-info" onclick="bringToFront()"><img src="/img/front.png" alt="Send To Front" height="20" width = "20"> </button><br>
-                  </div>
-               </span>
-               <!-- <button type="button" onclick="clearPane()">Clear Pane</button> -->
-               <!-- <button type="button" class="btn btn-info" onclick="deleteGroup()">Delete Group</button> -->
-               <!-- <input type="button" onclick="downloadImage()" value="download canvas as an image"> -->
-               <!-- BACKGROUND -->
-               <span class="dropdown">
-                  <button class="btn btn-info"><img src="/img/background.png" alt="download" height="20" width="20"></button>
-                  <div class="dropdown-content">
-                     <button type="button" class="btn btn-info" onclick="document.getElementById('backgroundImage').click();"><img src="/img/add.png" alt="Upload Download Image" height="20" width = "20"></button>
-                     <input type='file' id="backgroundImage" style="display: none;"/>
-                     <button type="button" class="btn btn-info" onclick="removeBackground()"><img src="/img/remove.png" alt="Remove Background" height="20" width = "20"> </button><br>
-                  </div>
-               </span>
-               <!-- UPLOADS -->
-               <span class="dropdown">
-                  <button class="btn btn-info"><img src="/img/image.png" alt="upload" height="20" width="20"></button>
-                  <div class="dropdown-content">
-                     <button type="button" class="btn btn-info" onclick="document.getElementById('imgLoader').click();"><img src="/img/imagedownload.png" alt="Upload Image" height="20" width = "20"></button>
-                     <input type='file' id="imgLoader" style="display: none;"/> <br>
-                     <button type="button" class="btn btn-info" onclick="document.getElementById('jsonLoader').click();"><img src="/img/json.png" alt="Upload Json" height="20" width = "20"></button>
-                     <input type='file' id="jsonLoader" style="display: none;"/>
-                  </div>
-               </span>
+
+
                <!-- DOWNLOADS -->
                <span class="dropdown">
                   <button class="btn btn-info"><img src="/img/download.png" alt="download" height="20" width="20"></button>
@@ -291,14 +311,7 @@
                      <button type="button" class="btn btn-info" onclick="paste()"><img src="/img/paste.png" alt="Paste" height="20" width = "20"></button>
                   </div>
                </span>
-               <!-- GROUPING -->
-               <span class="dropdown">
-                  <button class="btn btn-info"><img src="/img/merging.png" alt="Grouping" height="20" width="20"></button>
-                  <div class="dropdown-content">
-                     <button  type="button" class="btn btn-info" onclick="group()"><img src="/img/group.png" alt="Group" height="20" width = "20"></button>
-                     <button type="button" class="btn btn-info" onclick="ungroup()"><img src="/img/ungroup.png" alt="Ungroup" height="20" width = "20"></button>
-                  </div>
-               </span>
+
                <!-- ZOOMING -->
                <span class="dropdown">
                   <button class="btn btn-info"><img src="/img/zoom.png" alt="Grouping" height="20" width="20"></button>
@@ -308,16 +321,11 @@
                      <button  type="button" class="btn btn-info" onclick="recenter()"><img src="/img/center.png" alt="Center" height="20" width = "20"></button>
                   </div>
                </span>
-               <button type="button" class="btn btn-info" onclick="deleteObject()"><img src="/img/trash.png" alt="Delete" height="20" width = "20"></button>
-               <!-- <input type="button" value="undo" onclick="undo()">
-                  <input type="button" value="redo" onclick="redo()"> -->
-               <button type="button" class="btn btn-info" onclick="undo()"><img src="/img/undo.png" alt="Undo" height="20" width = "20"> </button>
-               <button type="button" class="btn btn-info" onclick="redo()"><img src="/img/redo.png" alt="Redo" height="20" width = "20"> </button>
+
+
+
                <button id="save-canvas" type="button" class="btn btn-info" ><img src="/img/save.png" alt="Save" height="20" width = "20"></button>
                <button id="clear-canvas" class="btn btn-info"><img src="/img/clear.png" alt="Clear" height="20" width = "20"></button>
-               <!-- <input type="button" value="Remove Background" onclick="removeBackground()"> -->
-               <!-- <input type="button" onclick="saveimaging()" value="Save as an Image"> -->
-               <!-- <input type="button" class="btn btn-info" value="Upload Image" onclick="document.getElementById('imgLoader').click();"/> -->
                <br>
                <label for="stroke">Outline Color:</label>
                <input type="color" id="stroke" name="stroke" value="#000000">
