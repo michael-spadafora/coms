@@ -3,6 +3,7 @@ package seafoamgreen.coms.controllers;
 
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Panel;
+import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.services.ComicService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,13 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import seafoamgreen.coms.services.PanelService;
+import seafoamgreen.coms.services.SeriesService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*")
 @RestController
@@ -39,31 +43,133 @@ public class ComicController {
     @Autowired
     PanelService panelService;
 
+    @Autowired
+    SeriesService seriesService;
+
+
+
     @PostMapping("/create")
-    public ModelAndView create(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void addNewComic(HttpServletRequest request, HttpServletResponse response)
+    {
+        ModelAndView mav = new ModelAndView("myComics");
+        HttpSession session = request.getSession();
 
-        //TODO: refactor this to "start new comic"
-        //
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
 
 
-        // String seriesName = request.getParameter("seriesName");
-        // String tagList = (String) request.getParameter("tagList");
-        // request.getParameter("comicName");
-        // request.getParameter("panelList");
-        //request.getParameter("postTime");
+        String username = (String)session.getAttribute("username");
+        String seriesId= request.getParameter("seriesId");
+        String comicName = request.getParameter("comicName");
+        String tagString = request.getParameter("tags");
+        String publishDate = request.getParameter("publishDate");
+        Comic comic = comicService.create(username, comicName, seriesId, tagString , publishDate);
 
-        //
-        /*
-        String userID = comicBody.getUserID();
-        String comicName = comicBody.getComicName();
-        String seriesID = comicBody.getSeriesID();
+        Series series = seriesService.findByID(seriesId).get();
+        seriesService.addComic(series.getId(), comic.getId());
 
-        */
-        //return comicService.create(userID, comicName, seriesID);
-        //return panelService.create(userID, comicID, snapshotJSON);
-        ModelAndView mav = new ModelAndView("login");
+        List<Series> seriesList = seriesService.findAllByUsername(username);
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+
+        for(Series seriesElement : seriesList)
+        {
+            map.put(seriesElement, comicService.findAllBySeriesId(series.getId()));
+        }
+        //Get all of users series
+
+        //Map each series to a list of comics
+        try {
+            response.sendRedirect("/series/mySeries");
+        }
+        catch(Exception e) {
+
+        }
+
+    }
+
+    @PostMapping("/edit")
+    public ModelAndView editComic(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView("createComic");
+        String comicId = request.getParameter("editComicId");
+        if(comicId != null) {
+            request.getSession().setAttribute("currentComicId", comicId);
+        }
+        else {
+            comicId = (String)request.getSession().getAttribute("currentComicId");
+        }
+
+        String editPanelId = request.getParameter("editPanelId");
+        System.out.println("edit Panel id shud be page 0 empty: " + editPanelId);
+
+        if(editPanelId == null)
+        {
+            List<Panel> panelList= panelService.findAllByCoimcId(comicId);
+            if(panelList.size() > 0 )
+            {
+                Panel currentPanel = panelService.findAllByCoimcId(comicId).get(0);
+                HttpSession session = request.getSession();
+                session.setAttribute("currentPanelId", currentPanel.getId());
+                mav.addObject("currentPanel", currentPanel);
+            }
+
+        }
+        else{
+            HttpSession session = request.getSession();
+            session.setAttribute("currentPanelId", editPanelId);
+            Panel currentPanel = panelService.findById(editPanelId);
+            mav.addObject("currentPanel", currentPanel);
+
+
+        }
+        //add panel list
+        List<Panel> panelList = panelService.findAllByCoimcId(comicId);
+        mav.addObject("panelList", panelList);
         return mav;
-    };
+    }
+
+    @GetMapping("/delete")
+    public ModelAndView deleteComic(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView("myComics");
+        String comicId = (String)request.getParameter("comicId");
+        comicService.deleteById(comicId);
+
+
+        HttpSession session = request.getSession();
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+
+        String username = (String)session.getAttribute("username");
+        List<Series> seriesList = seriesService.findAllByUsername(username);
+
+        //TODO: ADD SORT
+
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+
+        for(Series series : seriesList)
+        {
+            map.put(series, comicService.findAllBySeriesId(series.getId()));
+        }
+        //Get all of users series
+
+        mav.addObject("seriesMap", map);
+
+        System.out.println(map);
+
+        //Map each series to a list of comics
+
+        return mav;
+    }
 
     @GetMapping("/view/{comicID}")
     public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response, @PathVariable String comicID) {
@@ -96,6 +202,7 @@ public class ComicController {
         return mav;
 
     }
+
 
     @GetMapping("/view/thumbnail")
     public ModelAndView viewComicThumbnail(HttpServletRequest request, HttpServletResponse response) {
@@ -173,14 +280,20 @@ public class ComicController {
     @PostMapping("/publish")
     public ModelAndView publishComic(HttpServletRequest request, HttpServletResponse response) {
         //what does this return?? I guess a view
-        String seriesName = request.getParameter("seriesName");
-        String tagList = (String) request.getParameter("tagList");
         String comicId = request.getParameter("comicId");
+        String publishDate = request.getParameter("publishDate");
+
 
         // request.getParameter("panelList");
         //Date posttime = request.getParameter("postTime"); still gotta figure this out for rn
+        Comic c = null;
+        if (publishDate != null) {
+            c = comicService.publishComic(comicId, publishDate);
+        } else {
+            c = comicService.publishComic(comicId, true);
+        }
 
-        Comic c = comicService.publishComic(comicId, seriesName, tagList);
+
 
 
         //returns the view of the comic

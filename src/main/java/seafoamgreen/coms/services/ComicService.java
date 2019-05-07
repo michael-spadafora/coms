@@ -2,6 +2,7 @@ package seafoamgreen.coms.services;
 
 import seafoamgreen.coms.model.Comic;
 
+import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.model.User;
 
@@ -10,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import seafoamgreen.coms.repositories.ComicRepository;
+import seafoamgreen.coms.repositories.PanelRepository;
 import seafoamgreen.coms.repositories.SeriesRepository;
 import seafoamgreen.coms.repositories.UserRepository;
 
@@ -39,16 +41,23 @@ public class ComicService {
     private SeriesRepository seriesRepository;
 
     @Autowired
+    private PanelRepository panelRepository;
+
+    @Autowired
     private PanelService panelService;
 
     @Autowired
     private UserRepository userRepository;
 
-    public Comic create(String Username, String comicName, String SeriesID, String tagString) //need to find a way to implement time
+    public Comic create(String Username, String comicName, String SeriesID, String tagString, String publishDate) //need to find a way to implement time
     {
         Comic comic = new Comic(Username, comicName, SeriesID);
         comic.setTags(tokenizeTagString(tagString));
-        comicRepository.save(comic);
+        //TODO: remove this line v
+        comic.setDateTime(publishDate);
+        Comic newComic = comicRepository.save(comic);
+        Panel firstPanel = new Panel(Username, newComic.getId(), "{\"version\":\"2.7.0\",\"objects\":[]}");
+        panelRepository.save(firstPanel);
         return comic;
     }
 
@@ -141,53 +150,22 @@ public class ComicService {
 
     }
 
-    public Comic publishComic(String comicId, String seriesName, String tagList, String dateTime) {
-        Comic c= publishComic(comicId, seriesName, tagList);
+    public Comic publishComic(String comicId, String dateTime) {
+        Comic c= publishComic(comicId, false);
         c.setDateTime(dateTime);
+        comicRepository.save(c);
         return c;
     }
 
-    public Comic publishComic(String comicId, String seriesName, String tagList) {
+    public Comic publishComic(String comicId, boolean publishNow) {
         Comic c = comicRepository.findById(comicId).get();
-        List<String> tags = tokenizeTagString(tagList);
-        c.setTags(tags);
-        Series s = seriesRepository.findBySeriesName(seriesName);
-        c.setSeriesID(s.getId());
 
-        AWSCredentials credentials = new BasicAWSCredentials(
-                "AKIAJIKZPRZSWRVS6SLQ",
-                "2IZ4gI/pxi8L82qeIWFl2txPIE1eslMxdbrHpYjq "
-        );
-
-        AmazonS3 s3client = AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(Regions.US_EAST_2)
-                .build();
-
-        String bucketName = "coms.com-comics";
-        String key = "key";
-        String content = "content";
-
-        s3client.putObject(bucketName, "key", content);
-
-        String urlstring = s3client.getUrl(bucketName, key).toString();
-
-        c.setAWSURL(urlstring);
+        if (publishNow) {
+            c.setPublished(true);
+        }
         comicRepository.save(c);
 
-        // s3client.putObject(
-        //     bucketName,
-        //     "Document/hello.txt",
-        //     new File("/Users/user/Document/hello.txt")
-        // );
-
-
-
         return c;
-
-
-
     }
 
 
@@ -196,7 +174,8 @@ public class ComicService {
     @Scheduled(cron = "0 * * ? * *")
     public void scheduleCheck() {
         Date date = new Date();
-        String strDateTimeFormat = "MM-dd-yyyy hh:mm a";
+        // String strDateTimeFormat = "MM-dd-yyyy hh:mm a";
+        String strDateTimeFormat = "yyyy-MM-dd";
         DateFormat dateTimeFormat = new SimpleDateFormat(strDateTimeFormat);
 
         String currDateTime = dateTimeFormat.format(date);
@@ -213,15 +192,15 @@ public class ComicService {
 
     }
 
-	public Comic getEditComic(String username, String comicId) {
+    public Comic getEditComic(String username, String comicId) {
         Comic c = comicRepository.findByComicId(comicId);
         if (c.getUsername() != username) {
             return null;
         }
 
 
-		return c;
-	}
+        return c;
+    }
 
 
 
@@ -241,11 +220,9 @@ public class ComicService {
 
     }
 
-	public void addToHistory(String username, String comicID) {
+    public void addToHistory(String username, String comicID) {
         User user = userRepository.findByUsername(username);
         user.addComicToHistory(comicID);
 
     }
 }
-
-
