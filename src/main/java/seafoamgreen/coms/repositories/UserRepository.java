@@ -12,7 +12,7 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     User findByUsername(String username);
 
-    @Query("{ 'username' : { $regex: ?0 } }")
+    @Query("{ 'username' : { $regex: ?0,  $options: 'i' } }")
     List<User> findAllByUsernameRegex(String regex);
 
 
