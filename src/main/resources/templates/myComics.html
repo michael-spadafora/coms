@@ -94,8 +94,9 @@
 
                     <div class="card-body">
                         <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                        <a id="view" th:href="@{'/comic/view/'+ ${comic.getId()}}"><img src=""></a>
+                        <a id="view" th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" ></a>
                         <a id="edit" th:data-thing="${comic.getId()}" onclick="editComic(this.getAttribute('data-thing'));" class="btn btn-primary">Edit</a>
+                        <a id="publish" th:data-thing="${comic.getId()}" onclick="publishComic(this.getAttribute('data-thing'));" class="btn btn-primary">Publish</a>
                         <a th:data-thing="${comic.getId()}" onclick="deleteComic(this.getAttribute('data-thing'));" id="delete" class="btn btn-danger">Delete</a>
 
                     </div>
@@ -168,6 +169,12 @@
     <form id = "viewComicForm" action = "/comic/view" method = "get">
         <input hidden id = "viewComicId" name = "viewComicID">
     </form>
+
+    <form id = "publishComicForm" action = "/comic/publish" method = "post">
+        <input hidden id = "publishComicId" name = "comicId">
+    </form>
+
+
 </div>
 
 <script type="text/javascript">
@@ -177,6 +184,14 @@
             dateFormat: "yy-mm-dd"
         });
     });
+    function publishComic(comicId)
+    {
+
+
+        document.getElementById("publishComicId").value = comicId;
+        document.getElementById("publishComicForm").submit();
+
+    }
 
     function viewTheComic(comicId)
     {
