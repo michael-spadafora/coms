@@ -220,6 +220,22 @@ public class UserService {
         return comics;
     }
 
+    public List<Comic> getUsersMyList(String username) {
+        User user = userRepository.findByUsername(username);
+        List<String> myList = user.getMyList();
+        List<Comic> ret = new ArrayList<Comic>();
+        for (String s:myList) {
+            ret.add(comicRepository.findByComicId(s));
+        }
+        return ret;
+    }
+
+    public void addToMyList(String username, String comicId) {
+        User user = userRepository.findByUsername(username);
+        List<String> myList = user.getMyList();
+        myList.add(comicId);
+    }
+
 	public List<Comic> getComicsFromSubscriptions(User user) {
         List<String> subscriptions = user.getSubscriptions();
         List<Comic> ret = new ArrayList<Comic>();
