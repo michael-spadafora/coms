@@ -148,7 +148,7 @@
         <div style="padding-right:100px">
             <form action = "/interaction/subscribers/addByComic/">
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
-                <button type = "submit" id="subscribe">SUBSCRIBE</button>
+                <button type = "submit" id="subscribe" th:text="${subscribeType}" ></button>
             </form>
         </div>
     </div>

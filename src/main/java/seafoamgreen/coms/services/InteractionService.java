@@ -94,6 +94,9 @@ public class InteractionService {
         User user = userRepository.findByUsername(username);
         user.getSubscriptions().add(c.getSeriesID());
 
+        seriesRepository.save(s);
+        userRepository.save(user);
+
         //get 
 	}
 
@@ -107,6 +110,9 @@ public class InteractionService {
         User user = userRepository.findByUsername(username);
         user.getSubscriptions().remove(c.getSeriesID());
 
+        seriesRepository.save(s);
+        userRepository.save(user);
+
 	}
 
 	public void subscribe(String seriesId, String username) {
@@ -117,6 +123,8 @@ public class InteractionService {
         User user = userRepository.findByUsername(username);
         user.getSubscriptions().add(seriesId);
 
+        seriesRepository.save(s);
+        userRepository.save(user);
         //get 
 	}
 
@@ -127,6 +135,9 @@ public class InteractionService {
 
         User user = userRepository.findByUsername(username);
         user.getSubscriptions().remove(seriesId);
+
+        seriesRepository.save(s);
+        userRepository.save(user);
 
         //get 
 	}
