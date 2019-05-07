@@ -86,8 +86,8 @@
     <h2>My Creations</h2>
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createSeriesModal">Add New Series</button>
     <div th:each="series: ${seriesMap}">
-        <h3 th:text="${series.key.getSeriesName()}"></h3>
-        <a th:data-thing="${series.key.getId()}" onclick="deleteSeries(this.getAttribute('data-thing'));" id="deleteSeries"><span class="fa fa-trash"></span></a>
+        <h3 th:text="${series.key.getSeriesName()}" style="display:inline"></h3>
+        <button th:data-thing="${series.key.getId()}" onclick="deleteSeries(this.getAttribute('data-thing'));" id="deleteSeries" style="display:inline"><span class="fa fa-trash"></span></button>
         <div class="row">
             <div class="col-md-3" th:each="comic: ${series.value}">
                 <div class="card" style="width: 18rem;">

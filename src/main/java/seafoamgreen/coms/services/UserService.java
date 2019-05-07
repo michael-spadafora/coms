@@ -144,6 +144,29 @@ public class UserService {
 		return popular;
     }
 
+    public List<Comic> getRecommended(String username) {
+        User user = userRepository.findByUsername(username);
+        List<String> readComics = user.getComicIdHistory();
+        List<String> tags = new ArrayList<>();
+        for(String comicID: readComics)
+        {
+            Comic comic = comicRepository.findByComicId(comicID);
+            for(String tag: comic.getTags())
+                tags.add(tag);
+        }
+        List<Comic> recommended = new ArrayList<>();
+        List<Comic> allComics = comicRepository.findAll();
+        for(Comic comic: allComics)
+        {
+            if(!readComics.contains(comic.getId()))
+                for(String tag: comic.getTags())
+                    if(tags.contains(tag) && !recommended.contains(comic))
+                        recommended.add(comic);
+        }
+        
+        return recommended;
+    }
+
     public List<Comic> getUserHistory(String username) {
         List<Comic> comics = new ArrayList<>();
 
