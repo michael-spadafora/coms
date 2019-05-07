@@ -167,7 +167,7 @@
                 <div class="col-xs-4" th:each="comic: ${recommendedComics}">
                     <div class="card" style="width: 15rem;">
                         <div class="card-body">
-                            <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getAWSURL()}" width="200" height="150"></a>
+                            <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
                             <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
                             <div th:text="${comic.getUsername()}"></div>
 

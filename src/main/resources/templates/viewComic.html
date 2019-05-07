@@ -135,8 +135,25 @@
     <div class="heading">
         <span id="comicTitle" th:text="${comic.getComicName()}"></span>
         <div class="actionButtons">
-            <button class="actions"><span class="fa fa-arrow-up"></span><p th:text = "${comic.getScore()}"></p></button>
-            <button class="actions"><span class="fa fa-arrow-down"></span><p th:text = "${comic.getDownvoters().size()}"></p></button>
+            <form action = "/interaction/vote" method ="post">
+                <label for="upvote" th:text ="${comic.getScore()}"> </label>
+                <button type="submit" id="upvote"  style = "background: none; padding: 0px; border: none;" >
+                    <i class="fa fa-arrow-up"></i>
+                </button>
+                <input name = "comicId" th:value = "${comic.getId()}" hidden>
+                <input name = "value" value = "1" hidden>
+                <input name = "username" th:value = "${username}" hidden>
+            </form>
+            <form action = "/interaction/vote" method ="post">
+                <label for="downvote" th:text = "${comic.getDownvoters().size()}"> </label>
+                <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
+                    <i class="fa fa-arrow-down"></i>
+                </button>
+                <input name = "comicId" th:value = "${comic.getId()}" hidden>
+                <input name = "value" value = "-1" hidden>
+                <input name = "username" th:value = "${username}" hidden>
+            </form>
+
             <button class="actions"><span class="fa fa-share-alt"></span> Share</button>
             <button class="actions"><span class="fa fa-plus"></span> Add to List</button>
             <button class="actions"><span class="fa fa-flag"></span> Report</button>

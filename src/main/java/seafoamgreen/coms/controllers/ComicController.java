@@ -211,6 +211,7 @@ public class ComicController {
         {
             mav.addObject("subscribeType", "Subscribe");
         }
+        mav.addObject("username", activeUsername);
         return mav;
 
     }
