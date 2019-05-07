@@ -145,7 +145,7 @@
                 <input name = "username" th:value = "${username}" hidden>
             </form>
             <form action = "/interaction/vote" method ="post">
-                <label for="downvote" th:text = "${comic.getDownvoters().size()}"> </label>
+                <label for="downvote" th:text = "${comic.getScore()}"> </label>
                 <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
                     <i class="fa fa-arrow-down"></i>
                 </button>
