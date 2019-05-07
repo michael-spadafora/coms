@@ -5,6 +5,8 @@ var canvas = new fabric.Canvas('canvas', {
     // backgroundColor : "white"
 });
 
+canvas.setDimensions({width: 1050, height: 350});
+
 
 
 var $ = function(id) {
@@ -834,6 +836,12 @@ function group() {
       var e = opt.e;
       this.viewportTransform[4] += e.clientX - this.lastPosX;
       this.viewportTransform[5] += e.clientY - this.lastPosY;
+      if (this.viewportTransform[4] > 0){
+          this.viewportTransform[4] = 0;
+      }
+      if (this.viewportTransform[5] > 0){
+        this.viewportTransform[5] = 0;
+        }
       this.requestRenderAll();
       this.lastPosX = e.clientX;
       this.lastPosY = e.clientY;
@@ -844,13 +852,36 @@ function group() {
     this.selection = true;
   });
 
-  function recenter (){
-    canvas.setZoom(1);
-    var img = canvas.getActiveObject();
-    canvas.remove(img);
-    canvas.centerObject(img);
-    canvas.setActiveObject(img);
-    canvas.add(img);
-  
-    canvas.renderAll();
-  }
+//   function recenter (){
+//     canvas.zoomToPoint({ x: 0, y: 0}, 1);
+//   }
+
+  canvas.on("object:moving", function(e){
+    var obj = e.target;
+    obj.setCoords();
+
+    var bound = obj.getBoundingRect(true);
+    var width = obj.canvas.width;
+    var height = obj.canvas.height;
+
+    obj.left = Math.min(Math.max(0, bound.left), width - bound.width);
+    obj.top = Math.min(Math.max(0, bound.top), height - bound.height);
+})
+
+function zoomin(){
+	var zoom = canvas.getZoom();
+  canvas.setZoom(zoom*1.2);
+}
+function zoomout(){
+	var zoom = canvas.getZoom();
+	canvas.setZoom(zoom/1.2);
+}
+function recenter(){
+    // canvas.zoomToPoint(new fabric.Point(canvas.width / 2, canvas.height / 2), canvas.getZoom() / 1);
+    // canvas.setZoom(1);
+    canvas.zoomToPoint(new fabric.Point(canvas.width / 2, canvas.height / 2), 1);
+    canvas.viewportTransform[4]=0;
+    canvas.viewportTransform[5]=0;
+    this.requestRenderAll();
+    
+}
