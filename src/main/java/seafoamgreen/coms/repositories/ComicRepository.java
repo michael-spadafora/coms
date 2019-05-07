@@ -28,7 +28,7 @@ public interface ComicRepository extends MongoRepository<Comic, String> {
     @Query("{ 'username' : ?0 }")
     List<Comic> findByUsername(String username);
 
-    @Query("{ 'comicName' : { $regex: ?0, , $options: 'i' } }")
+    @Query("{ 'comicName' : { $regex: ?0, $options: 'i' } }")
     List<Comic> findAllByComicNameRegex(String comicNameRegex);
 
     @Query("{ 'dateTime' : { lte: ?0} }")
