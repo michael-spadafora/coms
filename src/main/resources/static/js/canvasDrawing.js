@@ -756,7 +756,7 @@ function removeBackground() {
   }
 
 }
-
+/*
 function save() {
     console.log(canvas.toJSON());
     console.log(canvas.toDataURL);
@@ -782,12 +782,12 @@ function save() {
         headers: {
         'Content-Type': 'application/json', 
         },
-        body: JSON.stringify(requestBody)
+        body: requestBody
     }).then(res => res.json()).then(res => console.log(res)).catch(error => alert('Exeption:' + error));
     
 
 }
-
+*/
 
 function group() {
     if (!canvas.getActiveObject()) {

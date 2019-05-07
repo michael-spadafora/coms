@@ -5,6 +5,7 @@ package seafoamgreen.coms.services;
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
 
+import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.repositories.SeriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class SeriesService {
 
     @Autowired
     private SeriesRepository seriesRepository;
+
+    @Autowired
+    private ComicRepository comicRepository;
 
     //Create
     public Series create(String seriesName, String username)
@@ -48,7 +52,9 @@ public class SeriesService {
 
     public void deleteById(String id)
     {
+
         seriesRepository.deleteById(id);
+        comicRepository.deleteBySeriesId(id);
     }
 
     //Add comic to series list

@@ -40,4 +40,9 @@ public interface ComicRepository extends MongoRepository<Comic, String> {
     @Query("{ }")
 	List<Comic> findMostPopular(Sort sort);
 
+    @Query(value="{'seriesID': ?0}", delete = true)
+    List<Comic> deleteBySeriesId(String id);
+
+
+
 }
