@@ -96,4 +96,21 @@ public class InteractionController {
     public void getSubscribers(HttpServletRequest request, HttpServletResponse response) {
 
     }
+
+    @PostMapping("/comment")
+    public void postComment(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return;
+
+        String username = (String) session.getAttribute("username");
+        String comment = request.getParameter("comment");
+        String comicId = request.getParameter("comicId");
+        if (comicId == null) {
+            comicId = request.getParameter("comicID");
+        } 
+        
+        interactionService.postComment(username, comicId, comment);
+
+
+    }
 }

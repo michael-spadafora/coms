@@ -206,6 +206,7 @@ public class ComicController {
         {
             mav.addObject("subscribeType", "Subscribe");
         }
+        mav.addObject("comments", comicService.getCommentsForComicid(comicID));
         mav.addObject("username", activeUsername);
         return mav;
 
