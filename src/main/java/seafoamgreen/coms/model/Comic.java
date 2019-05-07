@@ -26,7 +26,7 @@ public class Comic {
     //is published
     private boolean isPublished;
     //aws url of the picture
-    private String AWSURL;
+    private String thumbnailBlob;
     //DateTime in format MM-dd-yyyy hh:mm a
     private String dateTime;
 
@@ -107,15 +107,12 @@ public class Comic {
     /**
      * @return the aWSURL
      */
-    public String getAWSURL() {
-        return AWSURL;
+    public String getThumbnailBlob() {
+        return thumbnailBlob;
     }
 
-    /**
-     * @param aWSURL the aWSURL to set
-     */
-    public void setAWSURL(String aWSURL) {
-        this.AWSURL = aWSURL;
+    public void setThumbnailBlob(String thumbnailBlob) {
+        this.thumbnailBlob = thumbnailBlob;
     }
 
     /**
@@ -196,12 +193,15 @@ public class Comic {
                 ", panelList=" + panelList +
                 ", tags=" + tags +
                 ", isPublished=" + isPublished +
-                ", AWSURL='" + AWSURL + '\'' +
+                ", thumbnailBlob='" + thumbnailBlob + '\'' +
                 ", dateTime='" + dateTime + '\'' +
+                ", upvoters=" + upvoters +
+                ", downvoters=" + downvoters +
+                ", score=" + score +
                 '}';
     }
 
-	public void calculateScore() {
+    public void calculateScore() {
         this.score = upvoters.size() - downvoters.size();
-	}
+    }
 }

@@ -69,6 +69,7 @@ public class ComicController {
         String publishDate = request.getParameter("publishDate");
         Comic comic = comicService.create(username, comicName, seriesId, tagString , publishDate);
 
+
         Series series = seriesService.findByID(seriesId).get();
         seriesService.addComic(series.getId(), comic.getId());
 
@@ -289,8 +290,10 @@ public class ComicController {
         Comic c = null;
         if (publishDate != null) {
             c = comicService.publishComic(comicId, publishDate);
+            System.out.println("publishing comic");
         } else {
             c = comicService.publishComic(comicId, true);
+            System.out.println("publishing comic");
         }
 
 
@@ -298,9 +301,9 @@ public class ComicController {
 
         //returns the view of the comic
         //we should have 2 different comic views - 1 if u created it, one if you didnt
-        ModelAndView mav = new ModelAndView(comicViewName);
-        mav.addObject("comic", c);
-        return mav;
+        ModelAndView mav = new ModelAndView("myComics");
+
+        return new ModelAndView( "redirect:/series/mySeries");
 
     }
 
