@@ -93,6 +93,7 @@ public class InteractionService {
 
         User user = userRepository.findByUsername(username);
         user.getSubscriptions().add(c.getSeriesID());
+        userRepository.save(user);
 
         //get 
 	}
@@ -116,6 +117,7 @@ public class InteractionService {
 
         User user = userRepository.findByUsername(username);
         user.getSubscriptions().add(seriesId);
+        userRepository.save(user);
 
         //get 
 	}
@@ -127,6 +129,7 @@ public class InteractionService {
 
         User user = userRepository.findByUsername(username);
         user.getSubscriptions().remove(seriesId);
+        userRepository.save(user);
 
         //get 
 	}

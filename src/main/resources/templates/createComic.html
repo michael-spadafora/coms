@@ -215,7 +215,6 @@
                   <!-- <button type="button" class="btn btn-info" onclick="copy()"><img src="/img/copy.png" alt="Copy" height="20" width = "20"></button>
                      <button type="button" class="btn btn-info" onclick="cut()"><img src="/img/cut.png" alt="Cut" height="20" width = "20"></button>
                      <button type="button" class="btn btn-info" onclick="paste()"><img src="/img/paste.png" alt="Paste" height="20" width = "20"></button> -->
-                    
                   <!-- LAYERS -->
                   <span class="dropdown">
                      <button class="btn btn-info"><img src="/img/layers.png" alt="download" height="20" width="20"></button>
@@ -258,22 +257,22 @@
                   </span>
                   <!-- EDITING -->
                   <span class="dropdown">
-                    <button class="btn btn-info"><img src="/img/edits.png" alt="edit" height="20" width="20"></button>
-                    <div class="dropdown-content">
-                       <button type="button" class="btn btn-info" onclick="copy()"><img src="/img/copy.png" alt="Copy" height="20" width = "20"></button><br>
-                       <button type="button" class="btn btn-info" onclick="cut()"><img src="/img/cut.png" alt="Cut" height="20" width = "20"></button><br>
-                       <button type="button" class="btn btn-info" onclick="paste()"><img src="/img/paste.png" alt="Paste" height="20" width = "20"></button>
-                    </div>
-                 </span>
-                 <!-- GROUPING -->
+                     <button class="btn btn-info"><img src="/img/edits.png" alt="edit" height="20" width="20"></button>
+                     <div class="dropdown-content">
+                        <button type="button" class="btn btn-info" onclick="copy()"><img src="/img/copy.png" alt="Copy" height="20" width = "20"></button><br>
+                        <button type="button" class="btn btn-info" onclick="cut()"><img src="/img/cut.png" alt="Cut" height="20" width = "20"></button><br>
+                        <button type="button" class="btn btn-info" onclick="paste()"><img src="/img/paste.png" alt="Paste" height="20" width = "20"></button>
+                     </div>
+                  </span>
+                  <!-- GROUPING -->
                   <span class="dropdown">
-                    <button class="btn btn-info"><img src="/img/merging.png" alt="Grouping" height="20" width="20"></button>
-                    <div class="dropdown-content">
-                       <button id="save-canvas" type="button" class="btn btn-info" onclick="group()"><img src="/img/group.png" alt="Group" height="20" width = "20"></button>
-                       <button id="save-canvas" type="button" class="btn btn-info" onclick="ungroup()"><img src="/img/ungroup.png" alt="Ungroup" height="20" width = "20"></button>
-                    </div>
-                 </span>
-                 <!-- ZOOMING -->
+                     <button class="btn btn-info"><img src="/img/merging.png" alt="Grouping" height="20" width="20"></button>
+                     <div class="dropdown-content">
+                        <button id="save-canvas" type="button" class="btn btn-info" onclick="group()"><img src="/img/group.png" alt="Group" height="20" width = "20"></button>
+                        <button id="save-canvas" type="button" class="btn btn-info" onclick="ungroup()"><img src="/img/ungroup.png" alt="Ungroup" height="20" width = "20"></button>
+                     </div>
+                  </span>
+                  <!-- ZOOMING -->
                   <span class="dropdown">
                      <button class="btn btn-info"><img src="/img/zoom.png" alt="Grouping" height="20" width="20"></button>
                      <div class="dropdown-content">
@@ -282,7 +281,6 @@
                         <button id="save-canvas" type="button" class="btn btn-info" onclick="recenter()"><img src="/img/center.png" alt="Center" height="20" width = "20"></button>
                      </div>
                   </span>
-                  
                   <button type="button" class="btn btn-info" onclick="deleteObject()"><img src="/img/trash.png" alt="Delete" height="20" width = "20"></button>
                   <!-- <input type="button" value="undo" onclick="undo()">
                      <input type="button" value="redo" onclick="redo()"> -->
@@ -365,7 +363,8 @@
                </ul>
             </div>
          </div>
-         <form action = "/series/editComic" method = "post" id = "editPanelForm">
+<!--          <form action = "/series/editComic" method = "post" id = "editPanelForm"> -->
+           <form action = "/comic/edit" method = "post" id = "editPanelForm">
             <input name = "editPanelId" id = "editPanelId">
          </form>
          <script src="/js/canvas-toBlob.js"></script>

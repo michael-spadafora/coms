@@ -2,7 +2,9 @@ package seafoamgreen.coms.controllers;
 
 
 
+import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Panel;
+import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.services.ComicService;
 import seafoamgreen.coms.services.PanelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
+import java.util.List;
 
 @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*")
 @RestController
@@ -24,6 +27,9 @@ public class PanelController {
 
     @Autowired
     ComicService comicService;
+
+    @Autowired
+    ComicRepository comicRepository;
 
 
     /*
@@ -111,41 +117,17 @@ public class PanelController {
         String currentPanelId = (String)session.getAttribute("currentPanelId");
         String blob = request.getParameter("image");
         String json = request.getParameter("body");
-
         Panel panel = panelService.update(currentPanelId, json, blob);
+
+        //Update the comic
+        List<Panel> panelList = panelService.findAllByCoimcId(panel.getComicID());
+        Comic comic = comicService.findById(panel.getComicID());
+        comic.setThumbnailBlob(panelService.getBlob(panelList.get(0).getId()));
+        comicRepository.save(comic);
 
 
         return "save triggered";
     }
 
-    /*
-    @PostMapping("/create")
-    public Panel create(HttpServletRequest request, HttpServletResponse response, @RequestBody PanelInfo panelInfo) throws IOException {
-        String userID = panelInfo.getUserID();
-        String comicID = panelInfo.getComicID();
-        String snapshotJSON = panelInfo.getSnapshotJSON();
-        Panel newPanel = new Panel(userID, comicID, snapshotJSON);
-        return panelService.create(userID, comicID, snapshotJSON);
-        //return panelService.create(userID, comicID, snapshotJSON);
-    };
-    @GetMapping("/deletePanel")
-    public void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String panelID = request.getParameter("panelID");
-        panelService.deleteById(panelID);
-        //return panelService.create(userID, comicID, snapshotJSON);
-    };
-    @GetMapping("/getAllByComicID")
-    public List<Panel> getByComicID(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String comicID = request.getParameter("comicID");
-        return panelService.getByComicID(comicID);
-        //return panelService.create(userID, comicID, snapshotJSON);
-    };
-    @GetMapping("/getAllByUserID")
-    public List<Panel> getByUserID(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String userID = request.getParameter("userID");
-        return panelService.getByUserID(userID);
-        //return panelService.create(userID, comicID, snapshotJSON);
-    };
-    */
 
 }

@@ -36,16 +36,16 @@
         input[type=search] {-webkit-appearance: textfield;-webkit-box-sizing: content-box;font-family: inherit;font-size: 100%;}
         input::-webkit-search-decoration, input::-webkit-search-cancel-button {display: none; }
 
-
         #featuredCarousel{width:100%;background-color:#E8E8E8;;margin-top:70px}
         .carousel-inner{text-align: center}
         .carousel-item > img{width:450px; height:300px;margin: 0 auto}
 
         .listOfComics{padding-top:50px;padding-left: 10px;margin-left:15px;margin-right:30px}
         .listOfComics > h3{margin-left:-10px;font-family: 'Roboto Condensed', sans-serif;color:#0e794b}
-        .testimonial-group{padding-bottom: 25px}
-        .testimonial-group > .row{overflow-x:scroll; white-space: nowrap;flex-wrap: nowrap;}
-        .testimonial-group > .row > .col-xs-4{display:inline-block;float:none}
+        .testimonial-group{padding-bottom: 25px;}
+        .testimonial-group > .row{overflow-x:scroll; overflow-y:hidden; white-space: nowrap;flex-wrap: nowrap;}
+        .testimonial-group > .row::-webkit-scrollbar {display: none;}
+        .testimonial-group > .row > .col-xs-4{display:inline-block;float:none;}
         .testimonial-group > .row > .col-xs-4 > a > img{height:150px; width:250px;padding:3px}
     </style>
 
@@ -129,72 +129,51 @@
 
         <h3>Continue Reading</h3>
         <div class="continue testimonial-group">
-            <div class="row text-center">
+            <div class="row">
                 <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+4.jpg"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a class="card card-block" href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+9.jpg"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+7.png"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+8.jpg"></a>
+                    <div class="card" style="width: 15rem;">
+                        <div class="card-body">
+                            <a href=""><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg" width="200" height="150"></a>
+                            <h5 class="card-title">Title</h5>
+                            <div>Author</div>
+
+                            <button class="btn btn-danger">Add to My List</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <h3>Popular on COMS</h3>
         <div class="popular testimonial-group">
-            <div class="row text-center">
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+7.png"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+8.jpg"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.png"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+11.jpg"></a>
+            <div class="row">
+                <div class="col-xs-4" th:each="comic: ${popularComics}">
+                    <div class="card" style="width: 15rem;">
+                        <div class="card-body">
+                            <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
+                            <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                            <div th:text="${comic.getUsername()}"></div>
+
+                            <button class="btn btn-danger">Add to My List</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <h3>Recommended for You</h3>
         <div class="recommended testimonial-group">
-            <div class="row text-center">
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.png"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+11.jpg"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.jpg"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+10.png"></a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="viewComic.html"><img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+11.jpg"></a>
+            <div class="row">
+                <div class="col-xs-4" th:each="comic: ${recommendedComics}">
+                    <div class="card" style="width: 15rem;">
+                        <div class="card-body">
+                            <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getAWSURL()}" width="200" height="150"></a>
+                            <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                            <div th:text="${comic.getUsername()}"></div>
+
+                            <button class="btn btn-danger">Add to My List</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
