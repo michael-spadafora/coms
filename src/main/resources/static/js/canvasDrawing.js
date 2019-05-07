@@ -79,7 +79,7 @@ if (fabric.PatternBrush) {
         ctx.moveTo(5, 0);
         ctx.lineTo(5, 10);
         ctx.closePath();
-        ctx.stroke();
+        ctx.stroke();   
 
         return patternCanvas;
     };
@@ -380,7 +380,7 @@ function paste() {
         _clipboard.top += 10;
         _clipboard.left += 10;
         canvas.setActiveObject(clonedObj);
-        canvas.requestRenderAll();
+        canvas.renderAll();
     });
 // updateModifications(true);
 }
@@ -797,7 +797,7 @@ function group() {
       return;
     }
     canvas.getActiveObject().toGroup();
-    canvas.requestRenderAll();
+    canvas.renderAll();
   }
 
  function ungroup() {
@@ -808,7 +808,7 @@ function group() {
       return;
     }
     canvas.getActiveObject().toActiveSelection();
-    canvas.requestRenderAll();
+    canvas.renderAll();
   }
 
   canvas.on('mouse:wheel', function(opt) {
@@ -819,6 +819,12 @@ function group() {
     if (zoom > 20) zoom = 20;
     if (zoom < 1) zoom = 1;
     canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+    if (canvas.viewportTransform[4] > 0){
+        canvas.viewportTransform[4] = 0;
+    }
+    if (canvas.viewportTransform[5] > 0){
+        canvas.viewportTransform[5] = 0;
+      }
     opt.e.preventDefault();
     opt.e.stopPropagation();
   });
@@ -833,23 +839,90 @@ function group() {
   });
   canvas.on('mouse:move', function(opt) {
     if (this.isDragging) {
-      var e = opt.e;
-      this.viewportTransform[4] += e.clientX - this.lastPosX;
-      this.viewportTransform[5] += e.clientY - this.lastPosY;
-      if (this.viewportTransform[4] > 0){
-          this.viewportTransform[4] = 0;
-      }
-      if (this.viewportTransform[5] > 0){
-        this.viewportTransform[5] = 0;
-        }
-      this.requestRenderAll();
-      this.lastPosX = e.clientX;
-      this.lastPosY = e.clientY;
+        var e = opt.e;
+        this.viewportTransform[4] += e.clientX - this.lastPosX;
+        this.viewportTransform[5] += e.clientY - this.lastPosY;
+        // var one = this.viewportTransform[1];
+        // var four = this.viewportTransform[4];
+        // var five = this.viewportTransform[5];
+        // if (this.viewportTransform[4] > 0) {
+        //     canvas.setViewportTransform([this.viewportTransform[0], this.viewportTransform[1], this.viewportTransform[2], this.viewportTransform[3], 0, this.viewportTransform[5]]);
+        // }
+        // if (this.viewportTransform[5] > 0) {
+        //     this.viewportTransform[5] = 0;
+        //     canvas.setViewportTransform([this.viewportTransform[0], this.viewportTransform[1], this.viewportTransform[2], this.viewportTransform[3], this.viewportTransform[4], 0]);
+        // }
+        // var zero = canvas.viewportTransform[0];
+        // var one = canvas.viewportTransform[1];
+        // var two = canvas.viewportTransform[2];
+        // var three = canvas.viewportTransform[3];
+        // var four = canvas.viewportTransform[4];
+        // var five = canvas.viewportTransform[5];
+        // // if (four/one - 350 < -350) {
+        // //     canvas.setViewportTransform([this.viewportTransform[0], this.viewportTransform[1], this.viewportTransform[2], this.viewportTransform[3], 350*one + 350, this.viewportTransform[5]]);
+        // // }
+        // // if (five/one - 1050 < -1050) {
+        // //     this.viewportTransform[5] = 0;
+        // //     canvas.setViewportTransform([this.viewportTransform[0], this.viewportTransform[1], this.viewportTransform[2], this.viewportTransform[3], this.viewportTransform[4], 1050*one + 1050]);
+        // // }
+
+        // if (five/zero-350<-350){
+        //     console.log("too low");
+        //     canvas.setViewportTransform([zero, one, two, three, four, (five*zero - 350)]);
+        // }
+
+
+        // this.renderAll();
+        this.lastPosX = e.clientX;
+        this.lastPosY = e.clientY;
     }
-  });
+});
   canvas.on('mouse:up', function(opt) {
     this.isDragging = false;
     this.selection = true;
+    var zero = canvas.viewportTransform[0];
+    var one = canvas.viewportTransform[1];
+    var two = canvas.viewportTransform[2];
+    var three = canvas.viewportTransform[3];
+    var four = canvas.viewportTransform[4];
+    var five = canvas.viewportTransform[5];
+    if (this.viewportTransform[4] > 0) {
+        four = 0;
+        // canvas.setViewportTransform([zero, one, two, three, four, five]);
+
+        // canvas.setViewportTransform([this.viewportTransform[0], this.viewportTransform[1], this.viewportTransform[2], this.viewportTransform[3], 0, this.viewportTransform[5]]);
+    }
+    if (this.viewportTransform[5] > 0) {
+        // this.viewportTransform[5] = 0;
+        five = 0;
+        // canvas.setViewportTransform([zero, one, two, three, four, five]);
+
+        // canvas.setViewportTransform([this.viewportTransform[0], this.viewportTransform[1], this.viewportTransform[2], this.viewportTransform[3], this.viewportTransform[4], 0]);
+    }
+    // var zero = canvas.viewportTransform[0];
+    // var one = canvas.viewportTransform[1];
+    // var two = canvas.viewportTransform[2];
+    // var three = canvas.viewportTransform[3];
+    // var four = canvas.viewportTransform[4];
+    // var five = canvas.viewportTransform[5];
+    // if (four/one - 350 < -350) {
+    //     canvas.setViewportTransform([this.viewportTransform[0], this.viewportTransform[1], this.viewportTransform[2], this.viewportTransform[3], 350*one + 350, this.viewportTransform[5]]);
+    // }
+    if (four/one - 1050 < -1050) {
+        // this.viewportTransform[5] = 0;
+        four = -(1050*zero - 1050)
+        // canvas.setViewportTransform([zero, one, two, three, four, five]);
+    }
+
+    if (five/zero-350<-350){
+        console.log("too low");
+        five = -(350*zero - 350);
+        // canvas.setViewportTransform([zero, one, two, three, four, five]);
+    }
+    canvas.setViewportTransform([zero, one, two, three, four, five]);
+
+
+    this.renderAll();
   });
 
 //   function recenter (){
@@ -873,15 +946,18 @@ function zoomin(){
   canvas.setZoom(zoom*1.2);
 }
 function zoomout(){
-	var zoom = canvas.getZoom();
-	canvas.setZoom(zoom/1.2);
+    var zoom = canvas.getZoom();
+    if (zoom/1.2 < 1){
+        canvas.setZoom(1);
+    }else{
+        canvas.setZoom(zoom/1.2);
+    }
 }
 function recenter(){
     // canvas.zoomToPoint(new fabric.Point(canvas.width / 2, canvas.height / 2), canvas.getZoom() / 1);
     // canvas.setZoom(1);
-    canvas.zoomToPoint(new fabric.Point(canvas.width / 2, canvas.height / 2), 1);
-    canvas.viewportTransform[4]=0;
-    canvas.viewportTransform[5]=0;
-    this.requestRenderAll();
+    
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    canvas.renderAll();
     
 }
