@@ -42,6 +42,10 @@ public class User {
     }
 
     public void addComicToHistory(String comicId){
+        if (comicIdHistory.contains(comicId)) {
+            comicIdHistory.remove(comicId);
+        }
+        
         comicIdHistory.add(0, comicId);
         if (comicIdHistory.size() > 5) {
             comicIdHistory.remove(5);

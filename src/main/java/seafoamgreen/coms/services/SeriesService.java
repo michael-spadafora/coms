@@ -24,6 +24,9 @@ public class SeriesService {
     @Autowired
     private ComicRepository comicRepository;
 
+    @Autowired
+    private ComicService comicService;
+
     //Create
     public Series create(String seriesName, String username)
     {
@@ -52,9 +55,14 @@ public class SeriesService {
 
     public void deleteById(String id)
     {
-
         seriesRepository.deleteById(id);
-        comicRepository.deleteBySeriesId(id);
+        // comicRepository.deleteBySeriesId(id);
+        List<Comic> comics  = comicRepository.findBySeriesID(id);
+        //deleting a series, deletes the comics, which removes it from the users history
+        for (Comic c : comics) {
+            String comicId = c.getId();
+            comicService.deleteById(comicId);
+        }
     }
 
     //Add comic to series list
