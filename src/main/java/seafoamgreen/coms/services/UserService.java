@@ -191,7 +191,7 @@ public class UserService {
 
         User user = userRepository.findByUsername(username);
         List<String> comicIds = user.getComicIdHistory();
-
+ 
         for (String id : comicIds) {
             Comic c = comicRepository.findByComicId(id);
             comics.add(c);
@@ -213,6 +213,33 @@ public class UserService {
         }
         return thumbs;
     }
+
+
+    public List<Comic> getUsersComics(String username) {
+        List<Comic> comics = comicRepository.findAllByUsername(username);
+        return comics;
+    }
+
+	public List<Comic> getComicsFromSubscriptions(User user) {
+        List<String> subscriptions = user.getSubscriptions();
+        List<Comic> ret = new ArrayList<Comic>();
+        for (String subKey: subscriptions) {
+            List<Comic> coms = comicRepository.findBySeriesID(subKey);
+            ret.addAll(coms);
+        }
+		return ret;
+    }
+    
+    public List<Comic> getComicsFromSubscriptions(String username) {
+        User user = userRepository.findByUsername(username);
+        List<String> subscriptions = user.getSubscriptions();
+        List<Comic> ret = new ArrayList<Comic>();
+        for (String subKey: subscriptions) {
+            List<Comic> coms = comicRepository.findBySeriesID(subKey);
+            ret.addAll(coms);
+        }
+		return ret;
+	}
 
 
 }
