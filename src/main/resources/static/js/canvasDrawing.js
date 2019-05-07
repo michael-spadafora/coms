@@ -1,7 +1,7 @@
 // <canvas id="canvas" width="300" height="300"></canvas>
 // import {fabric} from 'fabric';
 var canvas = new fabric.Canvas('canvas', {
-    isDrawingMode: true
+    isDrawingMode: false
     // backgroundColor : "white"
 });
 
