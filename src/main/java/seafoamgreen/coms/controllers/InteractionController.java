@@ -5,11 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.servlet.ModelAndView;
 import seafoamgreen.coms.services.InteractionService;
 
 @RestController
@@ -45,15 +43,17 @@ public class InteractionController {
     }
 
 
-    @GetMapping("/subscribers/addByComic") 
-    public void subscribeAddByComic(HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping("/subscribers/addByComic/")
+    public ModelAndView subscribeAddByComic(HttpServletRequest request, HttpServletResponse response) {
+        String comicId = request.getParameter("comicId");
         HttpSession session = request.getSession(false);
-        if (session == null) return;
+        if (session == null) return null;
 
         String username = (String) session.getAttribute("username");
-        String comicId = request.getParameter("comicId"); //possibly need to switch to id
-
+       // String comicId = request.getParameter("comicId"); //possibly need to switch to id
+        System.out.println("SUBSCRING USER TO SEIRES");
         interactionService.subscribeByComic(comicId, username);
+        return new ModelAndView( "redirect:/comic/view/" + comicId);
     }
 
     @GetMapping("/subscribers/removeByComic") 

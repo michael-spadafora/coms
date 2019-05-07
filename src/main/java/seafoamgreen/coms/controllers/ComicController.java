@@ -179,7 +179,7 @@ public class ComicController {
         //List<String> blobs = comicService.getPanelObjects(c);
         List<Panel> panelList = panelService.findAllByCoimcId(c.getId());
         //add to history
-        System.out.println("VIEW COMIC PANEL LIST: " + panelList);
+
         HttpSession session = request.getSession(false);
         if (session != null) {
             String username = (String) session.getAttribute("username");
@@ -200,6 +200,17 @@ public class ComicController {
             panels.add(panelService.getBlob(panel.getId()));
         }
         mav.addObject("panels", panels);
+
+        String seriesId = c.getSeriesID();
+        Series series = seriesService.findByID(seriesId).get();
+        if(series.getSubscriberList().contains(activeUsername))
+        {
+            mav.addObject("subscribeType", "Unsubscribe");
+        }
+        else
+        {
+            mav.addObject("subscribeType", "Subscribe");
+        }
         return mav;
 
     }

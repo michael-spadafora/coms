@@ -151,8 +151,10 @@ public class UsersController {
         mav.addObject("userSeries", userSeries);
         //TODO: add list objects for popular, continue reading, recommended
         List<Comic> popularComics = userService.getPopular();
+
         List<String> popularThumbnails = userService.getThumbnails(popularComics);
         List<Comic> recommendedComics = userService.getRecommended(activeUsername);
+
         mav.addObject("popularComics", popularComics);
         mav.addObject("popularThumbnails", popularThumbnails);
         mav.addObject("recommendedComics", recommendedComics);

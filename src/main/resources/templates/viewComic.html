@@ -135,8 +135,8 @@
     <div class="heading">
         <span id="comicTitle" th:text="${comic.getComicName()}"></span>
         <div class="actionButtons">
-            <button class="actions"><span class="fa fa-arrow-up"></span> 386</button>
-            <button class="actions"><span class="fa fa-arrow-down"></span> 4</button>
+            <button class="actions"><span class="fa fa-arrow-up"></span><p th:text = "${comic.getScore()}"></p></button>
+            <button class="actions"><span class="fa fa-arrow-down"></span><p th:text = "${comic.getDownvoters().size()}"></p></button>
             <button class="actions"><span class="fa fa-share-alt"></span> Share</button>
             <button class="actions"><span class="fa fa-plus"></span> Add to List</button>
             <button class="actions"><span class="fa fa-flag"></span> Report</button>
@@ -146,7 +146,10 @@
     <div>
         <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="${comic.getUsername()}"></span></a>
         <div style="padding-right:100px">
-            <button id="subscribe">SUBSCRIBE</button>
+            <form action = "/interaction/subscribers/addByComic/">
+                <input name = "comicId" th:value = "${comic.getId()}" hidden>
+                <button type = "submit" id="subscribe" th:text="${subscribeType}" ></button>
+            </form>
         </div>
     </div>
     <div class="commentSection">
