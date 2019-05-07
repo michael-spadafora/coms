@@ -100,6 +100,7 @@ public class PanelService {
         //key = seriesId/comicId/panelNumber
         String key = seriesId + "/" + comicId + "/" + panelId;
 
+        System.out.println("blob: " + blob);
         s3client.putObject(bucketName, key, blob); //saves
         String urlstring = s3client.getUrl(bucketName, key).toString();
         System.out.println(urlstring);

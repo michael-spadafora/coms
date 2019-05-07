@@ -28,17 +28,18 @@ public class InteractionController {
     }
 
     @PostMapping("/vote")
-    public int vote(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView vote(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
-        if (session == null) return 0;
+        if (session == null) return null;
 
-        String username = (String) session.getAttribute("usename");
+        String username = (String) session.getAttribute("username");
         String valueStr = request.getParameter("value");
         int val = Integer.parseInt(valueStr);
-        String comicId = request.getParameter("comic"); //possibly need to switch to id
+        String comicId = request.getParameter("comicId"); //possibly need to switch to id
               
         interactionService.vote(comicId, val, username);
-        return val;
+
+        return new ModelAndView( "redirect:/comic/view/" + comicId);
 
     }
 

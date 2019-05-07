@@ -176,7 +176,7 @@ public class ComicController {
     public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response, @PathVariable String comicID) {
         ModelAndView mav = new ModelAndView("viewComic");
         Comic c =  comicService.findById(comicID);
-        //List<String> blobs = comicService.getPanelObjects(c);
+        System.out.println("VIEWING COMIC: " + c);
         List<Panel> panelList = panelService.findAllByCoimcId(c.getId());
         //add to history
 
@@ -211,6 +211,7 @@ public class ComicController {
         {
             mav.addObject("subscribeType", "Subscribe");
         }
+        mav.addObject("username", activeUsername);
         return mav;
 
     }

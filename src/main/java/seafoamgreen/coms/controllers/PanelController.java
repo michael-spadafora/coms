@@ -117,6 +117,8 @@ public class PanelController {
         String currentPanelId = (String)session.getAttribute("currentPanelId");
         String blob = request.getParameter("image");
         String json = request.getParameter("body");
+
+        System.out.println("savePanel route blob: " + blob);
         Panel panel = panelService.update(currentPanelId, json, blob);
 
         //Update the comic
