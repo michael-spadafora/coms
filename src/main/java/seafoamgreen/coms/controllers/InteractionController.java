@@ -5,10 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import seafoamgreen.coms.services.InteractionService;
 
@@ -45,14 +42,15 @@ public class InteractionController {
     }
 
 
-    @GetMapping("/subscribers/addByComic") 
+    @GetMapping("/subscribers/addByComic/")
     public void subscribeAddByComic(HttpServletRequest request, HttpServletResponse response) {
+        String comicId = request.getParameter("comicId");
         HttpSession session = request.getSession(false);
         if (session == null) return;
 
         String username = (String) session.getAttribute("username");
-        String comicId = request.getParameter("comicId"); //possibly need to switch to id
-
+       // String comicId = request.getParameter("comicId"); //possibly need to switch to id
+        System.out.println("SUBSCRING USER TO SEIRES");
         interactionService.subscribeByComic(comicId, username);
     }
 
