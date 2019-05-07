@@ -209,8 +209,11 @@ public class UsersController {
 
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
-        else
+        else {
+            List<Comic> history = userService.getUserHistory(activeUsername);
+            mav.addObject("history", history);
             mav.addObject("isLoggedIn", true);
+        }
 
         return mav;
     }
