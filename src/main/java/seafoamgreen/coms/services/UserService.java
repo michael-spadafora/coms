@@ -138,10 +138,46 @@ public class UserService {
         return ret;
     }
 
-	public List<Comic> getPopular() {
+    public List<Comic> getPopular() {
         Sort sort = new Sort(Sort.Direction.DESC, "score");
         List<Comic> popular = comicRepository.findMostPopular(sort);
-		return popular;
+        List<Comic> ret = getPublished(popular);
+
+        return ret;
+    }
+
+    public List<Comic> getPublished(List<Comic> lst) {
+        List<Comic> ret = new ArrayList<Comic>();
+        for (Comic c : lst) {
+            if (c.isPublished()) {
+                ret.add(c);
+            }
+        }
+        return ret;
+
+    }
+
+    public List<Comic> getRecommended(String username) {
+        User user = userRepository.findByUsername(username);
+        List<String> readComics = user.getComicIdHistory();
+        List<String> tags = new ArrayList<>();
+        for(String comicID: readComics)
+        {
+            Comic comic = comicRepository.findByComicId(comicID);
+            for(String tag: comic.getTags())
+                tags.add(tag);
+        }
+        List<Comic> recommended = new ArrayList<>();
+        List<Comic> allComics = comicRepository.findAll();
+        for(Comic comic: allComics)
+        {
+            if(!readComics.contains(comic.getId()))
+                for(String tag: comic.getTags())
+                    if(tags.contains(tag) && !recommended.contains(comic))
+                        recommended.add(comic);
+        }
+        
+        return recommended;
     }
 
     public List<Comic> getUserHistory(String username) {
@@ -157,21 +193,21 @@ public class UserService {
 
         return comics;
     }
-    
 
-	public List<String> getThumbnails(List<Comic> comicList) {
+
+    public List<String> getThumbnails(List<Comic> comicList) {
         List<String> thumbs = new ArrayList<>();
         for (Comic c: comicList) {
             List<String> panelIds = c.getPanelList();
+            if (panelIds.size() == 0) continue;
             String panel1 = panelIds.get(0);
             if (panel1 == null) continue;
             String blob  = panelService.getBlob(panel1);
             thumbs.add(blob);
         }
-		return thumbs;
-	}
+        return thumbs;
+    }
 
 
 }
-
 

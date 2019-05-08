@@ -44,9 +44,8 @@ public class MessageService {
         return "successfully sent message to " + toUsername;
     }
 
-    public void delete(String Id) {
-        Message message = messageRepository.findById(Id).get();
-        messageRepository.delete(message);
+    public void delete(String messageID) {
+        messageRepository.deleteById(messageID);
     }
 
    

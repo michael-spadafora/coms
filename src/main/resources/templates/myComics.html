@@ -86,26 +86,28 @@
     <h2>My Creations</h2>
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createSeriesModal">Add New Series</button>
     <div th:each="series: ${seriesMap}">
-        <h3 th:text="${series.key.getSeriesName()}"></h3>
-        <a th:data-thing="${series.key.getId()}" onclick="deleteSeries(this.getAttribute('data-thing'));" id="deleteSeries" class="btn btn-danger">Delete</a>
+        <h3 th:text="${series.key.getSeriesName()}" style="display:inline"></h3>
+        <button th:data-thing="${series.key.getId()}" onclick="deleteSeries(this.getAttribute('data-thing'));" id="deleteSeries" style="display:inline"><span class="fa fa-trash"></span></button>
         <div class="row">
             <div class="col-md-3" th:each="comic: ${series.value}">
                 <div class="card" style="width: 18rem;">
 
                     <div class="card-body">
                         <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                        <a id="view" th:href="@{'/comic/view/'+ ${comic.getId()}}"><img src=""></a>
+                        <a id="view" th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" ></a>
                         <a id="edit" th:data-thing="${comic.getId()}" onclick="editComic(this.getAttribute('data-thing'));" class="btn btn-primary">Edit</a>
+                        <a id="publish" th:data-thing="${comic.getId()}" onclick="publishComic(this.getAttribute('data-thing'));" class="btn btn-primary">Publish</a>
                         <a th:data-thing="${comic.getId()}" onclick="deleteComic(this.getAttribute('data-thing'));" id="delete" class="btn btn-danger">Delete</a>
-
                     </div>
                 </div>
             </div>
 
             <div class="col-md-3">
-                <div class="card" style="width: 18rem;">
-                    <a th:data-thing="${series.key.getId()}" onclick="setSeriesID(this.getAttribute('data-thing'));" href="#" style="margin:0 auto;padding:30px" data-toggle="modal" data-target="#createComicModal"><span class="fa fa-plus" style=""></span></a>
-                </div>
+                <a th:data-thing="${series.key.getId()}" onclick="setSeriesID(this.getAttribute('data-thing'));" href="#" data-toggle="modal" data-target="#createComicModal">
+                    <div class="card" style="width: 18rem;height:18.2rem">
+                        <span class="fa fa-plus"  style="margin:auto;"></span>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
@@ -120,7 +122,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="/series/addSeries"  method="post" id = "newSeries">
+                <form action="/series/create"  method="post" id = "newSeries">
                     <input value = "" id = "seriesNameBox" class="form-control input-large" name="seriesName" type="text" placeholder="Series Name"><br/>
 
                     <div class="modal-footer">
@@ -142,7 +144,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="/series/addComic"  method="post" id = "newComic">
+                <form action="/comic/create"  method="post" id = "newComic">
                     <input hidden id = "seriesID" name = "seriesId" >
                     <input value = "" id = "comicNameBox" class=" required form-control input-large" name="comicName" type="text" placeholder="Comic Name" required><br/>
                     <input value = "" id = "tagsBox" class= "required hide form-control input-large" name="tags" type="text" placeholder="Tags" required><br/>
@@ -156,18 +158,24 @@
 
         </div>
     </div>
-    <form id = "deleteForm" action = "/series/deleteComic" method = "get">
+    <form id = "deleteForm" action = "/comic/delete" method = "get">
         <input hidden id = "deleteComicId" name = "comicId">
     </form>
-    <form id = "editForm" action = "/series/editComic" method = "post">
+    <form id = "editForm" action = "/comic/edit" method = "post">
         <input hidden id = "editComicId" name = "editComicId">
     </form>
-    <form id = "deleteSeriesForm" action = "/series/deleteSeries" method = "post">
+    <form id = "deleteSeriesForm" action = "/series/delete" method = "post">
         <input hidden id = "deleteSeriesId" name = "seriesId">
     </form>
     <form id = "viewComicForm" action = "/comic/view" method = "get">
         <input hidden id = "viewComicId" name = "viewComicID">
     </form>
+
+    <form id = "publishComicForm" action = "/comic/publish" method = "post">
+        <input hidden id = "publishComicId" name = "comicId">
+    </form>
+
+
 </div>
 
 <script type="text/javascript">
@@ -177,6 +185,14 @@
             dateFormat: "yy-mm-dd"
         });
     });
+    function publishComic(comicId)
+    {
+
+
+        document.getElementById("publishComicId").value = comicId;
+        document.getElementById("publishComicForm").submit();
+
+    }
 
     function viewTheComic(comicId)
     {
