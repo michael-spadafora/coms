@@ -505,12 +505,14 @@ function chat() {
     })
     .setCoords();
     loadedObject.scaleToWidth(100);
+    loadedObject.set("stroke", "#000000");
+    loadedObject.set("fill", 'rgba(0,0,0,0)');
     canvas.add(loadedObject);
   });
 // updateModifications(true);
 }
 function thought() {
-  console.log('adding chat svg');
+  console.log('adding thought svg');
   fabric.loadSVGFromURL('/img/thought.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
@@ -519,12 +521,14 @@ function thought() {
     })
     .setCoords();
     loadedObject.scaleToWidth(100);
+    loadedObject.set("stroke", "#000000");
+    loadedObject.set("fill", 'rgba(0,0,0,0)');
     canvas.add(loadedObject);
   });
 // updateModifications(true);
 }
 function arrow() {
-  console.log('adding chat svg');
+  console.log('adding arrow svg');
   fabric.loadSVGFromURL('/img/arrow.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
@@ -538,7 +542,7 @@ function arrow() {
 // updateModifications(true);
 }
 function scream() {
-  console.log('adding chat svg');
+  console.log('adding scream svg');
   fabric.loadSVGFromURL('/img/scream.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
@@ -546,6 +550,8 @@ function scream() {
       top: 0
     })
     .setCoords();
+    loadedObject.set("stroke", "#000000");
+    loadedObject.set("fill", 'rgba(0,0,0,0)');
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
@@ -554,7 +560,7 @@ function scream() {
 }
 
 function action() {
-  console.log('adding chat svg');
+  console.log('adding action svg');
   fabric.loadSVGFromURL('/img/action.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
@@ -562,8 +568,10 @@ function action() {
       top: 0
     })
     .setCoords();
+    // loadedObject.set("stroke", "#000000");
+    // loadedObject.set("fill", 'rgba(0,0,0,0)');
     loadedObject.set("stroke", "#000000");
-    loadedObject.set("fill", "#ffffff");
+    loadedObject.set("fill", 'rgba(0,0,0,0)');
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
@@ -764,26 +772,26 @@ function save() {
         "body": JSON.stringify(canvas.toJSON()),
         "image": canvas.toDataURL()
     }
-    // $.ajax({
-    //     type: 'POST',
-    //     url: "/savePanel",
-    //     data: requestBody,
-    //     success: [function(data) {
-    //         console.log(data);
-    //         //$("body").html(data);
-    //     }],
-    //     error: function(exception) {
-    //         alert('Exeption:' + exception);
-    //     }
-    // });
+    $.ajax({
+        type: 'POST',
+        url: "/savePanel",
+        data: requestBody,
+        success: [function(data) {
+            console.log(data);
+            //$("body").html(data);
+        }],
+        error: function(exception) {
+            alert('Exeption:' + exception);
+        }
+    });
 
-    fetch('/savePanel', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json', 
-        },
-        body: JSON.stringify(requestBody)
-    }).then(res => res.json()).then(res => console.log(res)).catch(error => alert('Exeption:' + error));
+    // fetch('/savePanel', {
+    //     method: 'POST',
+    //     headers: {
+    //     'Content-Type': 'application/json', 
+    //     },
+    //     body: JSON.stringify(requestBody)
+    // }).then(res => res.json()).then(res => console.log(res)).catch(error => alert('Exeption:' + error));
     
 
 }
