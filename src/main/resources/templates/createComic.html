@@ -38,14 +38,12 @@
 
       .container{width:100%;}
 
-      .middle{text-align:center;}
+      .middle{}
       input{margin-top:12px}
 
       form textarea{width:80%;resize:none;height:50px}
       form textarea:focus{outline:none}
       form button{position:absolute;width:inherit;height:50px}
-
-      #coloring{display: inline-block;float: right;width: 30%;}
 
       /* The container
       <div>
@@ -248,7 +246,7 @@
       <div class="middle">
          <div class="btn-group">
             <div id="mydiv" tabindex="0" />
-               <canvas id="canvas" width="700px" height="400px" style="border:1px solid #000000;"></canvas>
+               <canvas id="canvas" width="800px" height="400px" style="border:1px solid #000000;"></canvas>
          </div>
          <ul class="pagination" th:if="${panelList!=null}">
             <li class="page-item" th:each="panel,iter: ${panelList}">
@@ -262,84 +260,79 @@
          </ul>
       </div>
 
-      <div class="right">
+      <div class="right btn-group-vertical" style="float:right">
+         <!-- CHANGE DRAWING MODE -->
+         <label for="drawing-mode-selector">Drawing Mode</label><br/>
+         <select id="drawing-mode-selector">
+            <option>Pencil</option>
+            <option>Circle</option>
+            <option>Spray</option>
+            <option>Poka-dots</option>
+            <option>hline</option>
+            <option>vline</option>
+            <option>square</option>
+            <option>diamond</option>
+         </select><br/>
+
          <!-- TEXT FONT/SIZE -->
-         <div class="dropdown-content">
-            <label for="font">Font:</label><br>
-            <select id="fonts" onchange="fontchange()">
-               <option value="Arial">Arial</option>
-               <option value="Helvetica">Helvetica</option>
-               <option value="Times New Roman">Times New Roman</option>
-               <option value="Times">Times</option>
-               <option value="Impact">Impact</option>
-               <option value="Courier New">Courier New</option>
-               <option value="Courier">Courier</option>
-               <option value="Verdana">Verdana</option>
-               <option value="Georgia">Georgia</option>
-               <option value="Palatino">Palatino</option>
-               <option value="Garamond">Garamond</option>
-               <option value="Bookman">Bookman</option>
-               <option value="Comic Sans MS">Comic Sans MS</option>
-               <option value="Trebuchet MS">Trebuchet MS</option>
-               <option value="Arial Black">Arial Black</option>
-            </select>
-         </div>
-         <label for="font">Font Size:</label><br>
-         <input type="number"min="0" max="500" value="30" id="font-size">
-      </div>
+         <label for="font">Font</label><br/>
+         <select id="fonts" onchange="fontchange()">
+            <option value="Arial">Arial</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Times">Times</option>
+            <option value="Impact">Impact</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Courier">Courier</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Palatino">Palatino</option>
+            <option value="Garamond">Garamond</option>
+            <option value="Bookman">Bookman</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Trebuchet MS">Trebuchet MS</option>
+            <option value="Arial Black">Arial Black</option>
+         </select><br/>
 
-   <div class="middleTop">
-      <div class="middleToold">
-         <label for="stroke">Outline Color:</label>
-         <input type="color" id="stroke" name="stroke" value="#000000" onchange="changeStroke()">
+         <label for="font">Font Size</label><br/>
+         <input type="number"min="0" max="500" value="30" id="font-size"><br/>
 
-         <label for="fill">Fill Color:</label>
-         <input type="color" id="fill" name="fill" value="#ffffff" onchange="changeFill()">
+         <!-- OUTLINE COLOR -->
+         <label for="stroke">Outline Color</label><br/>
+         <input type="color" id="stroke" name="stroke" value="#000000" onchange="changeStroke()"><br/>
+
+         <!-- FILL COLOR -->
+         <label for="fill">Fill Color</label><br/>
+         <input type="color" id="fill" name="fill" value="#ffffff" onchange="changeFill()"><br/>
          <button type="button" class="btn btn-info" onclick="removeFill()">
             Remove Fill
-         </button>
-      </div>
-      <!-- <div id="pen"> -->
-      <!-- <div id="drawing-mode-options"> -->
-      <label for="drawing-mode-selector">Mode:</label>
-      <select id="drawing-mode-selector">
-         <option>Pencil</option>
-         <option>Circle</option>
-         <option>Spray</option>
-         <option>Poka-dots</option>
-         <option>hline</option>
-         <option>vline</option>
-         <option>square</option>
-         <option>diamond</option>
-      </select>
-      <!-- <br> -->
-      <label for="drawing-color">Line color:</label>
-      <input type="color" value="#000000" id="drawing-color">
-      <label for="drawing-line-width">Line width:</label>
-      <input type="number" min="1" max="500" value="15" id="drawing-line-width">
+         </button><br/>
 
-      <label for="drawing-shadow-color">Shadow color:</label>
-      <input type="color" value="#000000" id="drawing-shadow-color">
-      <label for="drawing-shadow-width">Shadow width:</label>
-      <input type="number" min="0" max="500" value="0" id="drawing-shadow-width">
-      <label for="drawing-shadow-offset">Shadow offset:</label>
-      <input type="number" min="0" max="500" size="4" value="30" id="drawing-shadow-offset">
+         <!-- LINE -->
+         <label for="drawing-color">Line Color</label><br/>
+         <input type="color" value="#000000" id="drawing-color"><br/>
+         <label for="drawing-line-width">Line Width</label><br/>
+         <input type="number" min="1" max="500" value="15" id="drawing-line-width"><br/>
 
-      <!-- </div> -->
-      <!-- </div> -->
-      <div id="coloring">
-         <script>
-            var sel = document.getElementById('fonts');
-            console.log( sel.value );
-            function fontchange(){
-                console.log("value has been changed");
-                var x = document.getElementById("fonts").value;
-                console.log(x);
-                console.log(typeof(x));
-            }
-         </script>
+         <!-- SHADOW -->
+         <label for="drawing-shadow-color">Shadow Colo:</label><br/>
+         <input type="color" value="#000000" id="drawing-shadow-color"><br/>
+         <label for="drawing-shadow-width">Shadow Width</label><br/>
+         <input type="number" min="0" max="500" value="0" id="drawing-shadow-width"><br/>
+         <label for="drawing-shadow-offset">Shadow Offset</label><br/>
+         <input type="number" min="0" max="500" size="4" value="30" id="drawing-shadow-offset">
       </div>
-   </div>
+
+      <script>
+         var sel = document.getElementById('fonts');
+         console.log( sel.value );
+         function fontchange(){
+             console.log("value has been changed");
+             var x = document.getElementById("fonts").value;
+             console.log(x);
+             console.log(typeof(x));
+         }
+      </script>
 
 
 <!--          <form action = "/series/editComic" method = "post" id = "editPanelForm"> -->
