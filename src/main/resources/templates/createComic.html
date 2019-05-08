@@ -148,47 +148,58 @@
 
       <!-- SIDE TOOLBAR -->
       <div class="btn-group-vertical" style="float:left">
+
+         <!-- SELECTION BUTTON -->
+         <button class="btn btn-info" id="drawing-mode">
+            <img src="/img/select.png" alt="shapes" height="20" width="20">
+         </button>
+
+         <!-- DRAWING BUTTON -->
+         <button class="btn btn-info" onclick="enterDrawingMode()">
+            <img src="/img/drawing.png" alt="shapes" height="20" width="20">
+         </button>
+
          <!-- SHAPES BUTTONS -->
          <div class="dropdown">
             <button class="btn btn-info dropdown-toggle" type="button" id="shapesButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                <img src="/img/shapes.png" alt="shapes" height="20" width="20">
             </button>
             <div class="dropdown-menu" aria-labelledby="shapesButton">
-               <button type="button" class="btn btn-info" onclick="drawRec()" id="rect">
+               <button type="button" class="btn btn-info" onclick="drawRec();exitDrawingMode()" id="rect">
                   <img src="/img/rectangle.png" alt="Rectangle" height="20" width="30">
                </button>
-               <button type="button" class="btn btn-info" onclick="drawSquare()">
+               <button type="button" class="btn btn-info" onclick="drawSquare();exitDrawingMode()">
                   <img src="/img/square.png" alt="Square" height="20" width = "20">
                </button>
-               <button type="button" class="btn btn-info" onclick="drawTriangle()">
+               <button type="button" class="btn btn-info" onclick="drawTriangle();exitDrawingMode()">
                   <img src="/img/triangle.png" alt="Triangle" height="20" width = "20">
                </button>
-               <button type="button" class="btn btn-info" onclick="drawCircle()">
+               <button type="button" class="btn btn-info" onclick="drawCircle();exitDrawingMode()">
                   <img src="/img/ellipse.png" alt="Circle" height="20" width = "20">
                </button>
-               <button type="button" class="btn btn-info" onclick="drawLine()">
+               <button type="button" class="btn btn-info" onclick="drawLine();exitDrawingMode()">
                   <img src="/img/line.png" alt="Line" height="20" width = "20">
                </button>
-               <button type="button" class="btn btn-info" onclick="arrow()">
+               <button type="button" class="btn btn-info" onclick="arrow();exitDrawingMode()">
                   <img src="/img/arrow.png" alt="Arrow" height="20" width = "20">
                </button>
-               <button type="button" class="btn btn-info" onclick="chat()">
+               <button type="button" class="btn btn-info" onclick="chat();exitDrawingMode()">
                   <img src="/img/chat.png" alt="Talk Bubble" height="20" width = "20">
                </button>
-               <button type="button" class="btn btn-info" onclick="thought()">
+               <button type="button" class="btn btn-info" onclick="thought();exitDrawingMode()">
                   <img src="/img/thought.png" alt="Thought Bubble" height="20" width = "20">
                </button>
-               <button type="button" class="btn btn-info" onclick="scream()">
+               <button type="button" class="btn btn-info" onclick="scream();exitDrawingMode()">
                   <img src="/img/scream.png" alt="Scream Bubble" height="20" width = "20">
                </button>
-               <button type="button" class="btn btn-info" onclick="action()">
+               <button type="button" class="btn btn-info" onclick="action();exitDrawingMode()">
                   <img src="/img/action.png" alt="Action Bubble" height="20" width = "20">
                </button>
             </div>
          </div>
 
          <!-- ADD TEXTBOX -->
-         <button class="btn btn-info" onclick="addTextbox()">
+         <button class="btn btn-info" onclick="addTextbox();exitDrawingMode()">
             <img src="/img/text.png" alt="Text" height="20" width="20">
          </button>
 
@@ -198,11 +209,11 @@
                <img src="/img/image.png" alt="upload" height="20" width="20">
             </button>
             <div class="dropdown-menu" aria-labelledby="uploadButton">
-               <button type="button" class="btn btn-info" onclick="document.getElementById('imgLoader').click();">
+               <button type="button" class="btn btn-info" onclick="document.getElementById('imgLoader').click();;exitDrawingMode()">
                   <img src="/img/imagedownload.png" alt="Upload Image" height="20" width = "20">
                </button>
                <input type='file' id="imgLoader" style="display: none;"/>
-               <button type="button" class="btn btn-info" onclick="document.getElementById('jsonLoader').click();">
+               <button type="button" class="btn btn-info" onclick="document.getElementById('jsonLoader').click();;exitDrawingMode()">
                   <img src="/img/json.png" alt="Upload Json" height="20" width = "20">
                </button>
                <input type='file' id="jsonLoader" style="display: none;"/>
@@ -210,25 +221,25 @@
          </div>
 
          <!-- BACKGROUND BUTTONS -->
-         <button type="button" class="btn btn-info" onclick="document.getElementById('backgroundImage').click();">
+         <button type="button" class="btn btn-info" onclick="document.getElementById('backgroundImage').click();;exitDrawingMode()">
             <img src="/img/add.png" alt="Upload Download Image" height="20" width = "20">
          </button>
          <input type='file' id="backgroundImage" style="display: none;"/>
-         <button type="button" class="btn btn-info" onclick="removeBackground()">
+         <button type="button" class="btn btn-info" onclick="removeBackground();exitDrawingMode()">
             <img src="/img/remove.png" alt="Remove Background" height="20" width = "20">
          </button>
 
          <!-- LAYER BUTTONS -->
-         <button type="button" class="btn btn-info" onclick="sendToBack()" >
+         <button type="button" class="btn btn-info" onclick="sendToBack();exitDrawingMode()" >
             <img src="/img/back.png" alt="Send To Back" height="15" width="20">
          </button>
-         <button type="button" class="btn btn-info" onclick="back()" >
+         <button type="button" class="btn btn-info" onclick="back();exitDrawingMode()" >
             <img src="/img/backward.png" alt="Send Back One" height="15" width="20">
          </button>
-         <button type="button" class="btn btn-info" onclick="front()" >
+         <button type="button" class="btn btn-info" onclick="front();exitDrawingMode()" >
             <img src="/img/forward.png" alt="Send Front One" height="15" width="20">
          </button>
-         <button type="button" class="btn btn-info" onclick="bringToFront()">
+         <button type="button" class="btn btn-info" onclick="bringToFront();exitDrawingMode()">
             <img src="/img/front.png" alt="Send To Front" height="20" width = "20">
          </button>
 
@@ -237,7 +248,7 @@
       <div class="middle">
          <div class="btn-group">
             <div id="mydiv" tabindex="0" />
-               <canvas id="canvas" width="50%" height="400px" style="border:1px solid #000000;"></canvas>
+               <canvas id="canvas" width="700px" height="400px" style="border:1px solid #000000;"></canvas>
          </div>
          <ul class="pagination" th:if="${panelList!=null}">
             <li class="page-item" th:each="panel,iter: ${panelList}">
@@ -284,9 +295,9 @@
 
          <label for="fill">Fill Color:</label>
          <input type="color" id="fill" name="fill" value="#ffffff" onchange="changeFill()">
-         <button type="button" class="btn btn-info" onclick="removeFill()"><img src="/img/empty.png" alt="Remove Fill" height="20" width = "20"></button>
-         <br>
-         <br>
+         <button type="button" class="btn btn-info" onclick="removeFill()">
+            Remove Fill
+         </button>
       </div>
       <!-- <div id="pen"> -->
       <!-- <div id="drawing-mode-options"> -->
@@ -306,14 +317,14 @@
       <input type="color" value="#000000" id="drawing-color">
       <label for="drawing-line-width">Line width:</label>
       <input type="number" min="1" max="500" value="15" id="drawing-line-width">
-      <!-- <span class="info">30</span><input type="range" value="30" min="0" max="150" id="drawing-line-width"><br> -->
+
       <label for="drawing-shadow-color">Shadow color:</label>
       <input type="color" value="#000000" id="drawing-shadow-color">
       <label for="drawing-shadow-width">Shadow width:</label>
       <input type="number" min="0" max="500" value="0" id="drawing-shadow-width">
       <label for="drawing-shadow-offset">Shadow offset:</label>
       <input type="number" min="0" max="500" size="4" value="30" id="drawing-shadow-offset">
-      <button id="drawing-mode" class="btn btn-info">Exit drawing</button>
+
       <!-- </div> -->
       <!-- </div> -->
       <div id="coloring">

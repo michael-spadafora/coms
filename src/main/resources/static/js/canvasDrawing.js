@@ -5,7 +5,7 @@ var canvas = new fabric.Canvas('canvas', {
     // backgroundColor : "white"
 });
 
-canvas.setDimensions({width: 1050, height: 350});
+canvas.setDimensions({width: 700, height: 400});
 
 var strokeColor = 'black';
 var fillColor = 'white';
@@ -38,14 +38,7 @@ clearEl.onclick = function() {
 };
 
 drawingModeEl.onclick = function() {
-    canvas.isDrawingMode = !canvas.isDrawingMode;
-    if (canvas.isDrawingMode) {
-        drawingModeEl.innerHTML = 'Exit drawing';
-        // drawingOptionsEl.style.display = '';
-    } else {
-        drawingModeEl.innerHTML = 'Enter drawing';
-        // drawingOptionsEl.style.display = 'none';
-    }
+    canvas.isDrawingMode = false;
 };
 
 if (fabric.PatternBrush) {
@@ -917,4 +910,12 @@ function recenter(){
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
     canvas.renderAll();
     
+}
+
+function exitDrawingMode(){
+      canvas.isDrawingMode = false;
+}
+
+function enterDrawingMode(){
+    canvas.isDrawingMode = true;
 }
