@@ -85,7 +85,8 @@ public class MessageController {
     @PostMapping("/messages/delete")
     public ModelAndView deleteMessage(HttpServletRequest request) throws IOException {
         String messageId = (String)request.getParameter("messageId");
-        service.delete(messageId);
+        String currentUser = (String)request.getSession().getAttribute("username");
+        service.delete(currentUser, messageId);
 
         ModelAndView mav = new ModelAndView("inbox");
         HttpSession session = request.getSession(false);

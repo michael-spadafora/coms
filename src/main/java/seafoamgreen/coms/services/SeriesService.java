@@ -22,7 +22,7 @@ public class SeriesService {
     private SeriesRepository seriesRepository;
 
     @Autowired
-    private ComicRepository comicRepository;
+    ComicRepository comicRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -58,7 +58,7 @@ public class SeriesService {
 
     public void deleteById(String id)
     {
-        
+
         seriesRepository.deleteById(id);
         // comicRepository.deleteBySeriesId(id);
         List<Comic> comics  = comicRepository.findBySeriesID(id);
