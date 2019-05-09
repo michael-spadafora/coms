@@ -308,7 +308,7 @@
          </div>
 
          <!-- CANVAS -->
-         <div class="col-md-auto" style="margin-left:50px">
+         <div class="col" style="margin-left:50px">
             <div id="mydiv" tabindex="0"/>
             <canvas id="canvas" width="1000px" height="400px" style="border:1px solid #000000;"></canvas>
          </div>
@@ -319,6 +319,11 @@
       <div class="row" style="text-align: center">
          <div class="col">
             <ul class="pagination" th:if="${panelList!=null}">
+               <li class="page-item" th:if="${panelList.size() > 1}">
+                  <a class="page-link" onclick="">
+                     Delete Panel
+                  </a>
+               </li>
                <li class="page-item" th:each="panel,iter: ${panelList}">
                   <a class="page-link" th:text="${iter.index+1}" th:data-thing="${panel.getId()}" onclick="form_edit_panel(this.getAttribute('data-thing'));"></a>
                </li>
