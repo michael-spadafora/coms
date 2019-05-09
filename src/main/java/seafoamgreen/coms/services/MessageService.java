@@ -100,6 +100,12 @@ public class MessageService {
 
 
 	}
+
+	public void readMessage(String messageId){
+        Message message = messageRepository.findById(messageId).get();
+        message.setRead(true);
+        messageRepository.save(message);
+    }
 }
     
 

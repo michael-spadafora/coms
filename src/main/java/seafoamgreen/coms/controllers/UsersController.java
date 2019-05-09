@@ -13,6 +13,7 @@ import seafoamgreen.coms.services.UserService;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -308,7 +309,11 @@ public class UsersController {
         }
 
         ModelAndView mav = new ModelAndView("inbox");
-        mav.addObject("Messages" , userService.getInbox(username));
+        List<Message> userMessages = userService.getInbox(username);
+        List<Message> messages = new ArrayList<Message>();
+        for(int i = userMessages.size()-1; i >= 0; i--)
+            messages.add(userMessages.get(i));
+        mav.addObject("Messages" , messages);
 
         mav.addObject("username", username);
         if(username == null)
