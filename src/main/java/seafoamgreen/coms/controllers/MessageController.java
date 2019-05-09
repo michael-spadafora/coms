@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 
+import seafoamgreen.coms.model.Message;
 import seafoamgreen.coms.requestBodyTypes.MessageBody;
 import seafoamgreen.coms.services.MessageService;
 import seafoamgreen.coms.services.UserService;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,7 +76,13 @@ public class MessageController {
         ModelAndView mav = new ModelAndView("inbox");
         mav.addObject("message", mg);
         String username = (String)session.getAttribute("username");
-        mav.addObject("Messages" , userService.getInbox(username));
+
+        List<Message> userMessages = userService.getInbox(username);
+        List<Message> messages = new ArrayList<Message>();
+        for(int i = userMessages.size()-1; i >= 0; i--)
+            messages.add(userMessages.get(i));
+        mav.addObject("Messages" , messages);
+
         mav.addObject("username",username);
         if(username == null)
             mav.addObject("notLoggedIn", true);
@@ -91,7 +100,36 @@ public class MessageController {
         ModelAndView mav = new ModelAndView("inbox");
         HttpSession session = request.getSession(false);
         String username = (String)session.getAttribute("username");
-        mav.addObject("Messages" , userService.getInbox(username));
+
+        List<Message> userMessages = userService.getInbox(username);
+        List<Message> messages = new ArrayList<Message>();
+        for(int i = userMessages.size()-1; i >= 0; i--)
+            messages.add(userMessages.get(i));
+
+        mav.addObject("Messages" , messages);
+        mav.addObject("username",username);
+        if(username == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+        return mav;
+    }
+
+    @PostMapping("/messages/read")
+    public ModelAndView readMessage(HttpServletRequest request) throws IOException {
+        String messageId = (String)request.getParameter("messageId");
+        service.readMessage(messageId);
+
+        ModelAndView mav = new ModelAndView("inbox");
+        HttpSession session = request.getSession(false);
+        String username = (String)session.getAttribute("username");
+
+        List<Message> userMessages = userService.getInbox(username);
+        List<Message> messages = new ArrayList<Message>();
+        for(int i = userMessages.size()-1; i >= 0; i--)
+            messages.add(userMessages.get(i));
+
+        mav.addObject("Messages" , messages);
         mav.addObject("username",username);
         if(username == null)
             mav.addObject("notLoggedIn", true);
