@@ -902,17 +902,17 @@ function group() {
     canvas.renderAll();
   }
 
-  canvas.on("object:moving", function(e){
-    var obj = e.target;
-    obj.setCoords();
+//   canvas.on("object:moving", function(e){
+//     var obj = e.target;
+//     obj.setCoords();
 
-    var bound = obj.getBoundingRect(true);
-    var width = obj.canvas.width;
-    var height = obj.canvas.height;
+//     var bound = obj.getBoundingRect(true);
+//     var width = obj.canvas.width;
+//     var height = obj.canvas.height;
 
-    obj.left = Math.min(Math.max(0, bound.left), width - bound.width);
-    obj.top = Math.min(Math.max(0, bound.top), height - bound.height);
-})
+//     obj.left = Math.min(Math.max(0, bound.left), width - bound.width);
+//     obj.top = Math.min(Math.max(0, bound.top), height - bound.height);
+// })
 
 function zoomin(){
 	var zoom = canvas.getZoom();
