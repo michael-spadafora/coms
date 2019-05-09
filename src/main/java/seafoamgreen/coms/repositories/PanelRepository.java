@@ -22,12 +22,6 @@ public interface PanelRepository extends MongoRepository<Panel, String> {
     List<Panel> findByUserID(String userID);
 
 
-
-
-
-
-
-
-
-
+    @Query(value="{'comicID': ?0}", delete = true)
+    List<Panel> deleteByComicId(String id);
 }

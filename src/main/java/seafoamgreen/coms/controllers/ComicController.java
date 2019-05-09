@@ -4,6 +4,7 @@ package seafoamgreen.coms.controllers;
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.model.Series;
+import seafoamgreen.coms.model.User;
 import seafoamgreen.coms.services.ComicService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import seafoamgreen.coms.services.PanelService;
 import seafoamgreen.coms.services.SeriesService;
+import seafoamgreen.coms.services.UserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +41,9 @@ public class ComicController {
 
     @Autowired
     SeriesService seriesService;
+
+    @Autowired
+    UserService userService;
 
 
 
@@ -134,8 +139,6 @@ public class ComicController {
         String comicId = (String)request.getParameter("comicId");
         comicService.deleteById(comicId);
 
-
-
         HttpSession session = request.getSession();
 
         String activeUsername = (String)session.getAttribute("username");
@@ -208,6 +211,16 @@ public class ComicController {
         }
         mav.addObject("comments", comicService.getCommentsForComicid(comicID));
         mav.addObject("username", activeUsername);
+
+        User user = userService.findByUsername(activeUsername);
+        if(user.getSubscriptions().contains(c.getSeriesID()))
+        {
+            mav.addObject("isSubscribed", true);
+        }
+        else
+        {
+            mav.addObject("isSubscribed",false);
+        }
         return mav;
 
     }
