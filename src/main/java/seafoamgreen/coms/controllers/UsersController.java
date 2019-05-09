@@ -174,7 +174,9 @@ public class UsersController {
             // List<Comic> popularComic = userService.getPopular();
             // List<String> popularThumbnail = userService.getPopularThumbnails();
         }
-
+        User currentUser = userService.findByUsername(activeUsername);
+        session.setAttribute("user", currentUser);
+        mav.addObject("user", currentUser);
         return mav;
     }
 
@@ -194,6 +196,7 @@ public class UsersController {
         ModelAndView mav = new ModelAndView("index");
         HttpSession session = request.getSession();
         String activeUsername = (String)session.getAttribute("username");
+
         System.out.println("The current active username is: " + activeUsername);
 
         List<Comic> usersComics = comicService.findAllByUsername(activeUsername);
@@ -205,6 +208,7 @@ public class UsersController {
         //List<String> popularThumbnails = userService.getThumbnails(popularComics);
         mav.addObject("popularComics", popularComics);
         mav.addObject("recommendedComics", recommendedComics);
+        mav.addObject("user", session.getAttribute("user"));
         //mav.addObject("popularThumbnails", popularThumbnails);
 
         if(activeUsername == null)
@@ -359,24 +363,55 @@ public class UsersController {
         return mav;
     }
 
-    @PostMapping("/mylist/add") 
-    public ModelAndView addToMyList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/mylist/add/{comicID}")
+    public ModelAndView addToMyList(HttpServletRequest request, HttpServletResponse response,@PathVariable String comicID) throws IOException {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendError(401, "User not logged in");
         }
         String username = (String) session.getAttribute("username");
-        String comicId = request.getParameter("comicId");
 
-        userService.addToMyList(username, comicId);
+        System.out.println("ADD COMIC TO MY LIST " +comicID);
+
+        userService.addToMyList(username, comicID);
+
+        User user = userService.findByUsername(username);
+
+        session.setAttribute("user",user);
+
 
         //TODO: figure out what to return here
         //idk if this is the right mav to return
         //or if i should return anything tbh
-        ModelAndView mav = new ModelAndView("myList");
-        mav.addObject("myList", userService.getUsersMyList(username));
-        return mav;
+        //ModelAndView mav = new ModelAndView("myList");
+        //mav.addObject("myList", userService.getUsersMyList(username));
+        //return mav;
+        return new ModelAndView( "redirect:/home");
+    }
 
+    @GetMapping("/mylist/remove/{comicID}")
+    public ModelAndView removeFromMyList(HttpServletRequest request, HttpServletResponse response,@PathVariable String comicID) throws IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendError(401, "User not logged in");
+        }
+        String username = (String) session.getAttribute("username");
+
+
+        userService.removeFromMyList(username, comicID);
+
+        User user = userService.findByUsername(username);
+
+        session.setAttribute("user",user);
+
+
+        //TODO: figure out what to return here
+        //idk if this is the right mav to return
+        //or if i should return anything tbh
+        //ModelAndView mav = new ModelAndView("myList");
+        //mav.addObject("myList", userService.getUsersMyList(username));
+        //return mav;
+        return new ModelAndView( "redirect:/home");
     }
 
 

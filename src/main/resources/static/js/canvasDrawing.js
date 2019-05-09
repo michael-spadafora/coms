@@ -5,7 +5,7 @@ var canvas = new fabric.Canvas('canvas', {
     // backgroundColor : "white"
 });
 
-canvas.setDimensions({width: 1000, height: 400});
+canvas.setDimensions({width: 1200, height: 600});
 
 var strokeColor = 'black';
 var fillColor = 'white';

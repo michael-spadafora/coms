@@ -104,7 +104,6 @@ public class ComicController {
         }
 
         String editPanelId = request.getParameter("editPanelId");
-        System.out.println("edit Panel id shud be page 0 empty: " + editPanelId);
 
         if(editPanelId == null)
         {

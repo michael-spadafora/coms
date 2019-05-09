@@ -184,6 +184,10 @@ public class Comic {
         tags.add(tag);
     }
 
+    public void deletePanel(String panelId) {
+        panelList.remove(panelId);
+    }
+
     @Override
     public String toString() {
         return "Comic{" +

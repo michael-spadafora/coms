@@ -95,6 +95,13 @@ public class ComicService {
         comicRepository.save(comic);
     }
 
+    public void deletePanel(String comicID, String panel)
+    {
+        Comic comic = comicRepository.findByComicId(comicID);
+        comic.deletePanel(panel);
+        comicRepository.save(comic);
+    }
+
     public Comic findById(String id) { return comicRepository.findByComicId(id);}
 
     public List<Comic> findAllByUsername(String username) {

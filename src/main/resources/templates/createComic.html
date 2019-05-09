@@ -18,12 +18,15 @@
       body, html {
       height: 100%;
       margin: 0;
+         width: 100%;
       /* The image used */
+         margin: 0;
+         background-image: url("/img/myseries-background.png");
+         background-attachment:fixed;
+         background-position:center bottom;
       /* background-image: url("./img/troll.jpg"); */
       /* Full height */
-      height: 100%;
       /* Center and scale the image nicely */
-      background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
       /* color: #71eeb8; */
@@ -308,7 +311,7 @@
          <!-- CANVAS -->
          <div class="col" style="margin-left:50px">
             <div id="mydiv" tabindex="0"/>
-            <canvas id="canvas" width="1000px" height="400px" style="border:1px solid #000000;"></canvas>
+            <canvas id="canvas" width="1200px" height="600px" style="border:1px solid #000000;"></canvas>
          </div>
 
       </div>
@@ -318,7 +321,7 @@
          <div class="col">
             <ul class="pagination" th:if="${panelList!=null}">
                <li class="page-item" th:if="${panelList.size() > 1}">
-                  <a class="page-link" onclick="">
+                  <a class="page-link"th:data-thing="${currentPanel.getId()}" onclick="deletePanel(this.getAttribute('data-thing'));");>
                      Delete Panel
                   </a>
                </li>
@@ -354,6 +357,11 @@
       <form id="addPanelForm" hidden action = "/addPanel", method = "GET">
          <button type="submit"></button>
       </form>
+      <form id = "deletePanelForm" action = "/panel/delete" method = "get">
+         <input hidden id = "deletePanelId" name = "panelId">
+      </form>
+
+
       <script src="/js/canvas-toBlob.js"></script>
       <script type="text/javascript" src = "/js/FileSaver.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min.js"></script>
@@ -388,6 +396,12 @@
          function addPanelSubmit(){
             document.getElementById("addPanelForm").submit();
          }
+          function deletePanel(panelId)
+          {
+             document.getElementById("deletePanelId").value = panelId;
+             document.getElementById("deletePanelForm").submit();
+
+          }
       </script>
       <script th:inline="javascript">
          /*<![CDATA[*/
