@@ -580,7 +580,9 @@ function action() {
 }
 
 
-
+var body = document.body;
+body.addEventListener("keyup", keyup);
+body.addEventListener("keydown", bodyDown);
 var canvasWrapper = document.getElementById('mydiv');
 canvasWrapper.tabIndex = 1000;
 canvasWrapper.addEventListener("keydown", keydown);
@@ -588,15 +590,7 @@ canvasWrapper.addEventListener("keyup", keyup);
 var control = false;
 var shift = false;
 
-function keydown(e) {
-    // console.log("key is pressed");
-    // console.log(e.keyCode);
-    console.log("")
-    
-    if (e.keyCode == 46) {
-        deleteObject();
-        console.log("delete");
-    }
+function bodyDown(e){
     if (e.keyCode == 17){
         control = true;
         console.log("control key is pressed");
@@ -605,6 +599,36 @@ function keydown(e) {
         shift = true;
         console.log("shift key is pressed");
     }
+    if (shift && control && e.keyCode == 90) {
+        console.log("redo keys");
+        redo();
+    }
+    else if (control && e.keyCode == 90) {
+        console.log("undo keys");
+        undo();
+    }
+}
+
+function keydown(e) {
+    // console.log("key is pressed");
+    // console.log(e.keyCode);
+    console.log("")
+    if (e.keyCode == 8) {
+        deleteObject();
+        console.log("backspace");
+    }
+    if (e.keyCode == 46) {
+        deleteObject();
+        console.log("delete");
+    }
+    // if (e.keyCode == 17){
+    //     control = true;
+    //     console.log("control key is pressed");
+    // }
+    // if (e.keyCode == 16){
+    //     shift = true;
+    //     console.log("shift key is pressed");
+    // }
     if (control && e.keyCode == 67) {
         console.log("copy keys");
         copy();
@@ -617,14 +641,14 @@ function keydown(e) {
         console.log("cut keys");
         cut();
     }
-    if (shift && control && e.keyCode == 90) {
-        console.log("redo keys");
-        redo();
-    }
-    else if (control && e.keyCode == 90) {
-        console.log("undo keys");
-        undo();
-    }
+    // if (shift && control && e.keyCode == 90) {
+    //     console.log("redo keys");
+    //     redo();
+    // }
+    // else if (control && e.keyCode == 90) {
+    //     console.log("undo keys");
+    //     undo();
+    // }
 }
 function keyup(e){
     if (e.keyCode == 17){
