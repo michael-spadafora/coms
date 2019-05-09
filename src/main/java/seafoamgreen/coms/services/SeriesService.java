@@ -22,7 +22,7 @@ public class SeriesService {
     private SeriesRepository seriesRepository;
 
     @Autowired
-    private ComicRepository comicRepository;
+    ComicRepository comicRepository;
 
     //Create
     public Series create(String seriesName, String username)
@@ -52,7 +52,6 @@ public class SeriesService {
 
     public void deleteById(String id)
     {
-
         seriesRepository.deleteById(id);
         comicRepository.deleteBySeriesId(id);
     }
