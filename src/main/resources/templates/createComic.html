@@ -18,12 +18,14 @@
       body, html {
       height: 100%;
       margin: 0;
+         width: 100%;
       /* The image used */
+         margin: 0;
+         background-image: url("/img/myseries-background.png");
+         background-position:center bottom;
       /* background-image: url("./img/troll.jpg"); */
       /* Full height */
-      height: 100%;
       /* Center and scale the image nicely */
-      background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
       /* color: #71eeb8; */
@@ -349,6 +351,11 @@
       <form id="addPanelForm" hidden action = "/addPanel", method = "GET">
          <button type="submit"></button>
       </form>
+      <form id = "deletePanelForm" action = "/panel/delete" method = "get">
+         <input hidden id = "deletePanelId" name = "panelId">
+      </form>
+
+
       <script src="/js/canvas-toBlob.js"></script>
       <script type="text/javascript" src = "/js/FileSaver.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min.js"></script>
@@ -383,6 +390,12 @@
          function addPanelSubmit(){
             document.getElementById("addPanelForm").submit();
          }
+          function deletePanel(panelId)
+          {
+             document.getElementById("deletePanelId").value = panelId;
+             document.getElementById("deletePanelForm").submit();
+
+          }
       </script>
       <script th:inline="javascript">
          /*<![CDATA[*/
