@@ -57,6 +57,7 @@ public class PanelController {
         comicService.deletePanel(currentComicId, panel.getId());
         panelService.deleteById(panel.getId());
         //Update the Session Comic
+
         ModelAndView mav = new ModelAndView("createComic");
         mav.addObject("currentPanel", panel);
         mav.addObject("panelList", panelService.findAllByCoimcId(currentComicId));

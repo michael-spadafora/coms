@@ -58,14 +58,16 @@ public class InteractionController {
     }
 
     @GetMapping("/subscribers/removeByComic") 
-    public void subscribeRemoveByComic(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView subscribeRemoveByComic(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
-        if (session == null) return;
+        if (session == null) return null;
 
         String username = (String) session.getAttribute("username");
         String comicId = request.getParameter("comicId"); //possibly need to switch to id
 
+
         interactionService.unsubscribeByComic(comicId, username);
+        return new ModelAndView( "redirect:/comic/view/" + comicId);
     }
 
     

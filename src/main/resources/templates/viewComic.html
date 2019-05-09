@@ -46,7 +46,7 @@
         #comicTitle{font-size: 27px; font-weight: bold;padding-left:25px}
         .actionButtons{float:right;padding-right:100px}
 
-        #subscribe{float:right;color:white;background-color:#FF4141;border: 1px #ff0000 solid;padding:5px 15px}
+        .subscribe{float:right;color:white;background-color:#FF4141;border: 1px #ff0000 solid;padding:5px 15px}
 
         .commentSection{padding-left:25px;margin-top:25px}
         .commentForm img, .commentForm input{display: inline-block}
@@ -163,9 +163,13 @@
     <div>
         <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="${comic.getUsername()}"></span></a>
         <div style="padding-right:100px">
-            <form action = "/interaction/subscribers/addByComic/">
+            <form th:if = "${!isSubscribed}" action = "/interaction/subscribers/addByComic/">
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
-                <button type = "submit" id="subscribe" th:text="${subscribeType}" ></button>
+                <button type = "submit" class="subscribe" th:text="${subscribeType}" ></button>
+            </form>
+            <form th:if = "${isSubscribed}" action = "/interaction/subscribers/removeByComic">
+                <input name = "comicId" th:value = "${comic.getId()}" hidden>
+                <button type = "submit" class="subscribe" th:text="${subscribeType}" ></button>
             </form>
         </div>
     </div>
