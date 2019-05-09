@@ -586,7 +586,7 @@ body.addEventListener("keydown", bodyDown);
 var canvasWrapper = document.getElementById('mydiv');
 canvasWrapper.tabIndex = 1000;
 canvasWrapper.addEventListener("keydown", keydown);
-canvasWrapper.addEventListener("keyup", keyup);
+// canvasWrapper.addEventListener("keyup", keyup);
 var control = false;
 var shift = false;
 
@@ -606,6 +606,10 @@ function bodyDown(e){
     else if (control && e.keyCode == 90) {
         console.log("undo keys");
         undo();
+    }
+    else if (control && e.keyCode == 89) {
+        console.log("undo keys");
+        redo();
     }
 }
 
