@@ -37,6 +37,7 @@ public class SeriesController {
         String seriesId = (String)request.getParameter("seriesId");
         seriesService.deleteById(seriesId);
 
+        //TODO: remove the series from users' subscriptions
 
         HttpSession session = request.getSession();
 

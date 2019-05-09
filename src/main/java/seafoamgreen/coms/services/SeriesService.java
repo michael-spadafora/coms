@@ -1,12 +1,12 @@
 package seafoamgreen.coms.services;
 
-
-
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
-
+import seafoamgreen.coms.model.User;
 import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.repositories.SeriesRepository;
+import seafoamgreen.coms.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +23,12 @@ public class SeriesService {
 
     @Autowired
     ComicRepository comicRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ComicService comicService;
 
     //Create
     public Series create(String seriesName, String username)
@@ -52,8 +58,23 @@ public class SeriesService {
 
     public void deleteById(String id)
     {
+
         seriesRepository.deleteById(id);
-        comicRepository.deleteBySeriesId(id);
+        // comicRepository.deleteBySeriesId(id);
+        List<Comic> comics  = comicRepository.findBySeriesID(id);
+        //deleting a series, deletes the comics, which removes it from the users history
+        for (Comic c : comics) {
+            String comicId = c.getId();
+            comicService.deleteById(comicId);
+        }
+        //TODO: remove from subscriptions
+        List<User> users = userRepository.findAll();
+        for (User u : users) {
+            if (u.getSubscriptions().contains(id)){
+                u.getSubscriptions().remove(id);
+                userRepository.save(u);
+            }
+        }
     }
 
     //Add comic to series list

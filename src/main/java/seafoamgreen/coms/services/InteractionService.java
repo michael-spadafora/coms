@@ -1,17 +1,28 @@
 package seafoamgreen.coms.services;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import seafoamgreen.coms.model.Comic;
+import seafoamgreen.coms.model.Comment;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.model.User;
 import seafoamgreen.coms.repositories.ComicRepository;
+import seafoamgreen.coms.repositories.CommentRepository;
 import seafoamgreen.coms.repositories.SeriesRepository;
 import seafoamgreen.coms.repositories.UserRepository;
 
 @Service
 public class InteractionService {
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
     private ComicRepository comicRepository;
@@ -89,6 +100,10 @@ public class InteractionService {
         Comic c = comicRepository.findByComicId(comicId);
         //get series
         Series s = seriesRepository.findById(c.getSeriesID()).get();
+
+        if (s.getSubscriberList().contains(username)) {
+            return;
+        }
         s.getSubscriberList().add(username);
 
         User user = userRepository.findByUsername(username);
@@ -106,7 +121,7 @@ public class InteractionService {
         Comic c = comicRepository.findByComicId(comicId);
         //get series
         Series s = seriesRepository.findById(c.getSeriesID()).get();
-        s.getSubscriberList().add(username);
+        s.getSubscriberList().remove(username);
 
         User user = userRepository.findByUsername(username);
         user.getSubscriptions().remove(c.getSeriesID());
@@ -119,6 +134,11 @@ public class InteractionService {
 	public void subscribe(String seriesId, String username) {
         //get series
         Series s = seriesRepository.findById(seriesId).get();
+
+        if (s.getSubscriberList().contains(username)) {
+            return;
+        }
+        
         s.getSubscriberList().add(username);
 
         User user = userRepository.findByUsername(username);
@@ -143,5 +163,25 @@ public class InteractionService {
         userRepository.save(user);
 
         //get 
+	}
+
+
+	public void postComment(String username, String comicId, String comment) {
+        Date date = new Date();
+        String strDateTimeFormat = "yyyy-MM-dd hh:mm a";
+
+        // String strDateTimeFormat = "yyyy-MM-dd";
+        DateFormat dateTimeFormat = new SimpleDateFormat(strDateTimeFormat);
+        String currDateTime = dateTimeFormat.format(date);
+
+        Comment com = new Comment(username, comicId, comment, currDateTime);
+        commentRepository.save(com);
+    }
+    
+    public List<Comment> getCommentsForComicid(String comicId) {
+        Sort sort = new Sort(Sort.Direction.DESC, "dateTime");
+        
+        List<Comment> comments = commentRepository.findAllByComicId(comicId, sort);
+        return comments;
 	}
 }

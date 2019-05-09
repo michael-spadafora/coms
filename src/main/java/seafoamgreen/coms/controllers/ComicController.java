@@ -14,12 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import seafoamgreen.coms.services.PanelService;
 import seafoamgreen.coms.services.SeriesService;
 
@@ -141,6 +135,7 @@ public class ComicController {
         comicService.deleteById(comicId);
 
 
+
         HttpSession session = request.getSession();
 
         String activeUsername = (String)session.getAttribute("username");
@@ -211,6 +206,7 @@ public class ComicController {
         {
             mav.addObject("subscribeType", "Subscribe");
         }
+        mav.addObject("comments", comicService.getCommentsForComicid(comicID));
         mav.addObject("username", activeUsername);
         return mav;
 
