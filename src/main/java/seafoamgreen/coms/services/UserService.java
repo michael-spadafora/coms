@@ -241,8 +241,26 @@ public class UserService {
 
     public void addToMyList(String username, String comicId) {
         User user = userRepository.findByUsername(username);
-        List<String> myList = user.getMyList();
-        myList.add(comicId);
+
+        ArrayList<String> myList = user.getMyList();
+        if(!myList.contains(comicId))
+        {
+            myList.add(comicId);
+        }
+        user.setMyList(myList);
+        userRepository.save(user);
+    }
+
+    public void removeFromMyList(String username, String comicId) {
+        User user = userRepository.findByUsername(username);
+
+        ArrayList<String> myList = user.getMyList();
+        if(myList.contains(comicId))
+        {
+            myList.remove(comicId);
+        }
+        user.setMyList(myList);
+        userRepository.save(user);
     }
 
 	public List<Comic> getComicsFromSubscriptions(User user) {
