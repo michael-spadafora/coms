@@ -372,4 +372,23 @@ public class ComicController {
 
     }
 
+    @GetMapping("/{genre}")
+    public ModelAndView comicGenre(HttpServletRequest request, HttpServletResponse response, @PathVariable String genre) {
+        ModelAndView mav = new ModelAndView("genreComics");
+        List<Comic> comics = comicService.findAllByTag(genre);
+
+        HttpSession session = request.getSession(false);
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+        mav.addObject("genre", genre + ' ');
+        mav.addObject("comicList",comics);
+        mav.addObject("username",activeUsername);
+
+        return mav;
+    }
 }
