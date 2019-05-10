@@ -415,7 +415,7 @@ public class UsersController {
     }
 
 
-    @GetMapping("/mylist")
+    @GetMapping("/myList")
     public ModelAndView viewMyList(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         HttpSession session = request.getSession(false);
@@ -425,9 +425,38 @@ public class UsersController {
         String username = (String) session.getAttribute("username");
 
         List<Comic> myList = userService.getUsersMyList(username);
-        ModelAndView mav = new ModelAndView("mySubscriptions");
+        ModelAndView mav = new ModelAndView("myList");
         mav.addObject("myList", myList);
+        mav.addObject("username",username);
+        if(username == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
     }
 
+    @GetMapping("/mylist/removeComic/{comicID}")
+    public ModelAndView removeFromList(HttpServletRequest request, HttpServletResponse response,@PathVariable String comicID) throws IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendError(401, "User not logged in");
+        }
+        String username = (String) session.getAttribute("username");
+
+
+        userService.removeFromMyList(username, comicID);
+
+        User user = userService.findByUsername(username);
+
+        session.setAttribute("user",user);
+
+
+        //TODO: figure out what to return here
+        //idk if this is the right mav to return
+        //or if i should return anything tbh
+        //ModelAndView mav = new ModelAndView("myList");
+        //mav.addObject("myList", userService.getUsersMyList(username));
+        //return mav;
+        return new ModelAndView( "redirect:/myList");
+    }
 }
