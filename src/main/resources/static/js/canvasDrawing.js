@@ -1,7 +1,7 @@
 // <canvas id="canvas" width="300" height="300"></canvas>
 // import {fabric} from 'fabric';
 var canvas = new fabric.Canvas('canvas', {
-    isDrawingMode: true
+    isDrawingMode: false
     // backgroundColor : "white"
 });
 
@@ -493,12 +493,14 @@ function chat() {
     })
     .setCoords();
     loadedObject.scaleToWidth(100);
+    loadedObject.set("stroke", "#000000");
+    loadedObject.set("fill", 'rgba(0,0,0,0)');
     canvas.add(loadedObject);
   });
 // updateModifications(true);
 }
 function thought() {
-  console.log('adding chat svg');
+  console.log('adding thought svg');
   fabric.loadSVGFromURL('/img/thought.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
@@ -507,12 +509,14 @@ function thought() {
     })
     .setCoords();
     loadedObject.scaleToWidth(100);
+    loadedObject.set("stroke", "#000000");
+    loadedObject.set("fill", 'rgba(0,0,0,0)');
     canvas.add(loadedObject);
   });
 // updateModifications(true);
 }
 function arrow() {
-  console.log('adding chat svg');
+  console.log('adding arrow svg');
   fabric.loadSVGFromURL('/img/arrow.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
@@ -526,7 +530,7 @@ function arrow() {
 // updateModifications(true);
 }
 function scream() {
-  console.log('adding chat svg');
+  console.log('adding scream svg');
   fabric.loadSVGFromURL('/img/scream.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
@@ -534,6 +538,8 @@ function scream() {
       top: 0
     })
     .setCoords();
+    loadedObject.set("stroke", "#000000");
+    loadedObject.set("fill", 'rgba(0,0,0,0)');
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
@@ -542,7 +548,7 @@ function scream() {
 }
 
 function action() {
-  console.log('adding chat svg');
+  console.log('adding action svg');
   fabric.loadSVGFromURL('/img/action.svg', function(objects, options) {
     var loadedObject = fabric.util.groupSVGElements(objects, options);
     loadedObject.set({
@@ -550,8 +556,10 @@ function action() {
       top: 0
     })
     .setCoords();
+    // loadedObject.set("stroke", "#000000");
+    // loadedObject.set("fill", 'rgba(0,0,0,0)');
     loadedObject.set("stroke", "#000000");
-    loadedObject.set("fill", "#ffffff");
+    loadedObject.set("fill", 'rgba(0,0,0,0)');
     loadedObject.scaleToWidth(100);
     canvas.add(loadedObject);
   });
@@ -560,23 +568,17 @@ function action() {
 }
 
 
-
+var body = document.body;
+body.addEventListener("keyup", keyup);
+body.addEventListener("keydown", bodyDown);
 var canvasWrapper = document.getElementById('mydiv');
 canvasWrapper.tabIndex = 1000;
 canvasWrapper.addEventListener("keydown", keydown);
-canvasWrapper.addEventListener("keyup", keyup);
+// canvasWrapper.addEventListener("keyup", keyup);
 var control = false;
 var shift = false;
 
-function keydown(e) {
-    // console.log("key is pressed");
-    // console.log(e.keyCode);
-    console.log("")
-    
-    if (e.keyCode == 46) {
-        deleteObject();
-        console.log("delete");
-    }
+function bodyDown(e){
     if (e.keyCode == 17){
         control = true;
         console.log("control key is pressed");
@@ -585,6 +587,40 @@ function keydown(e) {
         shift = true;
         console.log("shift key is pressed");
     }
+    if (shift && control && e.keyCode == 90) {
+        console.log("redo keys");
+        redo();
+    }
+    else if (control && e.keyCode == 90) {
+        console.log("undo keys");
+        undo();
+    }
+    else if (control && e.keyCode == 89) {
+        console.log("undo keys");
+        redo();
+    }
+}
+
+function keydown(e) {
+    // console.log("key is pressed");
+    // console.log(e.keyCode);
+    console.log("")
+    if (e.keyCode == 8) {
+        deleteObject();
+        console.log("backspace");
+    }
+    if (e.keyCode == 46) {
+        deleteObject();
+        console.log("delete");
+    }
+    // if (e.keyCode == 17){
+    //     control = true;
+    //     console.log("control key is pressed");
+    // }
+    // if (e.keyCode == 16){
+    //     shift = true;
+    //     console.log("shift key is pressed");
+    // }
     if (control && e.keyCode == 67) {
         console.log("copy keys");
         copy();
@@ -597,14 +633,14 @@ function keydown(e) {
         console.log("cut keys");
         cut();
     }
-    if (shift && control && e.keyCode == 90) {
-        console.log("redo keys");
-        redo();
-    }
-    else if (control && e.keyCode == 90) {
-        console.log("undo keys");
-        undo();
-    }
+    // if (shift && control && e.keyCode == 90) {
+    //     console.log("redo keys");
+    //     redo();
+    // }
+    // else if (control && e.keyCode == 90) {
+    //     console.log("undo keys");
+    //     undo();
+    // }
 }
 function keyup(e){
     if (e.keyCode == 17){
@@ -752,18 +788,19 @@ function save() {
         "body": JSON.stringify(canvas.toJSON()),
         "image": canvas.toDataURL()
     }
-    // $.ajax({
-    //     type: 'POST',
-    //     url: "/savePanel",
-    //     data: requestBody,
-    //     success: [function(data) {
-    //         console.log(data);
-    //         //$("body").html(data);
-    //     }],
-    //     error: function(exception) {
-    //         alert('Exeption:' + exception);
-    //     }
-    // });
+    $.ajax({
+        type: 'POST',
+        url: "/savePanel",
+        data: requestBody,
+        success: [function(data) {
+            console.log(data);
+            //$("body").html(data);
+        }],
+        error: function(exception) {
+            alert('Exeption:' + exception);
+        }
+    });
+
 
     fetch('/savePanel', {
         method: 'POST',
@@ -882,17 +919,17 @@ function group() {
     canvas.renderAll();
   }
 
-  canvas.on("object:moving", function(e){
-    var obj = e.target;
-    obj.setCoords();
+//   canvas.on("object:moving", function(e){
+//     var obj = e.target;
+//     obj.setCoords();
 
-    var bound = obj.getBoundingRect(true);
-    var width = obj.canvas.width;
-    var height = obj.canvas.height;
+//     var bound = obj.getBoundingRect(true);
+//     var width = obj.canvas.width;
+//     var height = obj.canvas.height;
 
-    obj.left = Math.min(Math.max(0, bound.left), width - bound.width);
-    obj.top = Math.min(Math.max(0, bound.top), height - bound.height);
-})
+//     obj.left = Math.min(Math.max(0, bound.left), width - bound.width);
+//     obj.top = Math.min(Math.max(0, bound.top), height - bound.height);
+// })
 
 function zoomin(){
 	var zoom = canvas.getZoom();
