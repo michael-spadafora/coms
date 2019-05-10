@@ -46,6 +46,23 @@ public class PanelController {
         return mav;
     }
 
+    @GetMapping("/panel/delete")
+    public ModelAndView delete(HttpServletRequest request, HttpServletResponse response)
+    {
+
+        HttpSession session = request.getSession();
+        String currentComicId = (String)session.getAttribute("currentComicId");
+        String currentPanelId = (String)session.getAttribute("currentPanelId");
+        Panel panel = panelService.findById(currentPanelId);
+        comicService.deletePanel(currentComicId, panel.getId());
+        panelService.deleteById(panel.getId());
+        //Update the Session Comic
+
+        ModelAndView mav = new ModelAndView("createComic");
+        mav.addObject("currentPanel", panel);
+        mav.addObject("panelList", panelService.findAllByCoimcId(currentComicId));
+        return mav;
+    }
     @GetMapping("/getBlob")
     public String getPanelBlob(HttpServletRequest request) {
         String panelId = request.getParameter("panelId");
@@ -117,6 +134,8 @@ public class PanelController {
         String currentPanelId = (String)session.getAttribute("currentPanelId");
         String blob = request.getParameter("image");
         String json = request.getParameter("body");
+
+        System.out.println("savePanel route blob: " + blob);
         Panel panel = panelService.update(currentPanelId, json, blob);
 
         //Update the comic

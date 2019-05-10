@@ -5,11 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.servlet.ModelAndView;
 import seafoamgreen.coms.services.InteractionService;
 
 @RestController
@@ -30,41 +28,46 @@ public class InteractionController {
     }
 
     @PostMapping("/vote")
-    public int vote(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView vote(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
-        if (session == null) return 0;
+        if (session == null) return null;
 
-        String username = (String) session.getAttribute("usename");
+        String username = (String) session.getAttribute("username");
         String valueStr = request.getParameter("value");
         int val = Integer.parseInt(valueStr);
-        String comicId = request.getParameter("comic"); //possibly need to switch to id
+        String comicId = request.getParameter("comicId"); //possibly need to switch to id
               
         interactionService.vote(comicId, val, username);
-        return val;
+
+        return new ModelAndView( "redirect:/comic/view/" + comicId);
 
     }
 
 
-    @GetMapping("/subscribers/addByComic") 
-    public void subscribeAddByComic(HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping("/subscribers/addByComic/")
+    public ModelAndView subscribeAddByComic(HttpServletRequest request, HttpServletResponse response) {
+        String comicId = request.getParameter("comicId");
         HttpSession session = request.getSession(false);
-        if (session == null) return;
+        if (session == null) return null;
 
         String username = (String) session.getAttribute("username");
-        String comicId = request.getParameter("comicId"); //possibly need to switch to id
-
+       // String comicId = request.getParameter("comicId"); //possibly need to switch to id
+        System.out.println("SUBSCRING USER TO SEIRES");
         interactionService.subscribeByComic(comicId, username);
+        return new ModelAndView( "redirect:/comic/view/" + comicId);
     }
 
     @GetMapping("/subscribers/removeByComic") 
-    public void subscribeRemoveByComic(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView subscribeRemoveByComic(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
-        if (session == null) return;
+        if (session == null) return null;
 
         String username = (String) session.getAttribute("username");
         String comicId = request.getParameter("comicId"); //possibly need to switch to id
 
+
         interactionService.unsubscribeByComic(comicId, username);
+        return new ModelAndView( "redirect:/comic/view/" + comicId);
     }
 
     
@@ -93,6 +96,23 @@ public class InteractionController {
 
     @GetMapping("/subscribers/series") 
     public void getSubscribers(HttpServletRequest request, HttpServletResponse response) {
+
+    }
+
+    @PostMapping("/comment")
+    public void postComment(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return;
+
+        String username = (String) session.getAttribute("username");
+        String comment = request.getParameter("comment");
+        String comicId = request.getParameter("comicId");
+        if (comicId == null) {
+            comicId = request.getParameter("comicID");
+        } 
+        
+        interactionService.postComment(username, comicId, comment);
+
 
     }
 }

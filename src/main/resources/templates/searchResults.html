@@ -43,7 +43,7 @@
         .testimonial-group > .row > .col-xs-4 > a > img{height:150px; width:250px;padding:3px}
 
         h2{text-align: center;padding-bottom:15px}
-        img{object-fit: cover; width:275px;height:150px;margin-bottom:15px}
+        .col-xs-4{margin-bottom:15px; margin-right:15px}
     </style>
 </head>
 
@@ -53,9 +53,19 @@
             <a class="navbar-brand" th:href="@{/home}"><span class="fa fa-book"></span> COMS</a>
         </div>
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"><a href="searchResults.html">Genre</a></li>
-            <li class="nav-item active"><a href="searchResults.html">Recently Added</a></li>
-            <li class="nav-item active"><a href="searchResults.html">My List</a></li>
+            <li class="nav-item active" style="margin-top:8px">
+                <a th:href="@{/myList}">My List</a>
+            </li>
+            <li class="nav-item active dropdown">
+                <a class="nav-link dropdown-toggle" id="genreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                    Genre
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="genreDropdown">
+                    <a class="dropdown-item" th:href="@{/comic/Funny}">Funny</a>
+                    <a class="dropdown-item" th:href="@{/comic/Romance}">Romance</a>
+                    <a class="dropdown-item" th:href="@{/comic/Kids}">Kids</a>
+                </div>
+            </li>
         </ul>
     </div>
     <div class="navbar-collapse collapse">
@@ -69,10 +79,11 @@
                 <a th:href="@{/series/mySeries}"> My Creations</a>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
-                <a th:href="@{/create}"><span class="fa fa-upload"></span> Upload</a>
-            </li>
             <li class="nav-item dropdown" th:if="${isLoggedIn}">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><span class="fa fa-user-circle-o" aria-hidden="true"  th:text=" ${username}"> </span></a>
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                    <span class="fa fa-user-circle-o" aria-hidden="true"></span>
+                    <span th:text=" ${username}" style="margin-left:1px"> </span>
+                </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" th:href="@{/profile/inbox}">Inbox</a>
                     <a class="dropdown-item" th:href="@{/profile/self}">My Profile</a>
@@ -92,12 +103,19 @@
     <h2>Search Results for '<span th:text="${searchWord}"></span>'</h2>
 
     <div class="row">
-        <div class="col-md-3" th:each="comic: ${comicList}">
-            <div class="thumbnail">
-                <a th:href="@{'/comic/view/'+ ${comic.getId()}}" >
-                    <h3 th:text = "${comic.getComicName()}"></h3>
-                    <img th:src="${comic.getThumbnailBlob()}">
-                </a>
+        <div class="col-xs-4" th:each="comic: ${comicList}">
+            <div class="card" style="width: 15rem;" >
+                <div class="card-body">
+                    <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
+                    <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                    <div th:text="${comic.getUsername()}"></div>
+                    <div th:if = "${user.getMyList().contains(comic.getId())}">
+                        <a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a>
+                    </div>
+                    <div th:if = "${!user.getMyList().contains(comic.getId())}">
+                        <a th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

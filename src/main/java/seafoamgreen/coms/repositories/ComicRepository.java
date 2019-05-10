@@ -28,16 +28,21 @@ public interface ComicRepository extends MongoRepository<Comic, String> {
     @Query("{ 'username' : ?0 }")
     List<Comic> findByUsername(String username);
 
-    @Query("{ 'comicName' : { $regex: ?0 } }")
+    @Query("{ 'comicName' : { $regex: ?0, $options: 'i' } }")
     List<Comic> findAllByComicNameRegex(String comicNameRegex);
 
     @Query("{ 'dateTime' : { lte: ?0} }")
     List<Comic>  findByDateTime(String dateTime);
 
-    @Query("{ 'username' : ?0 }")
+    @Query("{ 'username' : { $regex: ?0, $options: 'i'} }")
     List<Comic> findAllByUsername(String username);
 
     @Query("{ }")
 	List<Comic> findMostPopular(Sort sort);
+
+    @Query(value="{'seriesID': ?0}", delete = true)
+    List<Comic> deleteBySeriesId(String id);
+
+
 
 }

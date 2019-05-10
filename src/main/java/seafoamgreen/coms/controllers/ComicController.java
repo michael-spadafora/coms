@@ -4,6 +4,7 @@ package seafoamgreen.coms.controllers;
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.model.Series;
+import seafoamgreen.coms.model.User;
 import seafoamgreen.coms.services.ComicService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import seafoamgreen.coms.services.PanelService;
 import seafoamgreen.coms.services.SeriesService;
+import seafoamgreen.coms.services.UserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +41,9 @@ public class ComicController {
 
     @Autowired
     SeriesService seriesService;
+
+    @Autowired
+    UserService userService;
 
 
 
@@ -105,7 +104,6 @@ public class ComicController {
         }
 
         String editPanelId = request.getParameter("editPanelId");
-        System.out.println("edit Panel id shud be page 0 empty: " + editPanelId);
 
         if(editPanelId == null)
         {
@@ -139,7 +137,6 @@ public class ComicController {
         ModelAndView mav = new ModelAndView("myComics");
         String comicId = (String)request.getParameter("comicId");
         comicService.deleteById(comicId);
-
 
         HttpSession session = request.getSession();
 
@@ -176,10 +173,10 @@ public class ComicController {
     public ModelAndView viewComic(HttpServletRequest request, HttpServletResponse response, @PathVariable String comicID) {
         ModelAndView mav = new ModelAndView("viewComic");
         Comic c =  comicService.findById(comicID);
-        //List<String> blobs = comicService.getPanelObjects(c);
+        System.out.println("VIEWING COMIC: " + c);
         List<Panel> panelList = panelService.findAllByCoimcId(c.getId());
         //add to history
-        System.out.println("VIEW COMIC PANEL LIST: " + panelList);
+
         HttpSession session = request.getSession(false);
         if (session != null) {
             String username = (String) session.getAttribute("username");
@@ -200,6 +197,29 @@ public class ComicController {
             panels.add(panelService.getBlob(panel.getId()));
         }
         mav.addObject("panels", panels);
+
+        String seriesId = c.getSeriesID();
+        Series series = seriesService.findByID(seriesId).get();
+        if(series.getSubscriberList().contains(activeUsername))
+        {
+            mav.addObject("subscribeType", "Unsubscribe");
+        }
+        else
+        {
+            mav.addObject("subscribeType", "Subscribe");
+        }
+        mav.addObject("comments", comicService.getCommentsForComicid(comicID));
+        mav.addObject("username", activeUsername);
+
+        User user = userService.findByUsername(activeUsername);
+        if(user.getSubscriptions().contains(c.getSeriesID()))
+        {
+            mav.addObject("isSubscribed", true);
+        }
+        else
+        {
+            mav.addObject("isSubscribed",false);
+        }
         return mav;
 
     }
@@ -352,4 +372,23 @@ public class ComicController {
 
     }
 
+    @GetMapping("/{genre}")
+    public ModelAndView comicGenre(HttpServletRequest request, HttpServletResponse response, @PathVariable String genre) {
+        ModelAndView mav = new ModelAndView("genreComics");
+        List<Comic> comics = comicService.findAllByTag(genre);
+
+        HttpSession session = request.getSession(false);
+
+        String activeUsername = (String)session.getAttribute("username");
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
+
+        mav.addObject("genre", genre + ' ');
+        mav.addObject("comicList",comics);
+        mav.addObject("username",activeUsername);
+
+        return mav;
+    }
 }

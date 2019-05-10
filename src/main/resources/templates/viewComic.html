@@ -46,7 +46,7 @@
         #comicTitle{font-size: 27px; font-weight: bold;padding-left:25px}
         .actionButtons{float:right;padding-right:100px}
 
-        #subscribe{float:right;color:white;background-color:#FF4141;border: 1px #ff0000 solid;padding:5px 15px}
+        .subscribe{float:right;color:white;background-color:#FF4141;border: 1px #ff0000 solid;padding:5px 15px}
 
         .commentSection{padding-left:25px;margin-top:25px}
         .commentForm img, .commentForm input{display: inline-block}
@@ -72,9 +72,19 @@
             <a class="navbar-brand" th:href="@{/home}"><span class="fa fa-book"></span> COMS</a>
         </div>
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"><a href="searchResults.html">Genre</a></li>
-            <li class="nav-item active"><a href="searchResults.html">Recently Added</a></li>
-            <li class="nav-item active"><a href="searchResults.html">My List</a></li>
+            <li class="nav-item active" style="margin-top:8px">
+                <a th:href="@{/myList}">My List</a>
+            </li>
+            <li class="nav-item active dropdown">
+                <a class="nav-link dropdown-toggle" id="genreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                    Genre
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="genreDropdown">
+                    <a class="dropdown-item" th:href="@{/comic/Funny}">Funny</a>
+                    <a class="dropdown-item" th:href="@{/comic/Romance}">Romance</a>
+                    <a class="dropdown-item" th:href="@{/comic/Kids}">Kids</a>
+                </div>
+            </li>
         </ul>
     </div>
     <div class="navbar-collapse collapse">
@@ -88,10 +98,11 @@
                 <a th:href="@{/series/mySeries}"> My Creations</a>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
-                <a th:href="@{/create}"><span class="fa fa-upload"></span> Upload</a>
-            </li>
             <li class="nav-item dropdown" th:if="${isLoggedIn}">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><span class="fa fa-user-circle-o" aria-hidden="true"  th:text=" ${username}"> </span></a>
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                    <span class="fa fa-user-circle-o" aria-hidden="true"></span>
+                    <span th:text=" ${username}" style="margin-left:1px"> </span>
+                </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" th:href="@{/profile/inbox}">Inbox</a>
                     <a class="dropdown-item" th:href="@{/profile/self}">My Profile</a>
@@ -135,18 +146,39 @@
     <div class="heading">
         <span id="comicTitle" th:text="${comic.getComicName()}"></span>
         <div class="actionButtons">
-            <button class="actions"><span class="fa fa-arrow-up"></span> 386</button>
-            <button class="actions"><span class="fa fa-arrow-down"></span> 4</button>
-            <button class="actions"><span class="fa fa-share-alt"></span> Share</button>
+            <form action = "/interaction/vote" method ="post">
+                <button type="submit" id="upvote"  style = "background: none; padding: 0px; border: none;" >
+                    <span class="fa fa-arrow-up"></span>
+                </button>
+                <input name = "comicId" th:value = "${comic.getId()}" hidden>
+                <input name = "value" value = "1" hidden>
+                <input name = "username" th:value = "${username}" hidden>
+            </form>
+            <span th:text="${comic.getScore()}"></span>
+            <form action = "/interaction/vote" method ="post">
+                <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
+                    <i class="fa fa-arrow-down"></i>
+                </button>
+                <input name = "comicId" th:value = "${comic.getId()}" hidden>
+                <input name = "value" value = "-1" hidden>
+                <input name = "username" th:value = "${username}" hidden>
+            </form>
+
             <button class="actions"><span class="fa fa-plus"></span> Add to List</button>
-            <button class="actions"><span class="fa fa-flag"></span> Report</button>
         </div>
     </div>
 
     <div>
         <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="${comic.getUsername()}"></span></a>
         <div style="padding-right:100px">
-            <button id="subscribe">SUBSCRIBE</button>
+            <form th:if = "${!isSubscribed}" action = "/interaction/subscribers/addByComic/">
+                <input name = "comicId" th:value = "${comic.getId()}" hidden>
+                <button type = "submit" class="subscribe" th:text="${subscribeType}" ></button>
+            </form>
+            <form th:if = "${isSubscribed}" action = "/interaction/subscribers/removeByComic">
+                <input name = "comicId" th:value = "${comic.getId()}" hidden>
+                <button type = "submit" class="subscribe" th:text="${subscribeType}" ></button>
+            </form>
         </div>
     </div>
     <div class="commentSection">
@@ -171,30 +203,6 @@
         </div>
 
     </div>
-
-    <div class="recommended">
-        <h4>Recommended Comics</h4>
-        <div class="row">
-            <div class="col-bg-3">
-                <div class="thumbnail">
-                    <a href="">
-                        <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg">
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-bg-3">
-                <div class="thumbnail">
-                    <a href="">
-                        <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png">
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 </div>
 </body>

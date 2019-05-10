@@ -36,6 +36,7 @@ public class Comic {
 
     // Panel and Tags are initalized as empty lists. They can be added within the
     // Service layer
+    //TODO: add comment Ids
     public Comic(String username, String comicName, String seriesID) {
         this.username = username;
         this.comicName = comicName;
@@ -181,6 +182,10 @@ public class Comic {
     public void addTag(String tag)
     {
         tags.add(tag);
+    }
+
+    public void deletePanel(String panelId) {
+        panelList.remove(panelId);
     }
 
     @Override

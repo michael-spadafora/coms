@@ -37,6 +37,7 @@ public class SeriesController {
         String seriesId = (String)request.getParameter("seriesId");
         seriesService.deleteById(seriesId);
 
+        //TODO: remove the series from users' subscriptions
 
         HttpSession session = request.getSession();
 
@@ -128,7 +129,7 @@ public class SeriesController {
 
         List<Series> seriesList = seriesService.findAllByUsername(username);
         Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
-
+        System.out.println(seriesList);
         for(Series series : seriesList)
         {
             map.put(series, comicService.findAllBySeriesId(series.getId()));
@@ -138,7 +139,7 @@ public class SeriesController {
         mav.addObject("seriesMap", map);
         mav.addObject("username", username);
 
-        System.out.println(map);
+        //System.out.println(map);
 
         //Map each series to a list of comics
 
