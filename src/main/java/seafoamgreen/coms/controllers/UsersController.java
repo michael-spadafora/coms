@@ -158,6 +158,7 @@ public class UsersController {
         mav.addObject("popularComics", popularComics);
         mav.addObject("popularThumbnails", popularThumbnails);
         mav.addObject("recommendedComics", recommendedComics);
+        mav.addObject("featuredComic",comicService.getRandomComic());
 
         if(activeUsername == null) {
             mav.addObject("notLoggedIn", true);
@@ -210,6 +211,7 @@ public class UsersController {
         mav.addObject("recommendedComics", recommendedComics);
         mav.addObject("user", session.getAttribute("user"));
         //mav.addObject("popularThumbnails", popularThumbnails);
+        mav.addObject("featuredComic",comicService.getRandomComic());
 
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
@@ -238,6 +240,9 @@ public class UsersController {
         User user = userService.findByUsername(activeUsername);
         mav.addObject("userProfile", user);
         mav.addObject("username", activeUsername);
+        mav.addObject("userComics",comicService.findAllByUsername(activeUsername));
+        mav.addObject("userList",userService.getUsersMyList(activeUsername));
+
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
         else
@@ -291,6 +296,8 @@ public class UsersController {
         mav.addObject("userProfile", user);
         mav.addObject("myComics", madeComics);
         mav.addObject("myList", myList);
+        mav.addObject("userComics",comicService.findAllByUsername(user.getUsername()));
+        mav.addObject("userList",userService.getUsersMyList(userProfile));
 
         HttpSession session = request.getSession(false);
         String activeUsername = (String)session.getAttribute("username");

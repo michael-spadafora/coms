@@ -147,16 +147,15 @@
         <span id="comicTitle" th:text="${comic.getComicName()}"></span>
         <div class="actionButtons">
             <form action = "/interaction/vote" method ="post">
-                <label for="upvote" th:text ="${comic.getScore()}"> </label>
                 <button type="submit" id="upvote"  style = "background: none; padding: 0px; border: none;" >
-                    <i class="fa fa-arrow-up"></i>
+                    <span class="fa fa-arrow-up"></span>
                 </button>
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
                 <input name = "value" value = "1" hidden>
                 <input name = "username" th:value = "${username}" hidden>
             </form>
+            <span th:text="${comic.getScore()}"></span>
             <form action = "/interaction/vote" method ="post">
-                <label for="downvote" th:text = "${comic.getScore()}"> </label>
                 <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
                     <i class="fa fa-arrow-down"></i>
                 </button>
@@ -165,9 +164,7 @@
                 <input name = "username" th:value = "${username}" hidden>
             </form>
 
-            <button class="actions"><span class="fa fa-share-alt"></span> Share</button>
             <button class="actions"><span class="fa fa-plus"></span> Add to List</button>
-            <button class="actions"><span class="fa fa-flag"></span> Report</button>
         </div>
     </div>
 
@@ -206,30 +203,6 @@
         </div>
 
     </div>
-
-    <div class="recommended">
-        <h4>Recommended Comics</h4>
-        <div class="row">
-            <div class="col-bg-3">
-                <div class="thumbnail">
-                    <a href="">
-                        <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg">
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-bg-3">
-                <div class="thumbnail">
-                    <a href="">
-                        <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png">
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 </div>
 </body>

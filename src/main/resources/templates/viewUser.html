@@ -111,7 +111,7 @@
     <div class="top">
         <img id="profilePicture" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+1.png">
         <h3 id="username" th:text="${userProfile.getUsername()}"></h3>
-        <div class="buttons">
+        <div class="buttons" th:if="${!username.equalsIgnoreCase(userProfile.getUsername())}">
             <button id="addFriend"><span class="fa fa-user-plus" style="color:black"></span> Add Friend </button>
             <button id="message"><span class="fa fa-envelope"></span> Message</button>
 
@@ -121,6 +121,7 @@
 
     <div class="bottom">
         <div class="bottomLeft">
+            <!--
             <div class="info">
                 <h4 class="sideTitle">Info</h4>
                 <div>
@@ -132,7 +133,7 @@
                     <span>Romance</span>
                 </div>
             </div>
-
+            -->
             <div class="info" style="margin-top: 15px">
                 <h4 class="sideTitle">Friends (1)</h4>
                 <a href="viewUser.html"><img class="friendsPics" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+2.png"></a>
@@ -143,26 +144,16 @@
             <div class="ownComics">
                 <div class="rightTitle"><span th:text="${userProfile.getUsername()}"></span>'s Comics</div>
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <a href="viewComic.html">
-                                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+1.jpg">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <a href="viewComic.html">
-                                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+2.png">
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <a href="viewComic.html">
-                                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+3.jpg">
-                            </a>
+                    <div class="col-xs-4" th:each="comic: ${userComics}">
+                        <div class="card" style="width: 15rem;" >
+                            <div class="card-body">
+                                <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
+                                <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                                <div th:text="${comic.getUsername()}"></div>
+                                <div>
+                                    <a th:href="@{'/mylist/removeComic/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -171,43 +162,16 @@
             <div class="list">
                 <div class="rightTitle"><span th:text="${userProfile.getUsername()}"></span>'s List</div>
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <a href="viewComic.html">
-                                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+4.jpg">
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <a href="viewComic.html">
-                                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+5.jpg">
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <a href="viewComic.html">
-                                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+8.jpg">
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <a href="viewComic.html">
-                                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+6.jpg">
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <a href="viewComic.html">
-                                <img src="https://s3.us-east-2.amazonaws.com/seafoamgreen/cover+7.png">
-                            </a>
+                    <div class="col-xs-4" th:each="comic: ${userList}">
+                        <div class="card" style="width: 15rem;" >
+                            <div class="card-body">
+                                <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
+                                <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                                <div th:text="${comic.getUsername()}"></div>
+                                <div>
+                                    <a th:href="@{'/mylist/removeComic/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
