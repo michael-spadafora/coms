@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Message;
+import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.model.User;
 import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.repositories.MessageRepository;
@@ -33,6 +34,11 @@ public class UserService {
 
     // Create
     public User create(String username, String password) {
+        username = username.toLowerCase();
+        if (userRepository.findByUsername(username) != null) {
+            return null;
+        }
+
         String encrypted = encrypt(password);
         User user = new User(username, encrypted);
         userRepository.save(user);
@@ -65,6 +71,7 @@ public class UserService {
     }
 
     public User login(String username, String password) {
+        username = username.toLowerCase();
         User usr = userRepository.findByUsername(username);
         if (usr == null) {
             return null;
@@ -110,6 +117,8 @@ public class UserService {
 
         List<String> msgIds = usr.getMessagesReceived();
 
+        System.out.println("User messages " + msgIds);
+
 
         List<Message> ret = new ArrayList<>();
 
@@ -118,6 +127,12 @@ public class UserService {
         }
 
         return ret;
+
+    }
+    public User update(User user)
+    {
+        userRepository.save(user);
+        return user;
 
     }
 
@@ -185,7 +200,7 @@ public class UserService {
 
         User user = userRepository.findByUsername(username);
         List<String> comicIds = user.getComicIdHistory();
-
+ 
         for (String id : comicIds) {
             Comic c = comicRepository.findByComicId(id);
             comics.add(c);
@@ -207,6 +222,67 @@ public class UserService {
         }
         return thumbs;
     }
+
+
+    public List<Comic> getUsersComics(String username) {
+        List<Comic> comics = comicRepository.findAllByUsername(username);
+        return comics;
+    }
+
+    public List<Comic> getUsersMyList(String username) {
+        User user = userRepository.findByUsername(username);
+        List<String> myList = user.getMyList();
+        List<Comic> ret = new ArrayList<Comic>();
+        for (String s:myList) {
+            ret.add(comicRepository.findByComicId(s));
+        }
+        return ret;
+    }
+
+    public void addToMyList(String username, String comicId) {
+        User user = userRepository.findByUsername(username);
+
+        ArrayList<String> myList = user.getMyList();
+        if(!myList.contains(comicId))
+        {
+            myList.add(comicId);
+        }
+        user.setMyList(myList);
+        userRepository.save(user);
+    }
+
+    public void removeFromMyList(String username, String comicId) {
+        User user = userRepository.findByUsername(username);
+
+        ArrayList<String> myList = user.getMyList();
+        if(myList.contains(comicId))
+        {
+            myList.remove(comicId);
+        }
+        user.setMyList(myList);
+        userRepository.save(user);
+    }
+
+	public List<Comic> getComicsFromSubscriptions(User user) {
+        List<String> subscriptions = user.getSubscriptions();
+        List<Comic> ret = new ArrayList<Comic>();
+        for (String subKey: subscriptions) {
+            List<Comic> coms = comicRepository.findBySeriesID(subKey);
+            ret.addAll(coms);
+        }
+		return ret;
+    }
+    
+    public List<Comic> getComicsFromSubscriptions(String username) {
+        User user = userRepository.findByUsername(username);
+        List<String> subscriptions = user.getSubscriptions();
+        List<Comic> ret = new ArrayList<Comic>();
+        for (String subKey: subscriptions) {
+            List<Comic> coms = comicRepository.findBySeriesID(subKey);
+            ret.addAll(coms);
+        }
+		return ret;
+	}
 
 
 }

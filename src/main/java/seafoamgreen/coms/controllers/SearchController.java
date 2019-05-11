@@ -11,6 +11,7 @@ import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Series;
 import seafoamgreen.coms.model.User;
 import seafoamgreen.coms.services.SearchService;
+import seafoamgreen.coms.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ import javax.servlet.http.HttpSession;
 public class SearchController {
     @Autowired
     SearchService searchService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/tag")
     public List<Comic> searchByTag(HttpServletRequest request, HttpServletResponse response) {
@@ -78,6 +82,8 @@ public class SearchController {
 
         HttpSession session = request.getSession(false);
         String activeUsername = (String)session.getAttribute("username");
+        User user = userService.findByUsername(activeUsername);
+        mav.addObject("user", user);
         mav.addObject("username", activeUsername);
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);

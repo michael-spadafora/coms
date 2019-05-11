@@ -21,10 +21,25 @@ public class User {
 
     private boolean isAdmin;
     private ArrayList<String> subscriptions = new ArrayList<String>();
+    private ArrayList<String> myList = new ArrayList<String>();
 
     private ArrayList<String> comicIdHistory = new ArrayList<String>();
 
     public User() {
+    }
+
+    /**
+     * @return the myList
+     */
+    public ArrayList<String> getMyList() {
+        return myList;
+    }
+
+    /**
+     * @param myList the myList to set
+     */
+    public void setMyList(ArrayList<String> myList) {
+        this.myList = myList;
     }
 
     /**
@@ -42,6 +57,10 @@ public class User {
     }
 
     public void addComicToHistory(String comicId){
+        if (comicIdHistory.contains(comicId)) {
+            comicIdHistory.remove(comicId);
+        }
+        
         comicIdHistory.add(0, comicId);
         if (comicIdHistory.size() > 5) {
             comicIdHistory.remove(5);
@@ -137,6 +156,9 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+
+
+
     }
 
     public String getId() {
