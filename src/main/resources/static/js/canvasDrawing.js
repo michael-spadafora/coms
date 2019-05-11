@@ -390,11 +390,11 @@ document.getElementById('imgLoader').onchange = function handleImage(e) {
                 padding: 10,
                 cornersize: 10
             });
-            if (image.width > 350 && (image.width >= image.height)){
-              image.scale(350/image.getScaledWidth());
+            if (image.width > canvas.width && (image.width >= image.height)){
+              image.scale(canvas.width/image.getScaledWidth());
             }
-            if (image.height > 1000 && (image.height >= image.width)){
-              image.scale(1050/image.getScaledHeight());
+            if (image.height > canvas.height && (image.height >= image.width)){
+              image.scale(canvas.height/image.getScaledHeight());
             }
             canvas.add(image);
             // updateModifications(true);
@@ -907,13 +907,13 @@ function group() {
     if (canvas.viewportTransform[5] > 0) {
         five = 0;
     }
-    if (four < -(1050*zero - 1050)) {
-        four = -(1050*zero - 1050)
+    if (four < -(canvas.width*zero - canvas.width)) {
+        four = -(canvas.width*zero - canvas.width)
     }
 
-    if (five < -(350*zero - 350)){
+    if (five < -(canvas.height*zero - canvas.height)){
         console.log("too low");
-        five = -(350*zero - 350);
+        five = -(canvas.height*zero - canvas.height);
     }
     canvas.setViewportTransform([zero, one, two, three, four, five]);
     canvas.renderAll();

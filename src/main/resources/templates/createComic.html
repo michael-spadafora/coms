@@ -152,17 +152,7 @@
       </div>
 
       <div class="row" style="margin-left:35px">
-         <select id="drawing-mode-selector">
-            <option>Pencil</option>
-            <option>Circle</option>
-            <option>Spray</option>
-            <option>Poka-dots</option>
-            <option>hline</option>
-            <option>vline</option>
-            <option>square</option>
-            <option>diamond</option>
-         </select>
-         <input type="color" value="#000000" id="drawing-color">
+         
 
          <select id="fonts" onchange="fontchange()">
             <option value="Arial">Arial</option>
@@ -182,6 +172,17 @@
             <option value="Arial Black">Arial Black</option>
          </select>
          <input type="number"min="0" max="500" value="30" id="font-size" width="20px" height="10px">
+         <select id="drawing-mode-selector">
+            <option>Pencil</option>
+            <option>Circle</option>
+            <option>Spray</option>
+            <option>Poka-dots</option>
+            <option>hline</option>
+            <option>vline</option>
+            <option>square</option>
+            <option>diamond</option>
+         </select>
+         <input type="color" value="#000000" id="drawing-color">
          <!-- OUTLINE COLOR -->
          <label for="stroke">Outline Color</label>
          <input type="color" id="stroke" name="stroke" value="#000000" onchange="changeStroke()">
@@ -310,7 +311,7 @@
 
          <!-- CANVAS -->
          <div class="col" style="margin-left:50px">
-            <div id="mydiv" tabindex="0"/>
+            <div id="mydiv" tabindex="0">
             <canvas id="canvas" width="1200px" height="600px" style="border:1px solid #000000;"></canvas>
          </div>
 
