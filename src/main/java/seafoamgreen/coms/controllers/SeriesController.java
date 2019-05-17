@@ -111,14 +111,17 @@ public class SeriesController {
     {
         String collaborator = request.getParameter("collabUsername");
         String seriesId = request.getParameter("collabSeriesId");
+        String currentUser = (String)request.getSession().getAttribute("username");
 
         System.out.println("==ADD COLLAB=");
         System.out.println(collaborator);
         System.out.println(seriesId);
 
         User user = userService.findByUsername(collaborator);
-        if(user != null)
+
+        if(user != null && !currentUser.equals(collaborator))
         {
+
             user.addSeriesId(seriesId);
             userRepository.save(user);
 
@@ -151,7 +154,10 @@ public class SeriesController {
             for(String id : user.getCollabSeriesIds())
             {
                 Series series = seriesService.findByID(id).get();
-                seriesList.add(series);
+                if(!seriesList.contains(series))
+                {
+                    seriesList.add(series);
+                }
             }
         }
 
