@@ -139,7 +139,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-md-auto mt-2">
-                <button th:data-thing="${series.key.getId()}" onclick="setCollabSeriesId(this.getAttribute('data-thing'));" type="button" class="btn btn-info" style = "border: none ; color: white; background-color: #EE316A" data-toggle="modal" data-target="#collabModal">Add Collab</button>
+                <button th:data-thing="${series.key.getId()}" onclick="setCollabSeriesId(this.getAttribute('data-thing'));" type="button" class="btn btn-info" style = "border: none ; color: white; background-color: #EE316A" data-toggle="modal" data-target="#collabModal">Add Collaborator</button>
                 <button th:data-thing="${series.key.getId()}" onclick="deleteSeries(this.getAttribute('data-thing'));" id="deleteSeries" style=" color: white; background-color: #EE316A" class="btn ">Delete Series</button>
             </div>
         </div>
@@ -232,7 +232,7 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">New Series</h4>
+                <h4 class="modal-title">Add New Collaborator</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
