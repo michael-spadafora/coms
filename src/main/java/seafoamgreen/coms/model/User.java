@@ -24,6 +24,7 @@ public class User {
     private ArrayList<String> myList = new ArrayList<String>();
 
     private ArrayList<String> comicIdHistory = new ArrayList<String>();
+    private ArrayList<String> collabSeriesIds = new ArrayList<String>();
 
     public User() {
     }
@@ -56,6 +57,21 @@ public class User {
         this.comicIdHistory = comicIdHistory;
     }
 
+
+    public ArrayList<String> getCollabSeriesIds() {
+        return collabSeriesIds;
+    }
+
+    public void setCollabSeriesIds(ArrayList<String> collabSeriesIds) {
+        this.collabSeriesIds = collabSeriesIds;
+    }
+
+    public void addSeriesId(String seriesId){
+        if (!collabSeriesIds.contains(seriesId)) {
+            collabSeriesIds.add(seriesId);
+        }
+
+    }
     public void addComicToHistory(String comicId){
         if (comicIdHistory.contains(comicId)) {
             comicIdHistory.remove(comicId);
