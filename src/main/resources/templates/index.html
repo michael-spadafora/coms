@@ -47,6 +47,17 @@
         .testimonial-group > .row::-webkit-scrollbar {display: none;}
         .testimonial-group > .row > .col-xs-4{display:inline-block;float:none;}
         .testimonial-group > .row > .col-xs-4 > a > img{height:150px; width:250px;padding:3px}
+
+        .showcases{
+            background: rgb(36,247,156);
+            background: linear-gradient(198deg, rgba(36,247,156,1) 27%, rgba(113,238,184,1) 76%);
+            border-radius: 10px;
+            box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+            padding:20px 40px 0px 40px;
+            margin-top:20px;
+            margin-bottom: 20px;
+        }
+
     </style>
 
 </head>
@@ -122,54 +133,62 @@
 
     <div class="listOfComics">
 
-        <h3>Continue Reading</h3>
-        <div class="continue testimonial-group">
-            <div class="row">
-                <div class="col-xs-4" th:each="comic: ${history}">
-                    <div class="card" style="width: 15rem;" >
-                        <div class="card-body">
-                            <a th:href="@{'/comic/view/'+ ${comic.getId()}}">
-                                <img th:src="${comic.getThumbnailBlob()}" width="200" height="150">
-                            </a>
-                            <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                            <div th:text="${comic.getUsername()}"></div>
-                            <div th:if = "${user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
-                            <div th:if = "${!user.getMyList().contains(comic.getId())}"><a th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
+        <div  class = "showcases" >
+            <h3>Continue Reading</h3>
+            <div class="continue testimonial-group">
+                 <div class="row">
+                    <div class="col-xs-4" th:each="comic: ${history}">
+                        <div class="card" style="width: 15rem;" >
+                            <div class="card-body">
+                                <a th:href="@{'/comic/view/'+ ${comic.getId()}}">
+                                    <img th:src="${comic.getThumbnailBlob()}" width="200" height="150">
+                                </a>
+                                <div th:text = "${comic.getSeriesName()}"></div>
+                                <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                                <div th:text="'By:' + ${comic.getUsername()}"></div>
+                                <div th:if = "${user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
+                                <div th:if = "${!user.getMyList().contains(comic.getId())}"><a th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  class = "showcases" >
+            <h3>Popular on COMS</h3>
+            <div class="popular testimonial-group">
+                <div class="row">
+                    <div class="col-xs-4" th:each="comic: ${popularComics}">
+                        <div class="card" style="width: 15rem;">
+                            <div class="card-body">
+                                <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
+                                <div th:text = "${comic.getSeriesName()}"></div>
+                                <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                                <div th:text="${comic.getUsername()}"></div>
+                                <div th:if = "${user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
+                                <div th:if = "${!user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <h3>Popular on COMS</h3>
-        <div class="popular testimonial-group">
-            <div class="row">
-                <div class="col-xs-4" th:each="comic: ${popularComics}">
-                    <div class="card" style="width: 15rem;">
-                        <div class="card-body">
-                            <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
-                            <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                            <div th:text="${comic.getUsername()}"></div>
-                            <div th:if = "${user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
-                            <div th:if = "${!user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div  class = "showcases" >
+            <h3>Recommended for You</h3>
+            <div class="recommended testimonial-group">
+             <div class="row">
+                    <div class="col-xs-4" th:each="comic: ${recommendedComics}">
+                        <div class="card" style="width: 15rem;">
+                            <div class="card-body">
+                                <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
+                                <div th:text = "${comic.getSeriesName()}"></div>
+                                <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                                <div th:text="${comic.getUsername()}"></div>
+                                <div th:if = "${user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
+                                <div th:if = "${!user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
 
-        <h3>Recommended for You</h3>
-        <div class="recommended testimonial-group">
-            <div class="row">
-                <div class="col-xs-4" th:each="comic: ${recommendedComics}">
-                    <div class="card" style="width: 15rem;">
-                        <div class="card-body">
-                            <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
-                            <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                            <div th:text="${comic.getUsername()}"></div>
-                            <div th:if = "${user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
-                            <div th:if = "${!user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
-
+                            </div>
                         </div>
                     </div>
                 </div>

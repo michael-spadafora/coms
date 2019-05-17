@@ -1,14 +1,17 @@
 package seafoamgreen.coms.controllers;
 
 import seafoamgreen.coms.model.Comic;
-import seafoamgreen.coms.model.Panel;
+import seafoamgreen.coms.model.User;
+
 import seafoamgreen.coms.model.Series;
+import seafoamgreen.coms.repositories.UserRepository;
 import seafoamgreen.coms.services.ComicService;
 import seafoamgreen.coms.services.PanelService;
 import seafoamgreen.coms.services.SeriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import seafoamgreen.coms.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +33,12 @@ public class SeriesController {
     @Autowired
     PanelService panelService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    UserRepository userRepository;
+
     @PostMapping("/delete")
     public ModelAndView deleteSeries(HttpServletRequest request)
     {
@@ -37,6 +46,8 @@ public class SeriesController {
         String seriesId = (String)request.getParameter("seriesId");
         seriesService.deleteById(seriesId);
 
+
+        /*
         //TODO: remove the series from users' subscriptions
 
         HttpSession session = request.getSession();
@@ -68,6 +79,8 @@ public class SeriesController {
         //Map each series to a list of comics
 
         return mav;
+        */
+        return new ModelAndView( "redirect:/series/mySeries");
     }
 
 
@@ -90,27 +103,30 @@ public class SeriesController {
 
         seriesService.create(seriesName, username);
 
-        List<Series> seriesList = seriesService.findAllByUsername(username);
-
-        //TODO: ADD SORT
-
-        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
-
-        for(Series series : seriesList)
-        {
-            map.put(series, comicService.findAllBySeriesId(series.getId()));
-        }
-        //Get all of users series
-
-        mav.addObject("seriesMap", map);
-
-        System.out.println(map);
-
-        //Map each series to a list of comics
-
-        return mav;
+        return new ModelAndView( "redirect:/series/mySeries");
     }
 
+    @PostMapping("/addCollab")
+    public ModelAndView addCollab(HttpServletRequest request)
+    {
+        String collaborator = request.getParameter("collabUsername");
+        String seriesId = request.getParameter("collabSeriesId");
+
+        System.out.println("==ADD COLLAB=");
+        System.out.println(collaborator);
+        System.out.println(seriesId);
+
+        User user = userService.findByUsername(collaborator);
+        if(user != null)
+        {
+            user.addSeriesId(seriesId);
+            userRepository.save(user);
+
+        }
+
+
+        return new ModelAndView( "redirect:/series/mySeries");
+    }
     @GetMapping ("/mySeries")
     public ModelAndView viewMySeries(HttpServletRequest request)
     {
@@ -126,8 +142,21 @@ public class SeriesController {
 
         String username = (String)session.getAttribute("username");
 
+        User user = userService.findByUsername(username);
 
         List<Series> seriesList = seriesService.findAllByUsername(username);
+
+        if(user.getCollabSeriesIds() != null)
+        {
+            for(String id : user.getCollabSeriesIds())
+            {
+                Series series = seriesService.findByID(id).get();
+                seriesList.add(series);
+            }
+        }
+
+
+
         Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
         System.out.println(seriesList);
         for(Series series : seriesList)
