@@ -70,6 +70,17 @@ public class InteractionController {
         return new ModelAndView( "redirect:/comic/view/" + comicId);
     }
 
+    @GetMapping("/subscribers/removeByComic/{comicID}")
+    public ModelAndView unsubscribe(HttpServletRequest request, HttpServletResponse response, @PathVariable String comicID) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return null;
+
+        String username = (String) session.getAttribute("username");
+
+        interactionService.unsubscribeByComic(comicID, username);
+        return new ModelAndView( "redirect:/subscriptions");
+    }
+
     
     @GetMapping("/subscribers/add") 
     public void subscribeAdd(HttpServletRequest request, HttpServletResponse response) {
