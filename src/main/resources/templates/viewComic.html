@@ -49,13 +49,12 @@
         .subscribe{float:right;color:white;background-color:#FF4141;border: 1px #ff0000 solid;padding:5px 15px}
 
         .commentSection{padding-left:25px;margin-top:25px}
-        .commentForm img, .commentForm input{display: inline-block}
-        .commentForm input{background:transparent;border: none; border-bottom: 1px solid lightgrey;margin-left:10px;width:35%}
-        .commentForm button{border-style:none;margin-left:15px; padding:7px 15px;}
+        #commentForm img, #commentForm input{display: inline-block}
+        #commentForm input{background:transparent;border: none; border-bottom: 1px solid lightgrey;margin-left:10px;width:35%}
+        #commentForm button{border-style:none;margin-left:15px; padding:7px 15px;}
 
-        .comments{float:left;;margin-top:50px}
-        #comment1{margin-left:10px}
-        .commentActions{margin-left:50px;}
+        .comments{float:left;;margin-top:20px}
+        .comment{margin-top:15px}
 
         .recommended{float:right;padding-right:100px}
 
@@ -146,7 +145,7 @@
     <div class="heading">
         <span id="comicTitle" th:text="${comic.getComicName()}"></span>
         <div class="actionButtons">
-            <form action = "/interaction/vote" method ="post">
+            <form action = "/interaction/vote" method ="post" style="float:left;margin-right:10px">
                 <button type="submit" id="upvote"  style = "background: none; padding: 0px; border: none;" >
                     <span class="fa fa-arrow-up"></span>
                 </button>
@@ -154,8 +153,10 @@
                 <input name = "value" value = "1" hidden>
                 <input name = "username" th:value = "${username}" hidden>
             </form>
-            <span th:text="${comic.getScore()}"></span>
-            <form action = "/interaction/vote" method ="post">
+
+            <span th:text="${comic.getScore()}" style="margin-right:10px"></span>
+
+            <form action = "/interaction/vote" method ="post" style="float:right">
                 <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
                     <i class="fa fa-arrow-down"></i>
                 </button>
@@ -163,8 +164,6 @@
                 <input name = "value" value = "-1" hidden>
                 <input name = "username" th:value = "${username}" hidden>
             </form>
-
-            <button class="actions"><span class="fa fa-plus"></span> Add to List</button>
         </div>
     </div>
 
@@ -181,30 +180,33 @@
             </form>
         </div>
     </div>
+
     <div class="commentSection">
         <div class="user">
-            <form class="commentForm">
+            <form id="commentForm" action="/interaction/comment/" method="post">
                 <img class="profileImages" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+1.png">
-                <input placeholder="Type your comment">
-                <button>Comment</button>
+                <input name="comment" placeholder="Type your comment">
+                <input name="comicId" th:value="${comic.getId()}" hidden>
+                <button onclick= "form_submit()" type="submit">Comment</button>
             </form>
         </div>
 
         <div class="comments">
-            <div class="comment1">
+            <div class="comment" th:each="comment: ${comments}">
                 <a href="viewUser.html"><img class="profileImages" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+2.png"></a>
-                <span id="comment1">Love your stuff!</span>
-                <div class="commentActions">
-                    <button class="actions"><span class="fa fa-arrow-up"></span> 386</button>
-                    <button class="actions"><span class="fa fa-arrow-down"></span> 4</button>
-                    <button class="actions">Reply</button>
-                </div>
+                <span th:text="${comment.getCommentBody()}"></span>
             </div>
         </div>
 
     </div>
 
 </div>
+
+    <script type="text/javascript">
+        function form_submit() {
+            document.getElementById("commentForm").submit();
+        }
+    </script>
 </body>
 
 </html>
