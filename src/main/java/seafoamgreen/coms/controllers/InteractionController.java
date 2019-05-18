@@ -70,6 +70,17 @@ public class InteractionController {
         return new ModelAndView( "redirect:/comic/view/" + comicId);
     }
 
+    @GetMapping("/subscribers/removeByComic/{comicID}")
+    public ModelAndView unsubscribe(HttpServletRequest request, HttpServletResponse response, @PathVariable String comicID) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return null;
+
+        String username = (String) session.getAttribute("username");
+
+        interactionService.unsubscribeByComic(comicID, username);
+        return new ModelAndView( "redirect:/subscriptions");
+    }
+
     
     @GetMapping("/subscribers/add") 
     public void subscribeAdd(HttpServletRequest request, HttpServletResponse response) {
@@ -100,19 +111,18 @@ public class InteractionController {
     }
 
     @PostMapping("/comment")
-    public void postComment(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView postComment(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
-        if (session == null) return;
 
         String username = (String) session.getAttribute("username");
         String comment = request.getParameter("comment");
         String comicId = request.getParameter("comicId");
         if (comicId == null) {
             comicId = request.getParameter("comicID");
-        } 
+        }
         
         interactionService.postComment(username, comicId, comment);
 
-
+        return new ModelAndView( "redirect:/comic/view/" + comicId);
     }
 }

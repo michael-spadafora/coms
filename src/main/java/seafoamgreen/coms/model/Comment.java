@@ -32,8 +32,19 @@ public class Comment {
         this.dateTime = dateTime;
     }
 
-    
+    public String getUserId() {
+        return userId;
+    }
 
-    
+    public String getComicId() {
+        return comicId;
+    }
 
+    public String getCommentBody() {
+        return commentBody;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
 }
