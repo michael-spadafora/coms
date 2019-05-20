@@ -1,5 +1,4 @@
 // <canvas id="canvas" width="300" height="300"></canvas>
-// import {fabric} from 'fabric';
 var canvas = new fabric.Canvas('canvas', {
     isDrawingMode: false
     // backgroundColor : "white"
@@ -304,17 +303,29 @@ updateModifications(true);
 function changeStroke() {
     var x = document.getElementById("stroke").value;
     strokeColor = x;
-    canvas.getActiveObject().set("stroke", x);
-    canvas.renderAll();
-    updateModifications(true);
+    // console.log(x);
+    if (canvas.getActiveObject().get("stroke") == x) {
+        console.log("same color")
+    } else {
+        canvas.getActiveObject().set("stroke", x);
+        canvas.renderAll();
+        updateModifications(true);
+    }
 }
 
 function changeFill() {
     var x = document.getElementById("fill").value;
     fillColor = x;
-    canvas.getActiveObject().set("fill", x);
-    canvas.renderAll();
-    updateModifications(true);
+    // console.log(canvas.getActiveObject().get("fill"))
+    if (canvas.getActiveObject().get("fill") == x) {
+        console.log("same color")
+    } else {
+        console.log("color change")
+        canvas.getActiveObject().set("fill", x);
+        canvas.renderAll();
+        updateModifications(true);
+    }
+
 }
 
 function removeFill() {
@@ -801,15 +812,6 @@ function save() {
         }
     });
 
-
-    fetch('/savePanel', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json', 
-        },
-        body: requestBody
-    }).then(res => res.json()).then(res => console.log(res)).catch(error => alert('Exeption:' + error));
-    
 
 }
 */
