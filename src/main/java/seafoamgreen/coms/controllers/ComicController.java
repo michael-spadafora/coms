@@ -217,7 +217,6 @@ public class ComicController {
         }
 
         List<Comment> comments = interactionService.getCommentsForComicid(comicID);
-        System.out.println(comments);
         mav.addObject("comments", comments);
 
         return mav;

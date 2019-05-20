@@ -1,14 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <link rel="icon" type="image/png" href="/img/logo.png">
    <title>COMS.com</title>
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed" rel="stylesheet">
+   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-   <script src="https://unpkg.com/bootstrap-table@1.13.5/dist/bootstrap-table.min.js"></script>
-   <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.1.0/bootstrap.min.js"></script>
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
    <style>
       /* body{
       background:  url("./img/background.jpg");
@@ -31,13 +36,24 @@
       background-size: cover;
       /* color: #71eeb8; */
       }
-      nav {background-color: #71eeb8; border:none;font-family:'Open Sans', sans-serif;position:relative;}
+      nav {background-color: #000000; border:none;font-family:'Open Sans', sans-serif;position:relative;}
       .navbar-header{padding-right:50px}
-      .navbar-brand{color:#08442a}
-      .navbar-brand:hover{color:#08442a;}
-      .nav-item a{color:#08442a}
-      .nav-item a:hover{text-decoration: none;color:white}
+      .navbar-brand{color:#71eeb8}
+      .navbar-brand:hover{color:#88AA99;}
+      .nav-item a{color:#71eeb8}
+      .nav-item a:hover{text-decoration: none;color:#88AA99}
       .nav-item{margin-right:15px}
+      .nav-item .dropdown-menu{background-color:#2B2B2B}
+
+      #searchBox input[type=search]{width:15px;padding-left:5px;color:transparent;cursor:pointer;}
+      #searchBox input[type=search]:hover{}
+      #searchBox input[type=search]:focus{width:250px;padding-left:40px;color:#71eeb8;background-color:#000;cursor:auto;border-radius: 5px}
+      #searchBox-2 input:-moz-placeholder {color: transparent;}
+      #searchBox-2 input::-webkit-input-placeholder{color: transparent;}
+      #searchBox input[type=search]{background:url("/img/searchTransparent.png") no-repeat 9px center;width:35px;border: none;background-size:20px 20px;padding:5px}
+      input {outline: none;}
+      input[type=search] {-webkit-appearance: textfield;-webkit-box-sizing: content-box;font-family: inherit;font-size: 100%;}
+      input::-webkit-search-decoration, input::-webkit-search-cancel-button {display: none; }
 
       .container{margin-left:10px;margin-right:10px}
 
@@ -72,8 +88,56 @@
 <nav class="navbar navbar-toggleable-xs navbar-expand-md fixed-top">
    <div class="navbar-collapse collapse">
       <div class="navbar-header">
-         <a class="navbar-brand" th:href="@{/home}"><span class="fa fa-book"></span> COMS</a>
+         <a class="navbar-brand" th:href="@{/home}">
+            <img src="/img/logo.png" width="100px" height="35px">
+         </a>
       </div>
+      <ul class="navbar-nav mr-auto">
+         <li class="nav-item active" style="margin-top:8px">
+            <a th:href="@{/myList}">My List</a>
+         </li>
+         <li class="nav-item active" style="margin-top:8px">
+            <a th:href="@{/subscriptions}">Subscriptions</a>
+         </li>
+         <li class="nav-item active dropdown" style="margin-left:-3px">
+            <a class="nav-link dropdown-toggle" id="genreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+               Genre
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="genreDropdown">
+               <a class="dropdown-item" th:href="@{/comic/Funny}">Funny</a>
+               <a class="dropdown-item" th:href="@{/comic/Romance}">Romance</a>
+               <a class="dropdown-item" th:href="@{/comic/Kids}">Kids</a>
+            </div>
+         </li>
+      </ul>
+   </div>
+   <div class="navbar-collapse collapse">
+      <ul class="navbar-nav ml-auto">
+         <li class="nav-item" style="margin-top:5px">
+            <form id="searchBox" action="/search/keyword" method = "get">
+               <input name = "searchWord" type="search">
+            </form>
+         </li>
+         <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
+            <a th:href="@{/series/mySeries}"> My Creations</a>
+         </li>
+         <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
+         <li class="nav-item dropdown" th:if="${isLoggedIn}">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+               <span class="fa fa-user-circle-o" aria-hidden="true"></span>
+               <span th:text=" ${username}" style="margin-left:1px"> </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+               <a class="dropdown-item" th:href="@{/profile/inbox}">Inbox</a>
+               <a class="dropdown-item" th:href="@{/profile/self}">My Profile</a>
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
+            </div>
+         </li>
+         <li class="nav-item active" style="margin-top:8px" th:if="${notLoggedIn}">
+            <a th:href="@{/}"><span class="fa fa-sign-in"></span> Login</a>
+         </li>
+      </ul>
    </div>
 </nav>
 
