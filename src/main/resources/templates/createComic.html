@@ -169,6 +169,13 @@
             <option value="Arial Black">Arial Black</option>
          </select>
          <input type="number"min="0" max="500" value="30" id="font-size" width="20px" height="10px">
+
+
+         <!--
+         <button type="button" class="btn btn-info" onclick="removeFill()">
+            Remove Fill
+         </button>
+         -->
          <select id="drawing-mode-selector">
             <option>Pencil</option>
             <option>Circle</option>
@@ -180,19 +187,7 @@
             <option>diamond</option>
          </select>
          <input type="color" value="#000000" id="drawing-color">
-         <!-- OUTLINE COLOR -->
-         <label for="stroke">Outline Color</label>
-         <input type="color" id="stroke" name="stroke" value="#000000" onchange="changeStroke()">
-         <!-- FILL COLOR -->
-         <label for="fill">Fill Color</label>
-         <input type="color" id="fill" name="fill" value="#ffffff" onchange="changeFill()">
-         <!--
-         <button type="button" class="btn btn-info" onclick="removeFill()">
-            Remove Fill
-         </button>
-         -->
-
-         <label for="drawing-line-width">Line Width</label>
+         <label for="drawing-line-width">Drawing Width</label>
          <input type="number" min="1" max="500" value="15" id="drawing-line-width">
 
          <!-- SHADOW -->
@@ -202,7 +197,17 @@
          <input type="number" min="0" max="500" value="0" id="drawing-shadow-width">
          <label for="drawing-shadow-offset">Shadow Offset</label>
          <input type="number" min="0" max="500" size="4" value="30" id="drawing-shadow-offset">
+
+
+
+         <!-- OUTLINE COLOR -->
+         <label for="stroke">Outline Color</label>
+         <input type="color" id="stroke" name="stroke" value="#000000" onchange="changeStroke()">
+         <!-- FILL COLOR -->
+         <label for="fill">Fill Color</label>
+         <input type="color" id="fill" name="fill" value="#ffffff" onchange="changeFill()">
       </div>
+
 
       <div class="row">
          <!-- SIDE TOOLBAR -->
@@ -362,8 +367,9 @@
 
       <script src="/js/canvas-toBlob.js"></script>
       <script type="text/javascript" src = "/js/FileSaver.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min.js"></script>
-      <script type="text/javascript" src = "/js/canvasDrawing.js"></script>
+      <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min.js"></script>-->
+         <script type="text/javascript" src = "/js/fabric.js"></script>
+         <script type="text/javascript" src = "/js/canvasDrawing.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script>
           $(document).ready(function() {
