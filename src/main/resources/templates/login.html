@@ -44,6 +44,17 @@
         input::-webkit-search-decoration, input::-webkit-search-cancel-button {display: none; }
 
         .errorMessage{color:red;margin:0 auto;text-align:center}
+
+        html, body{
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            background-image: url("/img/myseries-background.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment:fixed;
+            background-position:center bottom;
+        }
     </style>
 </head>
 
@@ -64,9 +75,8 @@
     <div class="errorMessage" th:text="${RegisterError}"></div>
 
     <div class="signUp">
-        <button id="google">Login with Google</button>
-        <button id="facebook">Login with Facebook</button>
-        <div id="or"><span>or</span></div>
+        <h3>Welcome To</h3>
+        <img src = "/img/logo.png" width="120px" height="45px">
         <form method = "post" action = "/loginOrRegister">
             <div style = "margin:10px 0px 10px 0px">
                 <input class="inputField input-large" name = "username" type="text" required placeholder="Username"><br>
@@ -82,9 +92,7 @@
         </form>
     </div>
 
-    <div style="text-align: center;padding-top:10px">
-        <a>Forgot your password?</a>
-    </div>
+
 </div>
 </body>
 
