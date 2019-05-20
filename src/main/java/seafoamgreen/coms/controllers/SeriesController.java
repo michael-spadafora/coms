@@ -149,6 +149,10 @@ public class SeriesController {
 
         List<Series> seriesList = seriesService.findAllByUsername(username);
 
+
+        Map<Series, List<Comic>> collabMap = new HashMap<Series, List<Comic>>();
+
+
         if(user.getCollabSeriesIds() != null)
         {
             for(String id : user.getCollabSeriesIds())
@@ -156,7 +160,7 @@ public class SeriesController {
                 Series series = seriesService.findByID(id).get();
                 if(!seriesList.contains(series))
                 {
-                    seriesList.add(series);
+                    collabMap.put(series, comicService.findAllBySeriesId(id));
                 }
             }
         }
@@ -172,6 +176,7 @@ public class SeriesController {
         //Get all of users series
 
         mav.addObject("seriesMap", map);
+        mav.addObject("collabMap", collabMap);
         mav.addObject("username", username);
 
         //System.out.println(map);

@@ -146,9 +146,10 @@
         </a>
     </div>
 </div>
-
+1
 <div class="bottom">
     <div class="heading">
+        <h5 th:text="${comic.getSeriesName()}"></h5>
         <span id="comicTitle" th:text="${comic.getComicName()}"></span>
         <div class="actionButtons">
             <form action = "/interaction/vote" method ="post" style="float:left;margin-right:10px">
@@ -177,7 +178,7 @@
     </div>
 
     <div>
-        <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="${comic.getUsername()}"></span></a>
+        <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="'By: ' + ${comic.getUsername()}"></span></a>
         <div style="padding-right:100px">
             <form th:if = "${!isSubscribed}" action = "/interaction/subscribers/addByComic/">
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
