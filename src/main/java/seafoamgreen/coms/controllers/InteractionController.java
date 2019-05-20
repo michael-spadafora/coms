@@ -99,9 +99,20 @@ public class InteractionController {
         if (session == null) return;
 
         String username = (String) session.getAttribute("username");
-        String comicId = request.getParameter("seriesId"); //possibly need to switch to id
+        String seriesId = request.getParameter("seriesId"); //possibly need to switch to id
 
-        interactionService.unsubscribe(comicId, username);
+        interactionService.unsubscribe(seriesId, username);
+    }
+
+    @GetMapping("/subscribers/remove/{seriesID}")
+    public ModelAndView unsubscribeBySeries(HttpServletRequest request, HttpServletResponse response, @PathVariable String seriesID) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return null;
+
+        String username = (String) session.getAttribute("username");
+
+        interactionService.unsubscribe(seriesID, username);
+        return new ModelAndView( "redirect:/subscriptions");
     }
 
 

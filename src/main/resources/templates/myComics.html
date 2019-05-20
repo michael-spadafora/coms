@@ -179,11 +179,47 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
     </div>
 
 </div>
+
 <div class="row justify-content-md-center">
     <div class="col-md-auto mt-4">
         <button type="button" class="btn btn-info" style = "margin-bottom: 15px ;border: none ; color: black; background: rgb(36,247,156);" data-toggle="modal" data-target="#createSeriesModal">Add New Series</button>
     </div>
 </div>
+
+<div class="container">
+    <h2>My Collaborations</h2>
+    <div class = "series-box mt-4 mb-4" th:each="series: ${collabMap}">
+        <div class="row justify-content-center">
+            <div class="col-md-auto mt-2">
+                <h3 th:text="${series.key.getSeriesName()}" style="display:inline"></h3>
+            </div>
+
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto mt-2">
+                <button th:data-thing="${series.key.getId()}" onclick="setCollabSeriesId(this.getAttribute('data-thing'));" type="button" class="btn btn-info" style = "border: none ; color: white; background-color: #EE316A" data-toggle="modal" data-target="#collabModal">Add Collaborator</button>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="mb-4" th:each="comic: ${series.value}">
+                <div class="card mt-2 mr-2 ml-2 " style="width: 18rem;height:20rem ">
+                    <div class="card-body " style = "background: rgb(255,255,255);
+background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 95%); ;border-radius: 10px;">
+                        <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                        <a id="" th:href="@{'/comic/view/'+ ${comic.getId()}}"><img style=" border: 1px solid #ddd;border-radius: 4px;
+  padding: 5px; ;width: 100%;height: 15vw; object-fit: cover; " th:src="${comic.getThumbnailBlob()}" ></a>
+                        <div class = "mt-2" style = "text-align: center">
+                        <a th:data-thing="${comic.getId()}" onclick="editComic(this.getAttribute('data-thing'));" style = "color: white; background-color: #79BAEC" class="btn">Edit</a>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
 <div class="modal fade" id="createComicModal">
     <div class="modal-dialog">
