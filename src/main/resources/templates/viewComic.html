@@ -61,6 +61,16 @@
 
         .bottom > div > a{color:black}
         .bottom > div > a:hover{text-decoration: none;}
+        html, body{
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            background-image: url("/img/myseries-background.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment:fixed;
+            background-position:center bottom;
+        }
     </style>
 </head>
 
@@ -144,14 +154,16 @@
         </a>
     </div>
 </div>
-
+1
 <div class="bottom">
     <div class="heading">
+        <h5 th:text="${comic.getSeriesName()}"></h5>
         <span id="comicTitle" th:text="${comic.getComicName()}"></span>
         <div class="actionButtons">
             <form action = "/interaction/vote" method ="post" style="float:left;margin-right:10px">
                 <button type="submit" id="upvote"  style = "background: none; padding: 0px; border: none;" >
-                    <span class="fa fa-arrow-up"></span>
+                    <span th:if = "${!upvoted}" class="fa fa-arrow-up" ></span>
+                    <span th:if = "${upvoted}" class="fa fa-arrow-down"></span>
                 </button>
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
                 <input name = "value" value = "1" hidden>
@@ -160,6 +172,7 @@
 
             <span th:text="${comic.getScore()}" style="margin-right:10px"></span>
 
+            <!--
             <form action = "/interaction/vote" method ="post" style="float:right">
                 <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
                     <i class="fa fa-arrow-down"></i>
@@ -168,11 +181,12 @@
                 <input name = "value" value = "-1" hidden>
                 <input name = "username" th:value = "${username}" hidden>
             </form>
+            -->
         </div>
     </div>
 
     <div>
-        <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="${comic.getUsername()}"></span></a>
+        <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="'By: ' + ${comic.getUsername()}"></span></a>
         <div style="padding-right:100px">
             <form th:if = "${!isSubscribed}" action = "/interaction/subscribers/addByComic/">
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>

@@ -218,6 +218,13 @@ public class ComicController {
 
         List<Comment> comments = interactionService.getCommentsForComicid(comicID);
         mav.addObject("comments", comments);
+        if(user.getUpvotedComicIds().contains(comicID))
+        {
+            mav.addObject("upvoted", true);
+        }
+        else {
+            mav.addObject("upvoted", false);
+        }
 
         return mav;
 
