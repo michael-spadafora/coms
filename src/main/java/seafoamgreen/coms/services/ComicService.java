@@ -59,6 +59,7 @@ public class ComicService {
         Comic comic = new Comic(Username, comicName, SeriesID);
         comic.setTags(tokenizeTagString(tagString));
         //TODO: remove this line v
+        comic.setSeriesName(seriesRepository.findById(SeriesID).get().getSeriesName());
         comic.setDateTime(publishDate);
         Comic newComic = comicRepository.save(comic);
         Panel firstPanel = new Panel(Username, newComic.getId(), "{\"version\":\"2.7.0\",\"objects\":[]}");

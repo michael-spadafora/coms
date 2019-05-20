@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" type="image/png" href="/img/logo.png">
     <title>COMS.com</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -14,21 +15,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <style>
-        nav {background-color: #71eeb8; border:none;font-family:'Open Sans', sans-serif;position:relative;}
+        nav {background-color: #000000; border:none;font-family:'Open Sans', sans-serif;position:relative;}
         .navbar-header{padding-right:50px}
-        .navbar-brand{color:#08442a}
-        .navbar-brand:hover{color:#08442a;}
-        .nav-item a{color:#08442a}
-        .nav-item a:hover{text-decoration: none;color:white}
+        .navbar-brand{color:#71eeb8}
+        .navbar-brand:hover{color:#88AA99;}
+        .nav-item a{color:#71eeb8}
+        .nav-item a:hover{text-decoration: none;color:#88AA99}
         .nav-item{margin-right:15px}
+        .nav-item .dropdown-menu{background-color:#2B2B2B}
 
-        #searchBox{margin-top:3px}
         #searchBox input[type=search]{width:15px;padding-left:5px;color:transparent;cursor:pointer;}
-        #searchBox input[type=search]:hover{background-color:none}
-        #searchBox input[type=search]:focus{width:250px;padding-left:40px;color:#000;background-color:#fff;cursor:auto;border-radius: 5px}
+        #searchBox input[type=search]:hover{}
+        #searchBox input[type=search]:focus{width:250px;padding-left:40px;color:#71eeb8;background-color:#000;cursor:auto;border-radius: 5px}
         #searchBox-2 input:-moz-placeholder {color: transparent;}
         #searchBox-2 input::-webkit-input-placeholder{color: transparent;}
-        #searchBox input[type=search]{background:url(https://png.icons8.com/search) no-repeat 9px center;width:35px;border: none;background-size:20px 20px;padding:5px}
+        #searchBox input[type=search]{background:url("/img/searchTransparent.png") no-repeat 9px center;width:35px;border: none;background-size:20px 20px;padding:5px}
         input {outline: none;}
         input[type=search] {-webkit-appearance: textfield;-webkit-box-sizing: content-box;font-family: inherit;font-size: 100%;}
         input::-webkit-search-decoration, input::-webkit-search-cancel-button {display: none; }
@@ -49,13 +50,12 @@
         .subscribe{float:right;color:white;background-color:#FF4141;border: 1px #ff0000 solid;padding:5px 15px}
 
         .commentSection{padding-left:25px;margin-top:25px}
-        .commentForm img, .commentForm input{display: inline-block}
-        .commentForm input{background:transparent;border: none; border-bottom: 1px solid lightgrey;margin-left:10px;width:35%}
-        .commentForm button{border-style:none;margin-left:15px; padding:7px 15px;}
+        #commentForm img, #commentForm input{display: inline-block}
+        #commentForm input{background:transparent;border: none; border-bottom: 1px solid lightgrey;margin-left:10px;width:35%}
+        #commentForm button{border-style:none;margin-left:15px; padding:7px 15px;}
 
-        .comments{float:left;;margin-top:50px}
-        #comment1{margin-left:10px}
-        .commentActions{margin-left:50px;}
+        .comments{float:left;;margin-top:20px}
+        .comment{margin-top:15px}
 
         .recommended{float:right;padding-right:100px}
 
@@ -63,19 +63,34 @@
 
         .bottom > div > a{color:black}
         .bottom > div > a:hover{text-decoration: none;}
+        html, body{
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            background-image: url("/img/myseries-background.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment:fixed;
+            background-position:center bottom;
+        }
     </style>
 </head>
 
 <nav class="navbar navbar-toggleable-xs navbar-expand-md fixed-top">
     <div class="navbar-collapse collapse">
         <div class="navbar-header">
-            <a class="navbar-brand" th:href="@{/home}"><span class="fa fa-book"></span> COMS</a>
+            <a class="navbar-brand" th:href="@{/home}">
+                <img src="/img/logo.png" width="100px" height="35px">
+            </a>
         </div>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active" style="margin-top:8px">
                 <a th:href="@{/myList}">My List</a>
             </li>
-            <li class="nav-item active dropdown">
+            <li class="nav-item active" style="margin-top:8px">
+                <a th:href="@{/subscriptions}">Subscriptions</a>
+            </li>
+            <li class="nav-item active dropdown" style="margin-left:-3px">
                 <a class="nav-link dropdown-toggle" id="genreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
                     Genre
                 </a>
@@ -89,7 +104,7 @@
     </div>
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
+            <li class="nav-item" style="margin-top:5px">
                 <form id="searchBox" action="/search/keyword" method = "get">
                     <input name = "searchWord" type="search">
                 </form>
@@ -141,21 +156,26 @@
         </a>
     </div>
 </div>
-
+1
 <div class="bottom">
     <div class="heading">
+        <h5 th:text="${comic.getSeriesName()}"></h5>
         <span id="comicTitle" th:text="${comic.getComicName()}"></span>
         <div class="actionButtons">
-            <form action = "/interaction/vote" method ="post">
+            <form action = "/interaction/vote" method ="post" style="float:left;margin-right:10px">
                 <button type="submit" id="upvote"  style = "background: none; padding: 0px; border: none;" >
-                    <span class="fa fa-arrow-up"></span>
+                    <span th:if = "${!upvoted}" class="fa fa-arrow-up" ></span>
+                    <span th:if = "${upvoted}" class="fa fa-arrow-down"></span>
                 </button>
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
                 <input name = "value" value = "1" hidden>
                 <input name = "username" th:value = "${username}" hidden>
             </form>
-            <span th:text="${comic.getScore()}"></span>
-            <form action = "/interaction/vote" method ="post">
+
+            <span th:text="${comic.getScore()}" style="margin-right:10px"></span>
+
+            <!--
+            <form action = "/interaction/vote" method ="post" style="float:right">
                 <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
                     <i class="fa fa-arrow-down"></i>
                 </button>
@@ -163,13 +183,12 @@
                 <input name = "value" value = "-1" hidden>
                 <input name = "username" th:value = "${username}" hidden>
             </form>
-
-            <button class="actions"><span class="fa fa-plus"></span> Add to List</button>
+            -->
         </div>
     </div>
 
     <div>
-        <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="${comic.getUsername()}"></span></a>
+        <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="'By: ' + ${comic.getUsername()}"></span></a>
         <div style="padding-right:100px">
             <form th:if = "${!isSubscribed}" action = "/interaction/subscribers/addByComic/">
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
@@ -181,30 +200,33 @@
             </form>
         </div>
     </div>
+
     <div class="commentSection">
         <div class="user">
-            <form class="commentForm">
+            <form id="commentForm" action="/interaction/comment/" method="post">
                 <img class="profileImages" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+1.png">
-                <input placeholder="Type your comment">
-                <button>Comment</button>
+                <input name="comment" placeholder="Type your comment">
+                <input name="comicId" th:value="${comic.getId()}" hidden>
+                <button onclick= "form_submit()" type="submit">Comment</button>
             </form>
         </div>
 
         <div class="comments">
-            <div class="comment1">
+            <div class="comment" th:each="comment: ${comments}">
                 <a href="viewUser.html"><img class="profileImages" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+2.png"></a>
-                <span id="comment1">Love your stuff!</span>
-                <div class="commentActions">
-                    <button class="actions"><span class="fa fa-arrow-up"></span> 386</button>
-                    <button class="actions"><span class="fa fa-arrow-down"></span> 4</button>
-                    <button class="actions">Reply</button>
-                </div>
+                <span th:text="${comment.getCommentBody()}"></span>
             </div>
         </div>
 
     </div>
 
 </div>
+
+    <script type="text/javascript">
+        function form_submit() {
+            document.getElementById("commentForm").submit();
+        }
+    </script>
 </body>
 
 </html>

@@ -11,6 +11,6 @@ import java.util.Optional;
 
 public interface CommentRepository extends MongoRepository<Comment, String> {
 
-    @Query("{ 'comicID' : ?0 }")
+    @Query("{ 'comicId' : ?0 }")
 	List<Comment> findAllByComicId(String comicId, Sort sort);
 }

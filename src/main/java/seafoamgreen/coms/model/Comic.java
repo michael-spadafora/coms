@@ -19,6 +19,16 @@ public class Comic {
     private String comicName;
     //Series that comic belongs to
     private String seriesID;
+    private String seriesName;
+
+    public String getSeriesName() {
+        return seriesName;
+    }
+
+    public void setSeriesName(String seriesName) {
+        this.seriesName = seriesName;
+    }
+
     //List of Panels within the comic
     private List<String> panelList;
     //List of Tags within the comic

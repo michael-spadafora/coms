@@ -1,11 +1,8 @@
 package seafoamgreen.coms.controllers;
 
 
-import seafoamgreen.coms.model.Comic;
-import seafoamgreen.coms.model.Panel;
-import seafoamgreen.coms.model.Series;
-import seafoamgreen.coms.model.User;
-import seafoamgreen.coms.services.ComicService;
+import seafoamgreen.coms.model.*;
+import seafoamgreen.coms.services.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import seafoamgreen.coms.services.PanelService;
-import seafoamgreen.coms.services.SeriesService;
-import seafoamgreen.coms.services.UserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +38,8 @@ public class ComicController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    InteractionService interactionService;
 
 
     @PostMapping("/create")
@@ -220,6 +215,18 @@ public class ComicController {
         {
             mav.addObject("isSubscribed",false);
         }
+
+        List<Comment> comments = interactionService.getCommentsForComicid(comicID);
+        System.out.println(comments);
+        mav.addObject("comments", comments);
+        if(user.getUpvotedComicIds().contains(comicID))
+        {
+            mav.addObject("upvoted", true);
+        }
+        else {
+            mav.addObject("upvoted", false);
+        }
+
         return mav;
 
     }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" type="image/png" href="/img/logo.png">
     <title>COMS.com</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -14,28 +15,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <style>
-        nav {background-color: #71eeb8; border:none;font-family:'Open Sans', sans-serif;position:relative;}
+        nav {background-color: #000000; border:none;font-family:'Open Sans', sans-serif;position:relative;}
         .navbar-header{padding-right:50px}
-        .navbar-brand{color:#08442a}
-        .navbar-brand:hover{color:#08442a;}
-        .nav-item a{color:#08442a}
-        .nav-item a:hover{text-decoration: none;color:white}
+        .navbar-brand{color:#71eeb8}
+        .navbar-brand:hover{color:#88AA99;}
+        .nav-item a{color:#71eeb8}
+        .nav-item a:hover{text-decoration: none;color:#88AA99}
         .nav-item{margin-right:15px}
+        .nav-item .dropdown-menu{background-color:#2B2B2B}
 
-        #searchBox{margin-top:3px}
         #searchBox input[type=search]{width:15px;padding-left:5px;color:transparent;cursor:pointer;}
-        #searchBox input[type=search]:hover{background-color:none}
-        #searchBox input[type=search]:focus{width:250px;padding-left:40px;color:#000;background-color:#fff;cursor:auto;border-radius: 5px}
+        #searchBox input[type=search]:hover{}
+        #searchBox input[type=search]:focus{width:250px;padding-left:40px;color:#71eeb8;background-color:#000;cursor:auto;border-radius: 5px}
         #searchBox-2 input:-moz-placeholder {color: transparent;}
         #searchBox-2 input::-webkit-input-placeholder{color: transparent;}
-        #searchBox input[type=search]{background:url(https://png.icons8.com/search) no-repeat 9px center;width:35px;border: none;background-size:20px 20px;padding:5px}
+        #searchBox input[type=search]{background:url("/img/searchTransparent.png") no-repeat 9px center;width:35px;border: none;background-size:20px 20px;padding:5px}
         input {outline: none;}
         input[type=search] {-webkit-appearance: textfield;-webkit-box-sizing: content-box;font-family: inherit;font-size: 100%;}
         input::-webkit-search-decoration, input::-webkit-search-cancel-button {display: none; }
 
         .container{margin-top:7%;}
         h2{text-align: center;padding-bottom:15px}
-        img{object-fit: cover; width:250px;height:200px}
+        .card-body img{object-fit: cover; width:250px;height:200px}
         .col-md-3{margin-bottom:3%;margin-right:3%;}
         .series-box{
             background: rgb(36,247,156);
@@ -77,13 +78,18 @@
 <nav class="navbar navbar-toggleable-xs navbar-expand-md fixed-top">
     <div class="navbar-collapse collapse">
         <div class="navbar-header">
-            <a class="navbar-brand" th:href="@{/home}"><span class="fa fa-book"></span> COMS</a>
+            <a class="navbar-brand" th:href="@{/home}">
+                <img src="/img/logo.png" width="100px" height="35px">
+            </a>
         </div>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active" style="margin-top:8px">
                 <a th:href="@{/myList}">My List</a>
             </li>
-            <li class="nav-item active dropdown">
+            <li class="nav-item active" style="margin-top:8px">
+                <a th:href="@{/subscriptions}">Subscriptions</a>
+            </li>
+            <li class="nav-item active dropdown" style="margin-left:-3px">
                 <a class="nav-link dropdown-toggle" id="genreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
                     Genre
                 </a>
@@ -97,7 +103,7 @@
     </div>
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
+            <li class="nav-item" style="margin-top:5px">
                 <form id="searchBox" action="/search/keyword" method = "get">
                     <input name = "searchWord" type="search">
                 </form>
@@ -132,7 +138,15 @@
         <div class="row justify-content-center">
             <div class="col-md-auto mt-2">
                 <h3 th:text="${series.key.getSeriesName()}" style="display:inline"></h3>
-                <button th:data-thing="${series.key.getId()}" onclick="deleteSeries(this.getAttribute('data-thing'));" id="deleteSeries" style=" color: white; background-color: #EE316A" class="btn ">Delete</button>
+            </div>
+
+
+
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto mt-2">
+                <button th:data-thing="${series.key.getId()}" onclick="setCollabSeriesId(this.getAttribute('data-thing'));" type="button" class="btn btn-info" style = "border: none ; color: white; background-color: #EE316A" data-toggle="modal" data-target="#collabModal">Add Collaborator</button>
+                <button th:data-thing="${series.key.getId()}" onclick="deleteSeries(this.getAttribute('data-thing'));" id="deleteSeries" style=" color: white; background-color: #EE316A" class="btn ">Delete Series</button>
             </div>
         </div>
 
@@ -165,11 +179,47 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
     </div>
 
 </div>
+
 <div class="row justify-content-md-center">
     <div class="col-md-auto mt-4">
-        <button type="button" class="btn btn-info" style = "border: none ;background-color: #F9779F" data-toggle="modal" data-target="#createSeriesModal">Add New Series</button>
+        <button type="button" class="btn btn-info" style = "margin-bottom: 15px ;border: none ; color: black; background: rgb(36,247,156);" data-toggle="modal" data-target="#createSeriesModal">Add New Series</button>
     </div>
 </div>
+
+<div class="container">
+    <h2>My Collaborations</h2>
+    <div class = "series-box mt-4 mb-4" th:each="series: ${collabMap}">
+        <div class="row justify-content-center">
+            <div class="col-md-auto mt-2">
+                <h3 th:text="${series.key.getSeriesName()}" style="display:inline"></h3>
+            </div>
+
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto mt-2">
+                <button th:data-thing="${series.key.getId()}" onclick="setCollabSeriesId(this.getAttribute('data-thing'));" type="button" class="btn btn-info" style = "border: none ; color: white; background-color: #EE316A" data-toggle="modal" data-target="#collabModal">Add Collaborator</button>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="mb-4" th:each="comic: ${series.value}">
+                <div class="card mt-2 mr-2 ml-2 " style="width: 18rem;height:20rem ">
+                    <div class="card-body " style = "background: rgb(255,255,255);
+background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 95%); ;border-radius: 10px;">
+                        <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                        <a id="" th:href="@{'/comic/view/'+ ${comic.getId()}}"><img style=" border: 1px solid #ddd;border-radius: 4px;
+  padding: 5px; ;width: 100%;height: 15vw; object-fit: cover; " th:src="${comic.getThumbnailBlob()}" ></a>
+                        <div class = "mt-2" style = "text-align: center">
+                        <a th:data-thing="${comic.getId()}" onclick="editComic(this.getAttribute('data-thing'));" style = "color: white; background-color: #79BAEC" class="btn">Edit</a>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
 <div class="modal fade" id="createComicModal">
     <div class="modal-dialog">
@@ -211,6 +261,29 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
                         <button  onclick= "form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Series</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="collabModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add New Collaborator</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="/series/addCollab"  method="post" id = "addCollabForm">
+                    <input name = "collabSeriesId" id = "collabSeriesId" value = "" hidden>
+                    <input value = "" id = "collabBox" class="form-control input-large" name="collabUsername" type="text" placeholder="Collaborator Username"><br/>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                        <button  onclick= "collab_form_submit()" type="submit" class="btn btn-danger" data-dismiss="modal">Add Collaborator</button>
                     </div>
                 </form>
             </div>
@@ -281,6 +354,20 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
         }
         else{
             document.getElementById("newSeries").submit();
+        }
+
+    }
+    function setCollabSeriesId(id){
+        console.log("AKLSDFJLASDJKFASLDFJK");
+        console.log(id);
+        document.getElementById("collabSeriesId").value = id;
+    }
+    function collab_form_submit() {
+        if(document.getElementById("collabBox").value == "") {
+            alert("Must Have Valid Username");
+        }
+        else{
+            document.getElementById("addCollabForm").submit();
         }
 
     }

@@ -14,7 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -364,9 +366,16 @@ public class UsersController {
 
 
         List<Comic> mySubs = userService.getComicsFromSubscriptions(username);
+        User user = userService.findByUsername(username);
+        Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
+        for(String seriesID: user.getSubscriptions())
+        {
+            map.put(seriesService.findByID(seriesID).get(), comicService.findAllBySeriesId(seriesID));
+        }
 
         ModelAndView mav = new ModelAndView("mySubscriptions");
         mav.addObject("mySubs", mySubs);
+        mav.addObject("seriesMap", map);
         return mav;
     }
 
