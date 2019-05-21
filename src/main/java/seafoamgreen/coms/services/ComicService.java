@@ -115,7 +115,15 @@ public class ComicService {
 
     public List<Comic> findAllByTag(String tag) {
         List<Comic> comics = comicRepository.findAllByTag(tag);
-        return comics;
+        List<Comic> publishedComics = new ArrayList<Comic>();
+
+        //wont display unpublished comics
+        for(Comic c: comics) {
+            if (c.isPublished()) {
+                publishedComics.add(c);
+            }
+        }
+        return publishedComics;
     }
 
     public void deleteById(String id) { 
@@ -159,7 +167,7 @@ public class ComicService {
             }
         }
         int size = publishedComics.size();
-        int random = (int)Math.random()*size;
+        int random = (int)(Math.random()*size);
         Comic comic = publishedComics.get(random);
         return comic;
     }

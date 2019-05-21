@@ -52,6 +52,7 @@ public class SearchController {
         return comics;
     }
 
+    /*
     @GetMapping("/seriesName")
     public List<Series> searchBySeriesName(HttpServletRequest request, HttpServletResponse response) {
         String seriesName = request.getParameter("seriesName");
@@ -59,7 +60,7 @@ public class SearchController {
         return series;
 
     }
-  
+    */
     @GetMapping("/keyword")
     public ModelAndView search(HttpServletRequest request)
     {
@@ -69,6 +70,7 @@ public class SearchController {
         List<Comic> publishedComics = new ArrayList<Comic>();
 
         String searchWord = request.getParameter("searchWord");
+        comics.addAll(searchService.findAllBySeriesName(searchWord));
         comics.addAll(searchService.findAllByComicTitle(searchWord));
         comics.addAll(searchService.findAllByTag(searchWord));
         comics.addAll(searchService.findAllComicsByUsername(searchWord));

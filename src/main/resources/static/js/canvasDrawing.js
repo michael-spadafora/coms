@@ -5,7 +5,7 @@ var canvas = new fabric.Canvas('canvas', {
     // backgroundColor : "white"
 });
 
-canvas.setDimensions({width: 1200, height: 600});
+canvas.setDimensions({width: 900, height: 400});
 
 var strokeColor = 'black';
 var fillColor = 'white';
@@ -312,7 +312,6 @@ function changeStroke() {
 function changeFill() {
     var x = document.getElementById("fill").value;
     fillColor = x;
-    canvas.getActiveObject().set("fill", x);
     canvas.renderAll();
     updateModifications(true);
 }

@@ -40,37 +40,43 @@ public class SearchService {
     }
 
     public List<User> findAllByUsername(String username) {
-        // List<User> users = userRepository.findAll();
-        String usernameRegex = ".*"+username +".*";
-        List<User> users = userRepository.findAllByUsernameRegex(usernameRegex);
+        List<User> allUsers = userRepository.findAll();
+        List<User> users = new ArrayList<User>();
+        for(User user: allUsers)
+            if(user.getUsername().equalsIgnoreCase(username))
+                users.add(user);
         return users;
     }
 
     public List<Comic> findAllByComicTitle(String comicName) {
-        String comicNameRegex = ".*"+ comicName +".*";
-        List<Comic> comics = comicRepository.findAllByComicNameRegex(comicNameRegex);
+        List<Comic> allComics = comicRepository.findAll();
+        List<Comic> comics = new ArrayList<Comic>();
 
-        List<Comic> publishedComics = new ArrayList<Comic>();
+        for(Comic comic: allComics)
+            if(comic.isPublished() && comic.getComicName().equalsIgnoreCase(comicName))
+                comics.add(comic);
 
-        //wont display unpublished comics
-        for(Comic c: comics) {
-            if (c.isPublished()) {
-                publishedComics.add(c);
-            }
-        }
-
-        return publishedComics;
+        return comics;
     }
 
-    public List<Series> findAllBySeriesName(String seriesName) {
-        String seriesNameRegex = ".*"+seriesName +".*";
-        List<Series> series = seriesRepository.findAllBySeriesNameRegex(seriesNameRegex);
+    public List<Comic> findAllBySeriesName(String seriesName) {
+        List<Comic> allComics = comicRepository.findAll();
+        List<Comic> comics = new ArrayList<Comic>();
+        for(Comic comic: allComics)
+            if(comic.isPublished() && comic.getSeriesName().equalsIgnoreCase(seriesName))
+                comics.add(comic);
 
-        return series;
+        return comics;
     }
 
     public List<Comic> findAllComicsByUsername(String username) {
-        List<Comic> comics = comicRepository.findAllByUsername(username);
+        List<Comic> allComics = comicRepository.findAll();
+        List<Comic> comics = new ArrayList<Comic>();
+
+        for(Comic comic: allComics)
+            if(comic.isPublished() && comic.getUsername().equalsIgnoreCase(username))
+                comics.add(comic);
+
         return comics;
     }
 

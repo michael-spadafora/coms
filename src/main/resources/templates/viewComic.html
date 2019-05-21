@@ -55,7 +55,7 @@
         #commentForm button{border-style:none;margin-left:15px; padding:7px 15px;}
 
         .comments{float:left;margin-top:20px}
-        .comment{margin-top:10px;width:125%}
+        .comment{margin-top:10px;width:200%}
 
         .col-bg-3 > div > a > img{object-fit: cover; width:200px;height:100px}
 
@@ -172,7 +172,6 @@
 
             <span th:text="${comic.getScore()}" style="margin-right:10px"></span>
 
-            <!--
             <form action = "/interaction/vote" method ="post" style="float:right">
                 <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
                     <i class="fa fa-arrow-down"></i>
@@ -181,7 +180,6 @@
                 <input name = "value" value = "-1" hidden>
                 <input name = "username" th:value = "${username}" hidden>
             </form>
-            -->
         </div>
     </div>
 

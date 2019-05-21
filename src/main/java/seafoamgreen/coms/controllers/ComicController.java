@@ -123,6 +123,14 @@ public class ComicController {
         //add panel list
         List<Panel> panelList = panelService.findAllByCoimcId(comicId);
         mav.addObject("panelList", panelList);
+
+        HttpSession session = request.getSession(false);
+        String activeUsername = (String)session.getAttribute("username");
+        mav.addObject("username", activeUsername);
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
     }
 
