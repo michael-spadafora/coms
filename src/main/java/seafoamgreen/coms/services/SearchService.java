@@ -31,10 +31,10 @@ public class SearchService {
         List<Comic> comics = new ArrayList<Comic>();
 
         for(Comic comic: allComics)
-            if(comic.isPublished())
-                for(String t: comic.getTags())
-                    if(!comics.contains(comic) && t.equalsIgnoreCase(tag))
-                        comics.add(comic);
+            for(String t: comic.getTags())
+                if(t.toLowerCase().contains(tag.toLowerCase()) ||
+                        tag.toLowerCase().contains(t.toLowerCase()))
+                    comics.add(comic);
 
         return comics;
     }
@@ -53,7 +53,8 @@ public class SearchService {
         List<Comic> comics = new ArrayList<Comic>();
 
         for(Comic comic: allComics)
-            if(comic.isPublished() && comic.getComicName().equalsIgnoreCase(comicName))
+            if(comic.getComicName().toLowerCase().contains(comicName.toLowerCase()) ||
+                    comicName.toLowerCase().contains(comic.getComicName().toLowerCase()))
                 comics.add(comic);
 
         return comics;
@@ -63,7 +64,8 @@ public class SearchService {
         List<Comic> allComics = comicRepository.findAll();
         List<Comic> comics = new ArrayList<Comic>();
         for(Comic comic: allComics)
-            if(comic.isPublished() && comic.getSeriesName().equalsIgnoreCase(seriesName))
+            if(comic.getSeriesName().toLowerCase().contains(seriesName.toLowerCase()) ||
+                    seriesName.toLowerCase().contains(comic.getSeriesName().toLowerCase()))
                 comics.add(comic);
 
         return comics;
@@ -74,11 +76,11 @@ public class SearchService {
         List<Comic> comics = new ArrayList<Comic>();
 
         for(Comic comic: allComics)
-            if(comic.isPublished() && comic.getUsername().equalsIgnoreCase(username))
+            if(comic.getUsername().toLowerCase().contains(username.toLowerCase()) ||
+                    username.toLowerCase().contains(comic.getUsername().toLowerCase()))
                 comics.add(comic);
 
         return comics;
     }
-
 }
 

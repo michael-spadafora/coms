@@ -41,6 +41,9 @@ public class ComicController {
     @Autowired
     InteractionService interactionService;
 
+    @Autowired
+    SearchService searchService;
+
 
     @PostMapping("/create")
     public void addNewComic(HttpServletRequest request, HttpServletResponse response)
@@ -389,7 +392,15 @@ public class ComicController {
     @GetMapping("/{genre}")
     public ModelAndView comicGenre(HttpServletRequest request, HttpServletResponse response, @PathVariable String genre) {
         ModelAndView mav = new ModelAndView("genreComics");
-        List<Comic> comics = comicService.findAllByTag(genre);
+        List<Comic> comics = searchService.findAllByTag(genre);
+        List<Comic> publishedComics = new ArrayList<Comic>();
+
+        //wont display unpublished comics
+        for(Comic c: comics) {
+            if (c.isPublished()) {
+                publishedComics.add(c);
+            }
+        }
 
         HttpSession session = request.getSession(false);
 
@@ -400,7 +411,7 @@ public class ComicController {
             mav.addObject("isLoggedIn", true);
 
         mav.addObject("genre", genre + ' ');
-        mav.addObject("comicList",comics);
+        mav.addObject("comicList",publishedComics);
         mav.addObject("username",activeUsername);
 
         return mav;
