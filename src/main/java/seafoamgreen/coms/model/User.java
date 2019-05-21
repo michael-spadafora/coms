@@ -26,9 +26,11 @@ public class User {
     private ArrayList<String> comicIdHistory = new ArrayList<String>();
     private ArrayList<String> collabSeriesIds = new ArrayList<String>();
 
+    private String profilePictureUrl;
     private String profilePictureBlob;
 
     public User() {
+
     }
 
     public String getProfilePictureBlob() {
@@ -37,6 +39,14 @@ public class User {
 
     public void setProfilePictureBlob(String profilePictureBlob) {
         this.profilePictureBlob = profilePictureBlob;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureBlob) {
+        this.profilePictureUrl = profilePictureBlob;
     }
 
     /**
