@@ -500,7 +500,7 @@ public class UsersController {
 
 
 
-        return new ModelAndView( "redirect:/profile/self");
+        return new ModelAndView( "redirect:/accountSettings");
       
     }
 
