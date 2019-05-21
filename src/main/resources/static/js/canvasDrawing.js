@@ -4,10 +4,12 @@ var canvas = new fabric.Canvas('canvas', {
     // backgroundColor : "white"
 });
 
-canvas.setDimensions({width: 1200, height: 600});
+canvas.setDimensions({width: 1450, height: 600});
 
-var strokeColor = 'black';
-var fillColor = 'white';
+var strokeColor = document.getElementById("stroke").value;
+var fillingColor =  document.getElementById("fill").value;
+var opacity =  (Math.ceil(document.getElementById("opacity").value* 255 / 100 ).toString(16));
+var fillColor = fillingColor + opacity;
 
 var $ = function(id) {
     return document.getElementById(id)
@@ -72,7 +74,7 @@ if (fabric.PatternBrush) {
         ctx.moveTo(5, 0);
         ctx.lineTo(5, 10);
         ctx.closePath();
-        ctx.stroke();   
+        ctx.stroke();
 
         return patternCanvas;
     };
@@ -300,33 +302,33 @@ function deleteObject() {
 updateModifications(true);
 }
 
-function changeStroke() {
-    var x = document.getElementById("stroke").value;
-    strokeColor = x;
-    // console.log(x);
-    if (canvas.getActiveObject().get("stroke") == x) {
-        console.log("same color")
-    } else {
-        canvas.getActiveObject().set("stroke", x);
-        canvas.renderAll();
-        updateModifications(true);
-    }
-}
+// function changeStroke() {
+//     var x = document.getElementById("stroke").value;
+//     strokeColor = x;
+//     // console.log(x);
+//     if (canvas.getActiveObject().get("stroke") == x) {
+//         console.log("same color")
+//     } else {
+//         canvas.getActiveObject().set("stroke", x);
+//         canvas.renderAll();
+//         updateModifications(true);
+//     }
+// }
 
-function changeFill() {
-    var x = document.getElementById("fill").value;
-    fillColor = x;
-    // console.log(canvas.getActiveObject().get("fill"))
-    if (canvas.getActiveObject().get("fill") == x) {
-        console.log("same color")
-    } else {
-        console.log("color change")
-        canvas.getActiveObject().set("fill", x);
-        canvas.renderAll();
-        updateModifications(true);
-    }
-
-}
+// function changeFill() {
+//     var x = document.getElementById("fill").value;
+//     fillingColor = x;
+//     // console.log(canvas.getActiveObject().get("fill"))
+//     if (canvas.getActiveObject().get("fill") == x) {
+//         console.log("same color")
+//     } else {
+//         console.log("color change")
+//         canvas.getActiveObject().set("fill", x);
+//         canvas.renderAll();
+//         updateModifications(true);
+//     }
+//
+// }
 
 function removeFill() {
     if (canvas.getActiveObject().get("fill") == 'rgba(0,0,0,0)'){
@@ -662,7 +664,7 @@ function keyup(e){
         shift = false;
         console.log("shift key is let go");
     }
-    
+
 }
 
 
@@ -704,8 +706,89 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
 
 
 }
+function changeStroke() {
+    var x = document.getElementById("stroke").value;
+    strokeColor = x;
+    // console.log(x);
+    if (canvas.getActiveObject().get("stroke") == x) {
+        console.log("same color")
+    } else {
+        canvas.getActiveObject().set("stroke", x);
+        canvas.renderAll();
+        updateModifications(true);
+    }
+}
+
+function changeFill() {
+    var x = document.getElementById("fill").value;
+    fillingColor = x;
+    fillColor = x + opacity;
+    if (canvas.getActiveObject() != null){
+      var currentColor = canvas.getActiveObject().get("fill").substring(0, 7);
+      var currentOpacity = canvas.getActiveObject().get("fill").substring(7);
+      // console.log(canvas.getActiveObject().get("fill"))
+      if (currentColor.substring(0, 7) == x) {
+          console.log("same color")
+      } else {
+          console.log("color change")
+          canvas.getActiveObject().set("fill", x + currentOpacity);x
+          canvas.renderAll();
+          updateModifications(true);
+      }
+    }
+}
+
+function changeOpacity() {
+    opacity = (Math.ceil(document.getElementById("opacity").value* 255 / 100 ).toString(16));
+    fillColor = fillingColor + opacity;
+    if (canvas.getActiveObject() != null){
+      var currentColor = canvas.getActiveObject().get("fill").substring(0, 7);
+      var currentOpacity = canvas.getActiveObject().get("fill").substring(7);
+
+      // console.log(Math.ceil(canvas.getActiveObject().get("fill-opacity")*100* 255 / 100 ).toString(16));
+      // console.log(canvas.getActiveObject().get("fill"))
+      if (currentOpacity == opacity) {
+          console.log("same opacity")
+      } else {
+          console.log("opacity change")
+          canvas.getActiveObject().set("fill", currentColor+opacity);
+          canvas.renderAll();
+          updateModifications(true);
+      }
+      // setActiveStyle('opacity', parseInt(value, 10) / 100);
+    }
 
 
+}
+
+canvas.on('selection:created', function () {
+  console.log("object selected");
+  document.getElementById("stroke").value = canvas.getActiveObject().get("stroke");
+  var currentColor = canvas.getActiveObject().get("fill").substring(0, 7);
+  var currentOpacity = canvas.getActiveObject().get("fill").substring(7);
+  document.getElementById("fill").value = currentColor;
+  // fill = hexToRgb
+
+  console.log(~~(parseInt(currentOpacity, 16)*100/255));
+  document.getElementById("opacity").value = ~~(parseInt(currentOpacity, 16)*100/255);
+  // console.log(Math.ceil(canvas.getActiveObject().get("fill-opacity")*100* 255 / 100 ).toString(16));
+  // document.getElementById("opacity").value = canvas.getActiveObject().get("fill-opacity")*100;
+
+});
+canvas.on('selection:updated', function () {
+  console.log("object created");
+  document.getElementById("stroke").value = canvas.getActiveObject().get("stroke");
+  var currentColor = canvas.getActiveObject().get("fill").substring(0, 7);
+  var currentOpacity = canvas.getActiveObject().get("fill").substring(7);
+  document.getElementById("fill").value = currentColor;
+  // fill = hexToRgb
+
+  console.log(~~(parseInt(currentOpacity, 16)*100/255));
+  document.getElementById("opacity").value = ~~(parseInt(currentOpacity, 16)*100/255);
+  // console.log(Math.ceil(canvas.getActiveObject().get("fill-opacity")*100* 255 / 100 ).toString(16));
+  // document.getElementById("opacity").value = canvas.getActiveObject().get("fill-opacity")*100;
+
+});
 
 canvas.on(
     'object:modified', function () {
@@ -948,7 +1031,7 @@ function zoomout(){
 function recenter(){
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
     canvas.renderAll();
-    
+
 }
 
 function exitDrawingMode(){
