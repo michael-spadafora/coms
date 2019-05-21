@@ -12,10 +12,21 @@ import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.repositories.MessageRepository;
 import seafoamgreen.coms.repositories.UserRepository;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class UserService {
@@ -41,6 +52,9 @@ public class UserService {
 
         String encrypted = encrypt(password);
         User user = new User(username, encrypted);
+        user.setProfilePictureUrl("https://s3.us-east-2.amazonaws.com/seafoamgreen/person+1.png");
+        user.setProfilePictureBlob(this.getBlob(username));
+        //use default for now
         userRepository.save(user);
         return user;
     }
@@ -145,7 +159,7 @@ public class UserService {
 
 
         List<Message> ret = new ArrayList<>();
-
+ 
         for (String  s : msgIds) {
             ret.add(messageRepository.findById(s).get());
         }
@@ -293,6 +307,61 @@ public class UserService {
 		return ret;
 	}
 
+	public void addProfilePicture(String username, String blob) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) return;
+        String url = storeBlobInAWS(username, blob);
+        user.setProfilePictureUrl(url);
+        user.setProfilePictureBlob(this.getBlob(username));
+        userRepository.save(user);
+    }
+    
+    private String storeBlobInAWS(String username, String blob) {
+        AWSCredentials credentials = new BasicAWSCredentials("AKIAJIKZPRZSWRVS6SLQ",
+                "2IZ4gI/pxi8L82qeIWFl2txPIE1eslMxdbrHpYjq ");
 
+        AmazonS3 s3client = AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.US_EAST_2).build();
+
+        String bucketName = "coms.com-comics";
+
+        // String key = "key";
+
+        //key = seriesId/comicId/panelNumber
+        String key = "profilePictures/" + username;
+
+        s3client.putObject(bucketName, key, blob); //saves
+        String urlstring = s3client.getUrl(bucketName, key).toString();
+        System.out.println(urlstring);
+
+
+        return urlstring;
+    }
+
+    public String getBlob(String username) {
+        AWSCredentials credentials = new BasicAWSCredentials("AKIAJIKZPRZSWRVS6SLQ",
+                "2IZ4gI/pxi8L82qeIWFl2txPIE1eslMxdbrHpYjq ");
+
+        AmazonS3 s3client = AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.US_EAST_2).build();
+
+        String bucketName = "coms.com-comics";
+        String key = "profilePictures/" + username;
+
+        // String key = "5cca2508519e228d91fd3bfa/5cca2508519e228d91fd3bfb/5cca250b519e228d91fd3bfc";
+
+        S3Object obj = s3client.getObject(bucketName, key);
+
+        S3ObjectInputStream s = obj.getObjectContent();
+        InputStream stream = s.getDelegateStream();
+
+        String ret = convertStreamToString(stream);
+        return ret;
+    }
+
+    static String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
 }
 
