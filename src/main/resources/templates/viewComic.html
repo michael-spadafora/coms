@@ -36,9 +36,9 @@
 
         .container{width:70%;margin-top:50px}
 
-        #featuredCarousel{width:100%;background-color:#E8E8E8;;margin-top:70px}
+        #featuredCarousel{width:100%;margin-top:70px}
         .carousel-inner{text-align: center}
-        .carousel-item > img{width:450px; height:300px;margin: 0 auto}
+        .carousel-item > img{background-color:white;border:1px black solid}
 
         .profileImages{border-radius: 50%;width:50px;border:0.5px black solid}
         .bottom{padding-left:50px}
@@ -139,7 +139,7 @@
 
         <div class="carousel-inner">
             <div th:each="panel, iter: ${panels}" th:class="${iter.first}? 'carousel-item active' : 'carousel-item'">
-                <img class="img-fluid" th:src="${panel}">
+                <img class="img-fluid" th:src="${panel}" width="600px" height="550px">
             </div>
         </div>
 
@@ -154,11 +154,11 @@
         </a>
     </div>
 </div>
-1
+
 <div class="bottom">
     <div class="heading">
-        <h5 th:text="${comic.getSeriesName()}"></h5>
         <span id="comicTitle" th:text="${comic.getComicName()}"></span>
+        <h5 th:text="${comic.getSeriesName()}"></h5>
         <div class="actionButtons">
             <form action = "/interaction/vote" method ="post" style="float:left;margin-right:10px">
                 <button type="submit" id="upvote"  style = "background: none; padding: 0px; border: none;" >
@@ -172,6 +172,7 @@
 
             <span th:text="${comic.getScore()}" style="margin-right:10px"></span>
 
+            <!--
             <form action = "/interaction/vote" method ="post" style="float:right">
                 <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
                     <i class="fa fa-arrow-down"></i>
@@ -180,6 +181,7 @@
                 <input name = "value" value = "-1" hidden>
                 <input name = "username" th:value = "${username}" hidden>
             </form>
+            -->
         </div>
     </div>
 

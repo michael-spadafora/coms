@@ -27,16 +27,16 @@ public class SearchService {
 
 
     public List<Comic> findAllByTag(String tag) {
-        List<Comic> comics = comicRepository.findAllByTag(tag);
-        List<Comic> publishedComics = new ArrayList<Comic>();
+        List<Comic> allComics = comicRepository.findAll();
+        List<Comic> comics = new ArrayList<Comic>();
 
-        //wont display unpublished comics
-        for(Comic c: comics) {
-            if (c.isPublished()) {
-                publishedComics.add(c);
-            }
-        }
-        return publishedComics;
+        for(Comic comic: allComics)
+            if(comic.isPublished())
+                for(String t: comic.getTags())
+                    if(!comics.contains(comic) && t.equalsIgnoreCase(tag))
+                        comics.add(comic);
+
+        return comics;
     }
 
     public List<User> findAllByUsername(String username) {
