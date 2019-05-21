@@ -54,7 +54,6 @@
 
       .container{margin-top:75px;margin-right:10px;margin-left:-15px}
 
-      .middle{}
       input{margin-top:12px}
 
       form textarea{width:80%;resize:none;height:50px}
@@ -76,9 +75,9 @@
       /* Change the background color of the dropdown button when the dropdown content is shown */
       .dropdown:hover .dropbtn {background-color: #17a2b8;}
       .tools::after {display:none;}
-      label{background-color: white;margin-top:8px;margin-right:5px}
+      label{background-color: white;margin-top:10px;margin-right:5px}
 
-      input[type=number]{width: 28px;height:21px;margin-right:5px}
+      input[type=number]{width: 27px;height:21px;margin-right:5px}
       input[type=color]{width: 20px;height:20px;margin-right:5px}
       select{height:22px;margin-top:12px;margin-right:5px}
 
@@ -87,7 +86,15 @@
       input::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0; /* <-- Apparently some margin are still there even though it's hidden */}
       input[type=number] {-moz-appearance:textfield; /* Firefox */}
 
-      .dropdown-menu{width:20px}
+      .dropdown-menu{
+        min-width: 100px !important;
+      }
+      .row{
+        width: 1500px !important;
+      }
+      #mydiv{
+        background-color: rgb(255, 255, 255);
+      }
    </style>
 </head>
 
@@ -140,7 +147,7 @@
                <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
             </div>
          </li>
-         <li class="nav-item active" style="margin-top:8px" th:if="${notLoggedIn}">
+         <li class="nav-item active" style="margin-top:13px" th:if="${notLoggedIn}">
             <a th:href="@{/}"><span class="fa fa-sign-in"></span> Login</a>
          </li>
       </ul>
@@ -151,7 +158,7 @@
    <div class="container">
 
       <!-- TOP TOOLBAR -->
-      <div class="row">
+      <div class="row" style="margin-top:7px">
          <div class="col">
             <div class="btn-toolbar" role="toolbar">
                <!-- UNDO REDO GROUP UNGROUP =-->
@@ -221,7 +228,7 @@
          </div>
       </div>
 
-      <div class="row" style="margin-left:50px;margin-top:10px;padding-right:5px">
+      <div class="row" style="margin-left:50px;margin-top:3px;padding-right:5px">
          <select id="drawing-mode-selector">
             <option>Pencil</option>
             <option>Circle</option>
@@ -233,6 +240,10 @@
             <option>diamond</option>
          </select>
          <input type="color" value="#000000" id="drawing-color">
+
+         <label for="drawing-line-width">Line Width</label>
+
+         <input type="number" min="1" max="500" value="15" id="drawing-line-width">
 
          <select id="fonts" onchange="fontchange()">
             <option value="Arial">Arial</option>
@@ -251,30 +262,28 @@
             <option value="Trebuchet MS">Trebuchet MS</option>
             <option value="Arial Black">Arial Black</option>
          </select>
+         <label for="font-size">Font Size</label>
          <input type="number"min="0" max="500" value="30" id="font-size" width="20px" height="10px">
          <!-- OUTLINE COLOR -->
-         <label for="stroke">Outline Color</label>
+         <label for="stroke">Outline</label>
          <input type="color" id="stroke" name="stroke" value="#000000" onchange="changeStroke()">
          <!-- FILL COLOR -->
-         <label for="fill">Fill Color</label>
+         <label for="fill">Fill</label>
          <input type="color" id="fill" name="fill" value="#ffffff" onchange="changeFill()">
-         <!--
-         <button type="button" class="btn btn-info" onclick="removeFill()">
-            Remove Fill
-         </button>
-         -->
-
-         <label for="drawing-line-width">Line Width</label>
-         <input type="number" min="1" max="500" value="15" id="drawing-line-width">
 
          <!-- SHADOW -->
-         <label for="drawing-shadow-color">Shadow Color</label>
+         <label for="drawing-shadow-color">Shadow</label>
          <input type="color" value="#000000" id="drawing-shadow-color">
          <label for="drawing-shadow-width">Shadow Width</label>
          <input type="number" min="0" max="500" value="0" id="drawing-shadow-width">
          <label for="drawing-shadow-offset">Shadow Offset</label>
          <input type="number" min="0" max="500" size="4" value="30" id="drawing-shadow-offset">
+
+         <!-- OPACITY -->
+         <label for="opacity">Opacity</label>
+         <input type="number" id="opacity" min="0" max="100" size="4" value="100" onchange="changeOpacity()">
       </div>
+
 
       <div class="row">
          <!-- SIDE TOOLBAR -->
@@ -433,8 +442,9 @@
 
       <script src="/js/canvas-toBlob.js"></script>
       <script type="text/javascript" src = "/js/FileSaver.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min.js"></script>
-      <script type="text/javascript" src = "/js/canvasDrawing.js"></script>
+      <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min.js"></script>-->
+         <script type="text/javascript" src = "/js/fabric.js"></script>
+         <script type="text/javascript" src = "/js/canvasDrawing.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script>
           $(document).ready(function() {
