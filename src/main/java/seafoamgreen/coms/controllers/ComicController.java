@@ -413,6 +413,9 @@ public class ComicController {
         mav.addObject("genre", genre + ' ');
         mav.addObject("comicList",publishedComics);
         mav.addObject("username",activeUsername);
+        User currentUser = userService.findByUsername(activeUsername);
+        session.setAttribute("user", currentUser);
+        mav.addObject("user", currentUser);
 
         return mav;
     }

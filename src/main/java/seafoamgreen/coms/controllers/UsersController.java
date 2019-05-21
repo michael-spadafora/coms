@@ -448,6 +448,11 @@ public class UsersController {
             mav.addObject("notLoggedIn", true);
         else
             mav.addObject("isLoggedIn", true);
+
+        User currentUser = userService.findByUsername(username);
+        session.setAttribute("user", currentUser);
+        mav.addObject("user", currentUser);
+
         return mav;
     }
 
