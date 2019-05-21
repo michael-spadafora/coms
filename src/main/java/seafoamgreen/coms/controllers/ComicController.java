@@ -199,6 +199,7 @@ public class ComicController {
             mav.addObject("username", activeUsername);
 
             User user = userService.findByUsername(activeUsername);
+            mav.addObject("currentUser",user);
             if(user.getSubscriptions().contains(c.getSeriesID()))
             {
                 mav.addObject("isSubscribed", true);
@@ -210,6 +211,11 @@ public class ComicController {
 
             List<Comment> comments = interactionService.getCommentsForComicid(comicID);
             mav.addObject("comments", comments);
+            List<User> commentUsers = new ArrayList<User>();
+            for(Comment comment:comments)
+                commentUsers.add(userService.findByUsername(comment.getUserId()));
+            mav.addObject("commentUsers",commentUsers);
+
             if(user.getUpvotedComicIds().contains(comicID))
             {
                 mav.addObject("upvoted", true);

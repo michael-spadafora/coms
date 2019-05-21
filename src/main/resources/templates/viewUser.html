@@ -126,7 +126,7 @@
                 </div>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${notLoggedIn}">
-                <a th:href="@{/}"><span class="fa fa-sign-in"></span> Login</a>
+                <a th:href="@{/login}"><span class="fa fa-sign-in"></span> Login</a>
             </li>
         </ul>
     </div>
@@ -135,7 +135,7 @@
 <body>
     <div class="container">
         <div class="top">
-            <img class="profilePicture" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+1.png">
+            <img class="profilePicture" th:src="${userProfile.getProfilePictureUrl()}">
             <h3 id="username" th:text="${userProfile.getUsername()}"></h3>
             <div class="buttons" th:if="${isLoggedIn}">
                 <button th:if="${username.equalsIgnoreCase(userProfile.getUsername())}" id="changeProfilePicture"  class="btn btn-light" data-toggle="modal" data-target="#profilePictureModal">
@@ -150,8 +150,9 @@
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body">
-                                <form id="profilePictureForm">
-                                    <input type="file" name="profilePicture">
+                                <form id="profilePictureForm" th:action="@{/picture/upload}" method="post">
+                                    <label style="font-weight: bold">Image URL:</label>
+                                    <input type="text" name="profilePicture">
                                 </form>
                             </div>
 

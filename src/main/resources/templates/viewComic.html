@@ -125,7 +125,7 @@
                 </div>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${notLoggedIn}">
-                <a th:href="@{/}"><span class="fa fa-sign-in"></span> Login</a>
+                <a th:href="@{/login}"><span class="fa fa-sign-in"></span> Login</a>
             </li>
         </ul>
     </div>
@@ -203,7 +203,7 @@
     <div class="commentSection">
         <div class="user" th:if="${isLoggedIn}">
             <form id="commentForm" action="/interaction/comment/" method="post">
-                <img class="profileImages" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+1.png">
+                <img class="profileImages" th:src="${currentUser.getProfilePictureUrl()}">
                 <input name="comment" placeholder="Type your comment">
                 <input name="comicId" th:value="${comic.getId()}" hidden>
                 <button onclick= "form_submit()" type="submit">Comment</button>
@@ -211,9 +211,9 @@
         </div>
 
         <div class="comments">
-            <div class="comment" th:each="comment: ${comments}">
+            <div class="comment" th:each="comment,iter: ${comments}">
                 <a style="margin-right:15px;float:left;" href="viewUser.html">
-                    <img class="profileImages" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+2.png">
+                    <img class="profileImages" th:src="${commentUsers.get(iter.index).getProfilePictureUrl()}">
                 </a>
                 <span>
                     <div th:text="${comment.getUserId()}" style="font-weight:bold"></div>
