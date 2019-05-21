@@ -145,7 +145,7 @@ public class UserService {
 
 
         List<Message> ret = new ArrayList<>();
-
+ 
         for (String  s : msgIds) {
             ret.add(messageRepository.findById(s).get());
         }
@@ -286,6 +286,11 @@ public class UserService {
 		return ret;
 	}
 
-
+	public void addProfilePicture(String username, String blob) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) return;
+        user.setProfilePictureBlob(blob);
+        userRepository.save(user);
+	}
 }
 
