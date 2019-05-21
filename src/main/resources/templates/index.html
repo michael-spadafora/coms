@@ -37,11 +37,8 @@
         input[type=search] {-webkit-appearance: textfield;-webkit-box-sizing: content-box;font-family: inherit;font-size: 100%;}
         input::-webkit-search-decoration, input::-webkit-search-cancel-button {display: none; }
 
-        #featuredCarousel{background-color:#E8E8E8;margin-top:85px;border-radius: 10px;
-        }
-        .carousel-inner{text-align: center;background-color:white;border-radius: 10px ;border-radius: 10px;}
-        .carousel-item{background-color:white ;border-radius: 10px}
-        .carousel-item > img{margin: 0 auto}
+        #featuredCarousel{margin-top:85px;border-radius: 10px;text-align: center}
+        #featuredCarousel > a > img{border:1px black solid; background-color:white}
 
         .listOfComics{padding-top:50px;padding-left: 10px;margin-left:15px;margin-right:30px}
         .listOfComics > h3{margin-left:-10px;font-family: 'Roboto Condensed', sans-serif;color:#0e794b}
@@ -155,22 +152,13 @@
 
 <body>
     <div class="container-fluid">
-        <div id="featuredCarousel" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#featuredCarousel" data-slide-to="0" class="active"></li>
-            </ol>
-
-            <!-- TODO: make this link to actual comics  -->
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <h2>Featured Comic Of The Day</h2>
-                    <a th:href="@{'/comic/view/'+ ${featuredComic.getId()}}">
-                        <img class="img-fluid" th:src="${featuredComic.getThumbnailBlob()}" alt="Slide 1" width="600px" height="550px">
-                    </a>
-                    <h5 th:text = "${featuredComic.getSeriesName()}"></h5>
-                    <h3 th:text = "${featuredComic.getComicName()}"></h3>
-                </div>
-            </div>
+        <div id="featuredCarousel">
+            <h2>Featured Comic</h2>
+            <a th:href="@{'/comic/view/'+ ${featuredComic.getId()}}">
+                <img class="img-fluid" th:src="${featuredComic.getThumbnailBlob()}" width="600px" height="550px">
+            </a>
+            <h5 th:text = "${featuredComic.getSeriesName()}"></h5>
+            <h3 th:text = "${featuredComic.getComicName()}"></h3>
         </div>
     </div>
 

@@ -52,6 +52,7 @@ public class SearchController {
         return comics;
     }
 
+    /*
     @GetMapping("/seriesName")
     public List<Series> searchBySeriesName(HttpServletRequest request, HttpServletResponse response) {
         String seriesName = request.getParameter("seriesName");
@@ -59,25 +60,26 @@ public class SearchController {
         return series;
 
     }
-  
+    */
     @GetMapping("/keyword")
     public ModelAndView search(HttpServletRequest request)
     {
         ModelAndView mav = new ModelAndView("searchResults");
 
-        List<Comic> comics = new ArrayList<Comic>();
-        List<Comic> publishedComics = new ArrayList<Comic>();
-
         String searchWord = request.getParameter("searchWord");
-        comics.addAll(searchService.findAllByComicTitle(searchWord));
-        comics.addAll(searchService.findAllByTag(searchWord));
-        comics.addAll(searchService.findAllComicsByUsername(searchWord));
 
-        for(Comic comic: comics)
-            if(comic.isPublished())
-                publishedComics.add(comic);
+        List<Comic> allComics = searchService.findAllByTag(searchWord);
+        List<Comic> comics = new ArrayList<Comic>();
 
-        mav.addObject("comicList" , publishedComics);
+        allComics.addAll(searchService.findAllBySeriesName(searchWord));
+        allComics.addAll(searchService.findAllByComicTitle(searchWord));
+        allComics.addAll(searchService.findAllComicsByUsername(searchWord));
+
+        for(Comic comic: allComics)
+            if(comic.isPublished() && !comics.contains(comic))
+                comics.add(comic);
+
+        mav.addObject("comicList" , comics);
         mav.addObject("searchWord",searchWord);
 
         HttpSession session = request.getSession(false);

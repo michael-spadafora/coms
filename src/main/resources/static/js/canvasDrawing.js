@@ -4,7 +4,7 @@ var canvas = new fabric.Canvas('canvas', {
     // backgroundColor : "white"
 });
 
-canvas.setDimensions({width: 1450, height: 600});
+canvas.setDimensions({width: 1200, height: 600});
 
 var strokeColor = document.getElementById("stroke").value;
 var fillingColor =  document.getElementById("fill").value;
@@ -302,33 +302,20 @@ function deleteObject() {
 updateModifications(true);
 }
 
-// function changeStroke() {
-//     var x = document.getElementById("stroke").value;
-//     strokeColor = x;
-//     // console.log(x);
-//     if (canvas.getActiveObject().get("stroke") == x) {
-//         console.log("same color")
-//     } else {
-//         canvas.getActiveObject().set("stroke", x);
-//         canvas.renderAll();
-//         updateModifications(true);
-//     }
-// }
+function changeStroke() {
+    var x = document.getElementById("stroke").value;
+    strokeColor = x;
+    canvas.getActiveObject().set("stroke", x);
+    canvas.renderAll();
+    updateModifications(true);
+}
 
-// function changeFill() {
-//     var x = document.getElementById("fill").value;
-//     fillingColor = x;
-//     // console.log(canvas.getActiveObject().get("fill"))
-//     if (canvas.getActiveObject().get("fill") == x) {
-//         console.log("same color")
-//     } else {
-//         console.log("color change")
-//         canvas.getActiveObject().set("fill", x);
-//         canvas.renderAll();
-//         updateModifications(true);
-//     }
-//
-// }
+function changeFill() {
+    var x = document.getElementById("fill").value;
+    fillColor = x;
+    canvas.renderAll();
+    updateModifications(true);
+}
 
 function removeFill() {
     if (canvas.getActiveObject().get("fill") == 'rgba(0,0,0,0)'){

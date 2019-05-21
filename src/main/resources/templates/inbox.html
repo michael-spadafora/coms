@@ -39,7 +39,7 @@
 
         /* Inbox */
         #createMessage{background-color:#ff0000;float:left;margin-left:11%;margin-top:5%;margin-bottom:2%}
-        #noMessages{width:100%;margin:auto}
+        #noMessages{margin-right:50%}
         .table-responsive-md{margin:auto;width:75%;}
         .row{border:1px solid lightgrey}
         .borderless td, .borderless th {border: none;}
@@ -121,6 +121,7 @@
 <body>
     <div class="container">
         <button id="createMessage" class="btn btn-danger" data-toggle="modal" data-target="#myModal">New Message</button>
+        <div id="noMessages" th:if="${#lists.isEmpty(Messages)}">There are no messages in your inbox.</div>
         <div class="table-responsive-md">
             <table class="table table-hover borderless">
                 <tbody>
@@ -165,7 +166,6 @@
                 </tbody>
             </table>
         </div>
-        <div id="noMessages" th:if="${#lists.isEmpty(Messages)}">There are no messages in your inbox.</div>
 
         <div class="modal fade" id="myModal">
             <div class="modal-dialog">

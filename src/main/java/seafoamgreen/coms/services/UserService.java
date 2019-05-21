@@ -186,10 +186,12 @@ public class UserService {
         List<Comic> allComics = comicRepository.findAll();
         for(Comic comic: allComics)
         {
-            if(!readComics.contains(comic.getId()))
+            if(comic.isPublished() && !readComics.contains(comic.getId()))
+            {
                 for(String tag: comic.getTags())
                     if(tags.contains(tag) && !recommended.contains(comic))
                         recommended.add(comic);
+            }
         }
         
         return recommended;
