@@ -227,7 +227,11 @@ public class UserService {
 
 
     public List<Comic> getUsersComics(String username) {
-        List<Comic> comics = comicRepository.findAllByUsername(username);
+        List<Comic> allComics = comicRepository.findAllByUsername(username);
+        List<Comic> comics = new ArrayList<Comic>();
+        for(Comic comic: allComics)
+            if(comic.isPublished())
+                comics.add(comic);
         return comics;
     }
 
@@ -236,7 +240,8 @@ public class UserService {
         List<String> myList = user.getMyList();
         List<Comic> ret = new ArrayList<Comic>();
         for (String s:myList) {
-            ret.add(comicRepository.findByComicId(s));
+            if(comicRepository.findByComicId(s).isPublished())
+                ret.add(comicRepository.findByComicId(s));
         }
         return ret;
     }

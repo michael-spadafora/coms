@@ -194,7 +194,30 @@ public class ComicController {
         if(activeUsername == null)
             mav.addObject("notLoggedIn", true);
         else
+        {
             mav.addObject("isLoggedIn", true);
+            mav.addObject("username", activeUsername);
+
+            User user = userService.findByUsername(activeUsername);
+            if(user.getSubscriptions().contains(c.getSeriesID()))
+            {
+                mav.addObject("isSubscribed", true);
+            }
+            else
+            {
+                mav.addObject("isSubscribed",false);
+            }
+
+            List<Comment> comments = interactionService.getCommentsForComicid(comicID);
+            mav.addObject("comments", comments);
+            if(user.getUpvotedComicIds().contains(comicID))
+            {
+                mav.addObject("upvoted", true);
+            }
+            else {
+                mav.addObject("upvoted", false);
+            }
+        }
 
         mav.addObject("comic", c);
         List<String> panels = new ArrayList<>();
@@ -215,27 +238,6 @@ public class ComicController {
             mav.addObject("subscribeType", "Subscribe");
         }
         mav.addObject("comments", comicService.getCommentsForComicid(comicID));
-        mav.addObject("username", activeUsername);
-
-        User user = userService.findByUsername(activeUsername);
-        if(user.getSubscriptions().contains(c.getSeriesID()))
-        {
-            mav.addObject("isSubscribed", true);
-        }
-        else
-        {
-            mav.addObject("isSubscribed",false);
-        }
-
-        List<Comment> comments = interactionService.getCommentsForComicid(comicID);
-        mav.addObject("comments", comments);
-        if(user.getUpvotedComicIds().contains(comicID))
-        {
-            mav.addObject("upvoted", true);
-        }
-        else {
-            mav.addObject("upvoted", false);
-        }
 
         return mav;
 

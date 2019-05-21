@@ -207,10 +207,9 @@ public class UsersController {
         mav.addObject("username",activeUsername);
 
         List<Comic> popularComics = userService.getPopular();
-        List<Comic> recommendedComics = userService.getRecommended(activeUsername);
+
         //List<String> popularThumbnails = userService.getThumbnails(popularComics);
         mav.addObject("popularComics", popularComics);
-        mav.addObject("recommendedComics", recommendedComics);
         mav.addObject("user", session.getAttribute("user"));
         //mav.addObject("popularThumbnails", popularThumbnails);
         mav.addObject("featuredComic",comicService.getRandomComic());
@@ -221,6 +220,8 @@ public class UsersController {
             List<Comic> history = userService.getUserHistory(activeUsername);
             mav.addObject("history", history);
             mav.addObject("isLoggedIn", true);
+            List<Comic> recommendedComics = userService.getRecommended(activeUsername);
+            mav.addObject("recommendedComics", recommendedComics);
         }
 
         return mav;

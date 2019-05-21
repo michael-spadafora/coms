@@ -109,7 +109,11 @@ public class ComicService {
 
         System.out.println("COMIC SERVICE FIND ALL COMICS BY USERNAME: " + username);
         List<Comic> list = comicRepository.findByUsername(username);
-        return list;
+        List<Comic> comics = new ArrayList<Comic>();
+        for(Comic comic: list)
+            if(comic.isPublished())
+                comics.add(comic);
+        return comics;
 
     }
 
