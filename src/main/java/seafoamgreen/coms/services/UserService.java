@@ -275,7 +275,9 @@ public class UserService {
         List<Comic> ret = new ArrayList<Comic>();
         for (String subKey: subscriptions) {
             List<Comic> coms = comicRepository.findBySeriesID(subKey);
-            ret.addAll(coms);
+            for(Comic comic: coms)
+                if(comic.isPublished())
+                    ret.add(comic);
         }
 		return ret;
     }

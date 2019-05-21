@@ -363,7 +363,7 @@ public class UsersController {
             response.sendError(401, "User not logged in");
         }
         String username = (String) session.getAttribute("username");
-        
+
 
 
         List<Comic> mySubs = userService.getComicsFromSubscriptions(username);
@@ -377,6 +377,12 @@ public class UsersController {
         ModelAndView mav = new ModelAndView("mySubscriptions");
         mav.addObject("mySubs", mySubs);
         mav.addObject("seriesMap", map);
+
+        mav.addObject("username", username);
+        if(username == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
     }
 

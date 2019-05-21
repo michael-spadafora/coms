@@ -262,8 +262,13 @@ public class ComicService {
 
     public List<Comic> findAllBySeriesId(String id) {
 
-        return comicRepository.findBySeriesID(id);
+        List<Comic> allComics = comicRepository.findBySeriesID(id);
+        List<Comic> comics = new ArrayList<Comic>();
+        for(Comic comic: allComics)
+            if(comic.isPublished())
+                comics.add(comic);
 
+        return comics;
     }
 
     public void addToHistory(String username, String comicID) {
