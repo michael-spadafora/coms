@@ -52,6 +52,34 @@
             background-position:center bottom;
         }
 
+        .showcases{
+            background: rgb(36,247,156);
+            background: linear-gradient(198deg, rgba(36,247,156,1) 17%, rgba(36,247,156,1) 86%);
+            border-radius: 10px;
+            box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+            padding:20px 40px 0px 40px;
+            margin-top:20px;
+            margin-bottom: 20px;
+        }
+
+
+        .card {
+            border:none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            background:#FFF;
+            margin-left: 10px;
+            margin-right: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            transition: all .2s ease-in-out;
+        }
+        .card:hover{
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            transform: scale(1.01);
+        }
+
     </style>
 </head>
 
@@ -115,15 +143,17 @@
 <div class="container">
     <h2><span th:text="${genre}"></span>Comics</h2>
 
-    <div class="row">
-        <div class="col-xs-4" th:each="comic: ${comicList}">
-            <div class="card" style="width: 15rem;" >
-                <div class="card-body">
-                    <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
-                    <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                    <div th:text="${comic.getUsername()}"></div>
-                    <div>
-                        <a th:href="@{'/mylist/removeComic/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a>
+    <div class="showcases">
+        <div class="row">
+            <div class="col-xs-4" th:each="comic: ${comicList}">
+                <div class="card" style="width: 15rem;">
+                    <div class="card-body">
+                        <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img style = " border: 1px solid #ddd;border-radius: 4px;" th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
+                        <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
+                        <div th:text = "${comic.getSeriesName()}"></div>
+                        <div th:text="'By: ' + ${comic.getUsername()}"></div>
+                        <div th:if = "${user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
+                        <div th:if = "${!user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
                     </div>
                 </div>
             </div>

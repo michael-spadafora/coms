@@ -41,6 +41,9 @@ public class ComicController {
     @Autowired
     InteractionService interactionService;
 
+    @Autowired
+    SearchService searchService;
+
 
     @PostMapping("/create")
     public void addNewComic(HttpServletRequest request, HttpServletResponse response)
@@ -123,6 +126,14 @@ public class ComicController {
         //add panel list
         List<Panel> panelList = panelService.findAllByCoimcId(comicId);
         mav.addObject("panelList", panelList);
+
+        HttpSession session = request.getSession(false);
+        String activeUsername = (String)session.getAttribute("username");
+        mav.addObject("username", activeUsername);
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
     }
 
@@ -217,7 +228,6 @@ public class ComicController {
         }
 
         List<Comment> comments = interactionService.getCommentsForComicid(comicID);
-        System.out.println(comments);
         mav.addObject("comments", comments);
         if(user.getUpvotedComicIds().contains(comicID))
         {
@@ -385,7 +395,15 @@ public class ComicController {
     @GetMapping("/{genre}")
     public ModelAndView comicGenre(HttpServletRequest request, HttpServletResponse response, @PathVariable String genre) {
         ModelAndView mav = new ModelAndView("genreComics");
-        List<Comic> comics = comicService.findAllByTag(genre);
+        List<Comic> comics = searchService.findAllByTag(genre);
+        List<Comic> publishedComics = new ArrayList<Comic>();
+
+        //wont display unpublished comics
+        for(Comic c: comics) {
+            if (c.isPublished()) {
+                publishedComics.add(c);
+            }
+        }
 
         HttpSession session = request.getSession(false);
 
@@ -396,8 +414,11 @@ public class ComicController {
             mav.addObject("isLoggedIn", true);
 
         mav.addObject("genre", genre + ' ');
-        mav.addObject("comicList",comics);
+        mav.addObject("comicList",publishedComics);
         mav.addObject("username",activeUsername);
+        User currentUser = userService.findByUsername(activeUsername);
+        session.setAttribute("user", currentUser);
+        mav.addObject("user", currentUser);
 
         return mav;
     }

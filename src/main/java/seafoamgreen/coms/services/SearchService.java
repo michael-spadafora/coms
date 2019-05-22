@@ -27,52 +27,60 @@ public class SearchService {
 
 
     public List<Comic> findAllByTag(String tag) {
-        List<Comic> comics = comicRepository.findAllByTag(tag);
-        List<Comic> publishedComics = new ArrayList<Comic>();
+        List<Comic> allComics = comicRepository.findAll();
+        List<Comic> comics = new ArrayList<Comic>();
 
-        //wont display unpublished comics
-        for(Comic c: comics) {
-            if (c.isPublished()) {
-                publishedComics.add(c);
-            }
-        }
-        return publishedComics;
+        for(Comic comic: allComics)
+            for(String t: comic.getTags())
+                if(t.toLowerCase().contains(tag.toLowerCase()) ||
+                        tag.toLowerCase().contains(t.toLowerCase()))
+                    comics.add(comic);
+
+        return comics;
     }
 
     public List<User> findAllByUsername(String username) {
-        // List<User> users = userRepository.findAll();
-        String usernameRegex = ".*"+username +".*";
-        List<User> users = userRepository.findAllByUsernameRegex(usernameRegex);
+        List<User> allUsers = userRepository.findAll();
+        List<User> users = new ArrayList<User>();
+        for(User user: allUsers)
+            if(user.getUsername().equalsIgnoreCase(username))
+                users.add(user);
         return users;
     }
 
     public List<Comic> findAllByComicTitle(String comicName) {
-        String comicNameRegex = ".*"+ comicName +".*";
-        List<Comic> comics = comicRepository.findAllByComicNameRegex(comicNameRegex);
+        List<Comic> allComics = comicRepository.findAll();
+        List<Comic> comics = new ArrayList<Comic>();
 
-        List<Comic> publishedComics = new ArrayList<Comic>();
+        for(Comic comic: allComics)
+            if(comic.getComicName().toLowerCase().contains(comicName.toLowerCase()) ||
+                    comicName.toLowerCase().contains(comic.getComicName().toLowerCase()))
+                comics.add(comic);
 
-        //wont display unpublished comics
-        for(Comic c: comics) {
-            if (c.isPublished()) {
-                publishedComics.add(c);
-            }
-        }
-
-        return publishedComics;
-    }
-
-    public List<Series> findAllBySeriesName(String seriesName) {
-        String seriesNameRegex = ".*"+seriesName +".*";
-        List<Series> series = seriesRepository.findAllBySeriesNameRegex(seriesNameRegex);
-
-        return series;
-    }
-
-    public List<Comic> findAllComicsByUsername(String username) {
-        List<Comic> comics = comicRepository.findAllByUsername(username);
         return comics;
     }
 
+    public List<Comic> findAllBySeriesName(String seriesName) {
+        List<Comic> allComics = comicRepository.findAll();
+        List<Comic> comics = new ArrayList<Comic>();
+        for(Comic comic: allComics)
+            if(comic.getSeriesName().toLowerCase().contains(seriesName.toLowerCase()) ||
+                    seriesName.toLowerCase().contains(comic.getSeriesName().toLowerCase()))
+                comics.add(comic);
+
+        return comics;
+    }
+
+    public List<Comic> findAllComicsByUsername(String username) {
+        List<Comic> allComics = comicRepository.findAll();
+        List<Comic> comics = new ArrayList<Comic>();
+
+        for(Comic comic: allComics)
+            if(comic.getUsername().toLowerCase().contains(username.toLowerCase()) ||
+                    username.toLowerCase().contains(comic.getUsername().toLowerCase()))
+                comics.add(comic);
+
+        return comics;
+    }
 }
 

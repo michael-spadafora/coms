@@ -36,28 +36,27 @@
 
         .container{width:70%;margin-top:50px}
 
-        #featuredCarousel{width:100%;background-color:#E8E8E8;;margin-top:70px}
+        #featuredCarousel{width:100%;margin-top:70px;background-color:#e8e8e8}
         .carousel-inner{text-align: center}
-        .carousel-item > img{width:450px; height:300px;margin: 0 auto}
+        .carousel-item > img{background-color:white;border:1px black solid}
 
         .profileImages{border-radius: 50%;width:50px;border:0.5px black solid}
         .bottom{padding-left:50px}
         .actions{border-style:none;background-color: white}
         .heading{margin-top:25px}
         #comicTitle{font-size: 27px; font-weight: bold;padding-left:25px}
+        #comicSeries{padding-left:25px}
         .actionButtons{float:right;padding-right:100px}
 
-        .subscribe{float:right;color:white;background-color:#FF4141;border: 1px #ff0000 solid;padding:5px 15px}
+        .subscribe{float:right;}
 
-        .commentSection{padding-left:25px;margin-top:25px}
+        .commentSection{margin-top:25px}
         #commentForm img, #commentForm input{display: inline-block}
         #commentForm input{background:transparent;border: none; border-bottom: 1px solid lightgrey;margin-left:10px;width:35%}
         #commentForm button{border-style:none;margin-left:15px; padding:7px 15px;}
 
-        .comments{float:left;;margin-top:20px}
-        .comment{margin-top:15px}
-
-        .recommended{float:right;padding-right:100px}
+        .comments{float:left;margin-top:20px}
+        .comment{margin-top:10px;width:200%}
 
         .col-bg-3 > div > a > img{object-fit: cover; width:200px;height:100px}
 
@@ -141,7 +140,7 @@
 
         <div class="carousel-inner">
             <div th:each="panel, iter: ${panels}" th:class="${iter.first}? 'carousel-item active' : 'carousel-item'">
-                <img class="img-fluid" th:src="${panel}">
+                <img class="img-fluid" th:src="${panel}" width="600px" height="550px">
             </div>
         </div>
 
@@ -156,11 +155,11 @@
         </a>
     </div>
 </div>
-1
+
 <div class="bottom">
     <div class="heading">
-        <h5 th:text="${comic.getSeriesName()}"></h5>
         <span id="comicTitle" th:text="${comic.getComicName()}"></span>
+        <h5 id="comicSeries" th:text="${comic.getSeriesName()}"></h5>
         <div class="actionButtons">
             <form action = "/interaction/vote" method ="post" style="float:left;margin-right:10px">
                 <button type="submit" id="upvote"  style = "background: none; padding: 0px; border: none;" >
@@ -192,11 +191,11 @@
         <div style="padding-right:100px">
             <form th:if = "${!isSubscribed}" action = "/interaction/subscribers/addByComic/">
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
-                <button type = "submit" class="subscribe" th:text="${subscribeType}" ></button>
+                <button type = "submit" class="btn btn-danger subscribe" th:text="${subscribeType}" ></button>
             </form>
             <form th:if = "${isSubscribed}" action = "/interaction/subscribers/removeByComic">
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
-                <button type = "submit" class="subscribe" th:text="${subscribeType}" ></button>
+                <button type = "submit" class="btn btn-danger subscribe" th:text="${subscribeType}" ></button>
             </form>
         </div>
     </div>
@@ -213,8 +212,13 @@
 
         <div class="comments">
             <div class="comment" th:each="comment: ${comments}">
-                <a href="viewUser.html"><img class="profileImages" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+2.png"></a>
-                <span th:text="${comment.getCommentBody()}"></span>
+                <a style="margin-right:15px;float:left;" href="viewUser.html">
+                    <img class="profileImages" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+2.png">
+                </a>
+                <span>
+                    <div th:text="${comment.getUserId()}" style="font-weight:bold"></div>
+                    <div th:text="${comment.getCommentBody()}"></div>
+                </span>
             </div>
         </div>
 

@@ -61,6 +61,12 @@ public class PanelController {
         ModelAndView mav = new ModelAndView("createComic");
         mav.addObject("currentPanel", panel);
         mav.addObject("panelList", panelService.findAllByCoimcId(currentComicId));
+        String activeUsername = (String)session.getAttribute("username");
+        mav.addObject("username", activeUsername);
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
     }
     @GetMapping("/getBlob")
@@ -111,6 +117,12 @@ public class PanelController {
 
         mav.addObject("currentPanel", panel);
         mav.addObject("panelList", panelService.findAllByCoimcId(currentComicId));
+        String activeUsername = (String)session.getAttribute("username");
+        mav.addObject("username", activeUsername);
+        if(activeUsername == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
 
         return mav;
     }

@@ -279,7 +279,7 @@ public class UsersController {
         return mav;
     }
 
-
+ 
     //this should be edited. im not sure what exactly should go here
     @GetMapping("/profile/{userProfile}")
     public ModelAndView viewOther(HttpServletRequest request, HttpServletResponse response, @PathVariable String userProfile) throws IOException {
@@ -448,6 +448,11 @@ public class UsersController {
             mav.addObject("notLoggedIn", true);
         else
             mav.addObject("isLoggedIn", true);
+
+        User currentUser = userService.findByUsername(username);
+        session.setAttribute("user", currentUser);
+        mav.addObject("user", currentUser);
+
         return mav;
     }
 
@@ -475,4 +480,28 @@ public class UsersController {
         //return mav;
         return new ModelAndView( "redirect:/myList");
     }
+
+    //TODO: allow user to upload a profile picture
+    @PostMapping("/picture/upload")
+    public ModelAndView uploadImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendError(401, "User not logged in");
+        }
+        String username = (String) session.getAttribute("username");
+
+        if (username == null) {
+            response.sendError(401, "User not logged in");
+        }
+
+        String blob = request.getParameter("image");
+
+        userService.addProfilePicture(username, blob);
+
+
+
+        return new ModelAndView( "redirect:/accountSettings");
+      
+    }
+
 }
