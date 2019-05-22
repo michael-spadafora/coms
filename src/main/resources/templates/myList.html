@@ -140,7 +140,10 @@
 </nav>
 
 <body>
-<div class="container">
+<div class = "container">
+    <h3 style = "text-align:center;" th:if = "${myList.isEmpty()}">There seems to be nothing there</h3>
+</div>
+<div th:if = "${!myList.isEmpty()}" class="container">
     <h2>My List</h2>
 
     <div class="showcases">
