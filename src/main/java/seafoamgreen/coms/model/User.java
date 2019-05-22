@@ -27,27 +27,13 @@ public class User {
     private ArrayList<String> collabSeriesIds = new ArrayList<String>();
 
     private String profilePictureUrl;
-    private String profilePictureBlob;
 
     public User() {
-
     }
 
-    public String getProfilePictureBlob() {
-        return profilePictureBlob;
-    }
+    public String getProfilePictureUrl() {return profilePictureUrl;}
 
-    public void setProfilePictureBlob(String profilePictureBlob) {
-        this.profilePictureBlob = profilePictureBlob;
-    }
-
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
-    }
-
-    public void setProfilePictureUrl(String profilePictureBlob) {
-        this.profilePictureUrl = profilePictureBlob;
-    }
+    public void setProfilePictureUrl(String url) {profilePictureUrl = url;}
 
     /**
      * @return the myList
@@ -96,7 +82,7 @@ public class User {
         if (comicIdHistory.contains(comicId)) {
             comicIdHistory.remove(comicId);
         }
-        
+
         comicIdHistory.add(0, comicId);
         if (comicIdHistory.size() > 5) {
             comicIdHistory.remove(5);
@@ -173,7 +159,7 @@ public class User {
         this.messagesReceivedIds = messagesRecieved;
     }
 
-    
+
 
     /**
      * @return the messages
@@ -192,7 +178,6 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-
 
 
     }

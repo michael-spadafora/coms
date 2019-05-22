@@ -192,9 +192,47 @@ public class ComicController {
         }
         String activeUsername = (String)session.getAttribute("username");
         if(activeUsername == null)
+        {
             mav.addObject("notLoggedIn", true);
+
+            List<Comment> comments = interactionService.getCommentsForComicid(comicID);
+            mav.addObject("comments", comments);
+            List<User> commentUsers = new ArrayList<User>();
+            for(Comment comment:comments)
+                commentUsers.add(userService.findByUsername(comment.getUserId()));
+            mav.addObject("commentUsers",commentUsers);
+        }
         else
+        {
             mav.addObject("isLoggedIn", true);
+            mav.addObject("username", activeUsername);
+
+            User user = userService.findByUsername(activeUsername);
+            mav.addObject("currentUser",user);
+            if(user.getSubscriptions().contains(c.getSeriesID()))
+            {
+                mav.addObject("isSubscribed", true);
+            }
+            else
+            {
+                mav.addObject("isSubscribed",false);
+            }
+
+            List<Comment> comments = interactionService.getCommentsForComicid(comicID);
+            mav.addObject("comments", comments);
+            List<User> commentUsers = new ArrayList<User>();
+            for(Comment comment:comments)
+                commentUsers.add(userService.findByUsername(comment.getUserId()));
+            mav.addObject("commentUsers",commentUsers);
+
+            if(user.getUpvotedComicIds().contains(comicID))
+            {
+                mav.addObject("upvoted", true);
+            }
+            else {
+                mav.addObject("upvoted", false);
+            }
+        }
 
         mav.addObject("comic", c);
         List<String> panels = new ArrayList<>();
@@ -215,27 +253,6 @@ public class ComicController {
             mav.addObject("subscribeType", "Subscribe");
         }
         mav.addObject("comments", comicService.getCommentsForComicid(comicID));
-        mav.addObject("username", activeUsername);
-
-        User user = userService.findByUsername(activeUsername);
-        if(user.getSubscriptions().contains(c.getSeriesID()))
-        {
-            mav.addObject("isSubscribed", true);
-        }
-        else
-        {
-            mav.addObject("isSubscribed",false);
-        }
-
-        List<Comment> comments = interactionService.getCommentsForComicid(comicID);
-        mav.addObject("comments", comments);
-        if(user.getUpvotedComicIds().contains(comicID))
-        {
-            mav.addObject("upvoted", true);
-        }
-        else {
-            mav.addObject("upvoted", false);
-        }
 
         return mav;
 

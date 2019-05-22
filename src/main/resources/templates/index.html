@@ -102,10 +102,10 @@
             </a>
         </div>
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active" style="margin-top:8px">
+            <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
                 <a th:href="@{/myList}">My List</a>
             </li>
-            <li class="nav-item active" style="margin-top:8px">
+            <li class="nav-item active" style="margin-top:8px" th:if="${isLoggedIn}">
                 <a th:href="@{/subscriptions}">Subscriptions</a>
             </li>
             <li class="nav-item active dropdown" style="margin-left:-3px">
@@ -144,7 +144,7 @@
                 </div>
             </li>
             <li class="nav-item active" style="margin-top:8px" th:if="${notLoggedIn}">
-                <a th:href="@{/}"><span class="fa fa-sign-in"></span> Login</a>
+                <a th:href="@{/login}"><span class="fa fa-sign-in"></span> Login</a>
             </li>
         </ul>
     </div>
@@ -165,7 +165,7 @@
 
     <div class="listOfComics">
 
-        <div  class = "showcases" >
+        <div  class = "showcases" th:if="${isLoggedIn}">
             <h3>Continue Reading</h3>
             <div class="continue testimonial-group">
                  <div class="row">
@@ -177,9 +177,11 @@
                                 </a>
                                 <div th:text = "${comic.getSeriesName()}"></div>
                                 <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                                <div th:text="'By:' + ${comic.getUsername()}"></div>
-                                <div th:if = "${user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
-                                <div th:if = "${!user.getMyList().contains(comic.getId())}"><a th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
+                                <div th:text="'By: ' + ${comic.getUsername()}"></div>
+                                <div th:if="${isLoggedIn}">
+                                    <div th:if = "${user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
+                                    <div th:if = "${isLoggedIn && !user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -196,9 +198,11 @@
                                 <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img style = " border: 1px solid #ddd;border-radius: 4px;" th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
                                 <div th:text = "${comic.getSeriesName()}"></div>
                                 <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                                <div th:text="'By:' + ${comic.getUsername()}"></div>
-                                <div th:if = "${user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
-                                <div th:if = "${!user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
+                                <div th:text="'By: ' + ${comic.getUsername()}"></div>
+                                <div th:if="${isLoggedIn}">
+                                    <div th:if = "${user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
+                                    <div th:if = "${isLoggedIn && !user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -206,7 +210,7 @@
             </div>
         </div>
 
-        <div  class = "showcases" >
+        <div  class = "showcases" th:if="${isLoggedIn}">
             <h3>Recommended for You</h3>
             <div class="recommended testimonial-group">
              <div class="row">
@@ -216,10 +220,11 @@
                                 <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img style = " border: 1px solid #ddd;border-radius: 4px;" th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
                                 <div th:text = "${comic.getSeriesName()}"></div>
                                 <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                                <div th:text="'By:' + ${comic.getUsername()}"></div>
-                                <div th:if = "${user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
-                                <div th:if = "${!user.getMyList().contains(comic.getId())}"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
-
+                                <div th:text="'By: ' + ${comic.getUsername()}"></div>
+                                <div th:if="${isLoggedIn}">
+                                    <div th:if = "${user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
+                                    <div th:if = "${isLoggedIn && !user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
+                                </div>
                             </div>
                         </div>
                     </div>

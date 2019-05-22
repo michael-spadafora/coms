@@ -39,6 +39,13 @@ public class UsersController {
 
 
     @GetMapping("/")
+    public ModelAndView defaultPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        //System.out.println(request.getSession().getAttribute("username"));
+        return new ModelAndView( "redirect:/home");
+    };
+
+    @GetMapping("/login")
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         //System.out.println(request.getSession().getAttribute("username"));
@@ -207,10 +214,9 @@ public class UsersController {
         mav.addObject("username",activeUsername);
 
         List<Comic> popularComics = userService.getPopular();
-        List<Comic> recommendedComics = userService.getRecommended(activeUsername);
+
         //List<String> popularThumbnails = userService.getThumbnails(popularComics);
         mav.addObject("popularComics", popularComics);
-        mav.addObject("recommendedComics", recommendedComics);
         mav.addObject("user", session.getAttribute("user"));
         //mav.addObject("popularThumbnails", popularThumbnails);
         mav.addObject("featuredComic",comicService.getRandomComic());
@@ -221,6 +227,8 @@ public class UsersController {
             List<Comic> history = userService.getUserHistory(activeUsername);
             mav.addObject("history", history);
             mav.addObject("isLoggedIn", true);
+            List<Comic> recommendedComics = userService.getRecommended(activeUsername);
+            mav.addObject("recommendedComics", recommendedComics);
         }
 
         return mav;
@@ -370,12 +378,22 @@ public class UsersController {
         Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
         for(String seriesID: user.getSubscriptions())
         {
-            map.put(seriesService.findByID(seriesID).get(), comicService.findAllBySeriesId(seriesID));
+            List<Comic> comics = new ArrayList<Comic>();
+            for(Comic comic: comicService.findAllBySeriesId(seriesID))
+                if(comic.isPublished())
+                    comics.add(comic);
+            map.put(seriesService.findByID(seriesID).get(), comics);
         }
 
         ModelAndView mav = new ModelAndView("mySubscriptions");
         mav.addObject("mySubs", mySubs);
         mav.addObject("seriesMap", map);
+
+        mav.addObject("username", username);
+        if(username == null)
+            mav.addObject("notLoggedIn", true);
+        else
+            mav.addObject("isLoggedIn", true);
         return mav;
     }
 
@@ -494,13 +512,13 @@ public class UsersController {
             response.sendError(401, "User not logged in");
         }
 
-        String blob = request.getParameter("image");
+        String url = request.getParameter("profilePicture");
 
-        userService.addProfilePicture(username, blob);
+        userService.addProfilePicture(username, url);
 
 
 
-        return new ModelAndView( "redirect:/accountSettings");
+        return new ModelAndView( "redirect:/profile/self");
       
     }
 
