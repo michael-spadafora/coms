@@ -158,6 +158,7 @@ public class ComicController {
 
         //TODO: ADD SORT
 
+        User user = userService.findByUsername(username);
         Map<Series, List<Comic>> map = new HashMap<Series, List<Comic>>();
 
         for(Series series : seriesList)
@@ -165,8 +166,20 @@ public class ComicController {
             map.put(series, comicService.findAllBySeriesId(series.getId()));
         }
         //Get all of users series
-
+        Map<Series, List<Comic>> collabMap = new HashMap<Series, List<Comic>>();
+        if(user.getCollabSeriesIds() != null)
+        {
+            for(String id : user.getCollabSeriesIds())
+            {
+                Series series = seriesService.findByID(id).get();
+                if(!seriesList.contains(series))
+                {
+                    collabMap.put(series, comicService.findAllBySeriesId(id));
+                }
+            }
+        }
         mav.addObject("seriesMap", map);
+        mav.addObject("collabMap", collabMap);
 
         System.out.println(map);
 
@@ -231,6 +244,14 @@ public class ComicController {
             }
             else {
                 mav.addObject("upvoted", false);
+            }
+
+            if(user.getDownvotedComicIds().contains(comicID))
+            {
+                mav.addObject("downvoted", true);
+            }
+            else {
+                mav.addObject("downvoted", false);
             }
         }
 
