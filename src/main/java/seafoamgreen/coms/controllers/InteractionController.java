@@ -21,7 +21,7 @@ public class InteractionController {
     public int checkUserVote(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
         if (session == null) return 0;
-        String username = (String) session.getAttribute("usename");
+        String username = (String) session.getAttribute("username");
         String comicId = request.getParameter("comic"); //possibly need to switch to id
 
         return interactionService.checkVote(username, comicId);

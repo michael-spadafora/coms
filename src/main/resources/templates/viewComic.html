@@ -169,25 +169,23 @@
             <form action = "/interaction/vote" method ="post" style="float:left;margin-right:10px">
                 <button type="submit" id="upvote"  style = "background: none; padding: 0px; border: none;" th:if="${isLoggedIn}">
                     <span th:if = "${!upvoted}" class="fa fa-arrow-up" ></span>
-                    <span th:if = "${upvoted}" class="fa fa-arrow-down"></span>
+                    <span th:if = "${upvoted}" style = "color: #72eeb8;"class="fa fa-arrow-up"></span>
                 </button>
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
                 <input name = "value" value = "1" hidden>
                 <input name = "username" th:value = "${username}" hidden>
             </form>
-
-            <span style="font-weight: bold">Votes: <span th:text="${comic.getScore()}" style="margin-right:10px"></span></span>
-
-            <!--
             <form action = "/interaction/vote" method ="post" style="float:right">
                 <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
-                    <i class="fa fa-arrow-down"></i>
+                    <span th:if = "${!downvoted}" class="fa fa-arrow-down" ></span>
+                    <span th:if = "${downvoted}" style = "color: #72eeb8;"class="fa fa-arrow-down"></span>
                 </button>
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
                 <input name = "value" value = "-1" hidden>
                 <input name = "username" th:value = "${username}" hidden>
             </form>
-            -->
+
+            <span style="font-weight: bold">Votes: <span th:text="${comic.getScore()}" style="margin-right:10px"></span>
         </div>
     </div>
 
