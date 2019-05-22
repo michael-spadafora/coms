@@ -341,16 +341,19 @@ public class ComicController {
 
         // request.getParameter("panelList");
         //Date posttime = request.getParameter("postTime"); still gotta figure this out for rn
+
+        System.out.println("publush comic controller");
+        System.out.println(publishDate);
         Comic c = null;
-        if (publishDate != null) {
+        if (!publishDate.equals("")) {
             c = comicService.publishComic(comicId, publishDate);
+            System.out.println("later");
             System.out.println("publishing comic");
         } else {
+            System.out.println("publish now");
             c = comicService.publishComic(comicId, true);
             System.out.println("publishing comic");
         }
-
-
 
 
         //returns the view of the comic

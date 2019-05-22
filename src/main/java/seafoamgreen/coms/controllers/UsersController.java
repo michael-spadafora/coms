@@ -353,7 +353,7 @@ public class UsersController {
         }
 
         String username = (String) session.getAttribute("username");
-        
+
         List<Message> sent = userService.getSent(username);
         ModelAndView mav = new ModelAndView("messages");
         mav.addObject("Messages", sent);
@@ -361,8 +361,8 @@ public class UsersController {
 
     }
 
-    
-    @GetMapping ("/subscriptions") 
+
+    @GetMapping ("/subscriptions")
     public ModelAndView viewSubList(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         HttpSession session = request.getSession(false);
