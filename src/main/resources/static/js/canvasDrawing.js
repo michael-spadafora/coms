@@ -798,7 +798,6 @@ function updateModifications(changes) {
         undoStack.push(myjson);
         redoStack = [];
     }
-    //mods = 0;
 }
 
 
