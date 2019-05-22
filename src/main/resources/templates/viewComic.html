@@ -65,7 +65,6 @@
 
         .col-bg-3 > div > a > img{object-fit: cover; width:200px;height:100px}
 
-        .bottom > div > a{color:black}
         .bottom > div > a:hover{text-decoration: none;}
         html, body{
             height: 100%;
@@ -102,9 +101,12 @@
                     Genre
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="genreDropdown">
+                    <a class="dropdown-item" th:href="@{/comic/Foreign}">Foreign</a>
                     <a class="dropdown-item" th:href="@{/comic/Funny}">Funny</a>
-                    <a class="dropdown-item" th:href="@{/comic/Romance}">Romance</a>
+                    <a class="dropdown-item" th:href="@{/comic/Horror}">Horror</a>
                     <a class="dropdown-item" th:href="@{/comic/Kids}">Kids</a>
+                    <a class="dropdown-item" th:href="@{/comic/Mystery}">Mystery</a>
+                    <a class="dropdown-item" th:href="@{/comic/Romance}">Romance</a>
                 </div>
             </li>
         </ul>
@@ -193,7 +195,7 @@
     </div>
 
     <div>
-        <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="'By: ' + ${comic.getUsername()}"></span></a>
+        <a th:href="@{'/profile/'+ ${comic.getUsername()}}" style="padding-left:25px" th:text="'By: ' + ${comic.getUsername()}"></a>
         <div style="margin-top:-5%;margin-right:15%" th:if="${isLoggedIn}">
             <form th:if = "${!isSubscribed}" action = "/interaction/subscribers/addByComic/">
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>

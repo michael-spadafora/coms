@@ -89,7 +89,7 @@
 
 
         h3{color:black;font-family:'Open Sans', sans-serif;margin-left:-13px}
-
+        .creator:hover{text-decoration: none}
     </style>
 
 </head>
@@ -113,9 +113,12 @@
                     Genre
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="genreDropdown">
+                    <a class="dropdown-item" th:href="@{/comic/Foreign}">Foreign</a>
                     <a class="dropdown-item" th:href="@{/comic/Funny}">Funny</a>
-                    <a class="dropdown-item" th:href="@{/comic/Romance}">Romance</a>
+                    <a class="dropdown-item" th:href="@{/comic/Horror}">Horror</a>
                     <a class="dropdown-item" th:href="@{/comic/Kids}">Kids</a>
+                    <a class="dropdown-item" th:href="@{/comic/Mystery}">Mystery</a>
+                    <a class="dropdown-item" th:href="@{/comic/Romance}">Romance</a>
                 </div>
             </li>
         </ul>
@@ -177,7 +180,7 @@
                                 </a>
                                 <div th:text = "${comic.getSeriesName()}"></div>
                                 <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                                <div th:text="'By: ' + ${comic.getUsername()}"></div>
+                                <a class="creator" th:href="@{'/profile/' + ${comic.getUsername()}}" th:text="'By: ' + ${comic.getUsername()}"></a>
                                 <div th:if="${isLoggedIn}">
                                     <div th:if = "${user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
                                     <div th:if = "${isLoggedIn && !user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
@@ -198,7 +201,7 @@
                                 <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img style = " border: 1px solid #ddd;border-radius: 4px;" th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
                                 <div th:text = "${comic.getSeriesName()}"></div>
                                 <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                                <div th:text="'By: ' + ${comic.getUsername()}"></div>
+                                <a class="creator" th:href="@{'/profile/' + ${comic.getUsername()}}" th:text="'By: ' + ${comic.getUsername()}"></a>
                                 <div th:if="${isLoggedIn}">
                                     <div th:if = "${user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
                                     <div th:if = "${isLoggedIn && !user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
@@ -220,7 +223,7 @@
                                 <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img style = " border: 1px solid #ddd;border-radius: 4px;" th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
                                 <div th:text = "${comic.getSeriesName()}"></div>
                                 <h5 class="card-title" th:text="${comic.getComicName()}"></h5>
-                                <div th:text="'By: ' + ${comic.getUsername()}"></div>
+                                <a class="creator" th:href="@{'/profile/' + ${comic.getUsername()}}" th:text="'By: ' + ${comic.getUsername()}"></a>
                                 <div th:if="${isLoggedIn}">
                                     <div th:if = "${user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/remove/'+ ${comic.getId()}}" class="btn btn-danger">Remove From My List</a></div>
                                     <div th:if = "${isLoggedIn && !user.getMyList().contains(comic.getId())}" style="margin-top: 7px"><a  th:href="@{'/mylist/add/'+ ${comic.getId()}}" class="btn btn-danger">Add to My List</a></div>
