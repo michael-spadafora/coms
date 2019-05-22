@@ -54,9 +54,26 @@ public class PanelController {
         String currentComicId = (String)session.getAttribute("currentComicId");
         String currentPanelId = (String)session.getAttribute("currentPanelId");
         Panel panel = panelService.findById(currentPanelId);
+        System.out.print("current panelid" + panel.getId());
+        List<Panel> panelList = panelService.findAllByCoimcId(currentComicId);
+        int index = 0;
+        for(int i =0; i < panelList.size();i++)
+        {
+            System.out.println(panelList.get(0).getId());
+            if(panelList.get(i).getId().equals(panel.getId()))
+            {
+                index = i;
+            }
+        }
         comicService.deletePanel(currentComicId, panel.getId());
         panelService.deleteById(panel.getId());
         //Update the Session Comic
+
+        panel = panelList.get(index-1);
+
+
+
+        session.setAttribute("currentPanelId", panel.getId());
 
         ModelAndView mav = new ModelAndView("createComic");
         mav.addObject("currentPanel", panel);

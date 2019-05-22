@@ -64,6 +64,7 @@
             padding:20px 30px 20px 40px;
             margin-top:20px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
 
@@ -155,7 +156,7 @@
 
     <div class="showcases">
         <div class="row">
-            <div class="col-xs-4" th:each="comic: ${comicList}">
+            <div class="col-xs-4" style = "text-align:center;"th:each="comic: ${comicList}">
                 <div class="card" style="width: 15rem;">
                     <div class="card-body">
                         <a th:href="@{'/comic/view/'+ ${comic.getId()}}"><img style = " border: 1px solid #ddd;border-radius: 4px;" th:src="${comic.getThumbnailBlob()}" width="200" height="150"></a>
