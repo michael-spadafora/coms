@@ -188,6 +188,8 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
 
 <div class="container">
     <h2>My Collaborations</h2>
+
+    <h3 style = "text-align:center; margin-bottom: 30px;" th:if = "${collabMap.isEmpty()}">There seems to be nothing here!</h3>
     <div class = "series-box mt-4 mb-4" th:each="series: ${collabMap}">
         <div class="row justify-content-center">
             <div class="col-md-auto mt-2">
