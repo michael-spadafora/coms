@@ -682,8 +682,11 @@ document.getElementById('jsonLoader').onchange = function handleImage(e) {
           canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function(o, object) {
           fabric.log(o, object);
       });
-      redo_undo_status = false;
-      updateModifications(true);
+	setTimeout(function(){
+        redo_undo_status = false;
+        updateModifications(true);
+      }, 3000);
+
         }
 
 
@@ -805,8 +808,10 @@ function undo(){
         redoStack.push(undoStack.pop());
         redo_undo_status = true;
         canvas.loadFromJSON(undoStack[undoStack.length - 1]);
-        redo_undo_status = false;
-        canvas.renderAll();
+        setTimeout(function(){
+          redo_undo_status = false;
+          canvas.renderAll();
+        }, 3000);
     }
 }
 
@@ -815,9 +820,11 @@ function redo(){
         canvas.clear().renderAll();
         redo_undo_status = true;
         canvas.loadFromJSON(redoStack[redoStack.length - 1]);
-        redo_undo_status = false;
         undoStack.push(redoStack.pop());
-        canvas.renderAll();
+        setTimeout(function(){
+          redo_undo_status = false;
+          canvas.renderAll();
+        }, 3000);
     }
 }
 
