@@ -77,6 +77,9 @@
             background-attachment:fixed;
             background-position:center bottom;
         }
+
+        .carousel-indicators li{width:13px;height:13px;border-radius: 50%; background-color:seagreen}
+        .carousel-indicators .active{width:13px;height:13px;border-radius: 50%; background-color:#71eeb8}
     </style>
 </head>
 
@@ -176,7 +179,7 @@
                 <input name = "username" th:value = "${username}" hidden>
             </form>
             <form action = "/interaction/vote" method ="post" style="float:right">
-                <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" >
+                <button type="submit" id="downvote"  style = "background: none; padding: 0px; border: none;" th:if="${isLoggedIn}">
                     <span th:if = "${!downvoted}" class="fa fa-arrow-down" ></span>
                     <span th:if = "${downvoted}" style = "color: #72eeb8;"class="fa fa-arrow-down"></span>
                 </button>
@@ -185,7 +188,7 @@
                 <input name = "username" th:value = "${username}" hidden>
             </form>
 
-            <span style="font-weight: bold">Votes: <span th:text="${comic.getScore()}" style="margin-right:10px"></span>
+            <span style="font-weight: bold">Score: <span th:text="${comic.getScore()}" style="margin-right:10px"></span>
         </div>
     </div>
 
