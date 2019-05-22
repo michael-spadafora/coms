@@ -160,7 +160,7 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
   padding: 5px; ;width: 100%;height: 15vw; object-fit: cover; " th:src="${comic.getThumbnailBlob()}" ></a>
                         <div class = "mt-2" style = "text-align: center">
                             <a id="edit" th:data-thing="${comic.getId()}" onclick="editComic(this.getAttribute('data-thing'));" style = " color: white; background-color: #79BAEC" class="btn">Edit</a>
-                            <a  th:if="${!comic.isPublished()}" id="publish" th:data-thing="${comic.getId()}" onclick="publishComic(this.getAttribute('data-thing'));"style = " color: white; background-color: #79BAEC" class="btn ">Publish</a>
+                            <a  th:if="${!comic.isPublished()}" id="publish" th:data-thing="${comic.getId()}" onclick="setPublishComicID(this.getAttribute('data-thing'));" data-toggle="modal" data-target="#publishComicModal" style = " color: white; background-color: #79BAEC" class="btn ">Publish</a>
                             <a th:data-thing="${comic.getId()}" onclick="deleteComic(this.getAttribute('data-thing'));" style = " color: white; background-color: #EE316A" id="delete" class="btn ">Delete</a>
                         </div>
                     </div>
@@ -188,6 +188,8 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
 
 <div class="container">
     <h2>My Collaborations</h2>
+
+    <h3 style = "text-align:center; margin-bottom: 30px;" th:if = "${collabMap.isEmpty()}">There seems to be nothing here!</h3>
     <div class = "series-box mt-4 mb-4" th:each="series: ${collabMap}">
         <div class="row justify-content-center">
             <div class="col-md-auto mt-2">
@@ -245,6 +247,28 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
     </div>
 </div>
 
+<div class="modal fade" id="publishComicModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Publish Comic</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id = "publishForm" action="/comic/publish"  method="post">
+                    <input hidden id = "publishComicIDModal" name = "comicId">
+                    <input id = "publishDate" value = ""  class= "hide required" type="date" name="publishDate">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;background-color:lightgrey;border-color:lightgrey">Close</button>
+                        <button onclick= "form_publish_date_comic()" type="submit" class="btn btn-danger" data-dismiss="modal">Set Publish Date</button>
+                        <button onclick= "form_publish_comic()" type="submit" class="btn btn-danger" data-dismiss="modal">Publish Now</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 <div class="modal fade" id="createSeriesModal">
@@ -305,20 +329,10 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
     <input hidden id = "viewComicId" name = "viewComicID">
 </form>
 
-<form id = "publishComicForm" action = "/comic/publish" method = "post">
-    <input hidden id = "publishComicId" name = "comicId">
-</form>
+
 <script type="text/javascript">
 
 
-    function publishComic(comicId)
-    {
-
-
-        document.getElementById("publishComicId").value = comicId;
-        document.getElementById("publishComicForm").submit();
-
-    }
 
     function viewTheComic(comicId)
     {
@@ -357,6 +371,17 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
         }
 
     }
+    function form_publish_date_comic() {
+        console.log("asdfsd");
+        document.getElementById("publishForm").submit();
+
+    }
+    function form_publish_comic() {
+        console.log("asdf");
+        document.getElementById("publishDate").value = "";
+        document.getElementById("publishForm").submit();
+
+    }
     function setCollabSeriesId(id){
         console.log("AKLSDFJLASDJKFASLDFJK");
         console.log(id);
@@ -371,6 +396,11 @@ background: linear-gradient(18deg, rgba(255,255,255,1) 67%, rgba(217,254,238,1) 
         }
 
     }
+    function setPublishComicID(id)
+    {
+        document.getElementById("publishComicIDModal").value = id;
+    }
+
     function form_submit_comic() {
 
 
