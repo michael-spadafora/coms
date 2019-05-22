@@ -57,6 +57,11 @@
 
         .comments{float:left;margin-top:20px}
         .comment{margin-top:10px;width:200%}
+        #commentButton:hover{
+            color:white;
+            background-color: #72eeb8;
+            border-radius: 5px;
+        }
 
         .col-bg-3 > div > a > img{object-fit: cover; width:200px;height:100px}
 
@@ -206,7 +211,7 @@
                 <img class="profileImages" src="https://s3.us-east-2.amazonaws.com/seafoamgreen/person+1.png">
                 <input name="comment" placeholder="Type your comment">
                 <input name="comicId" th:value="${comic.getId()}" hidden>
-                <button onclick= "form_submit()" type="submit">Comment</button>
+                <button id = "commentButton" onclick= "form_submit()" type="submit">Comment</button>
             </form>
         </div>
 
