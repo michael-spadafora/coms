@@ -192,7 +192,16 @@ public class ComicController {
         }
         String activeUsername = (String)session.getAttribute("username");
         if(activeUsername == null)
+        {
             mav.addObject("notLoggedIn", true);
+
+            List<Comment> comments = interactionService.getCommentsForComicid(comicID);
+            mav.addObject("comments", comments);
+            List<User> commentUsers = new ArrayList<User>();
+            for(Comment comment:comments)
+                commentUsers.add(userService.findByUsername(comment.getUserId()));
+            mav.addObject("commentUsers",commentUsers);
+        }
         else
         {
             mav.addObject("isLoggedIn", true);

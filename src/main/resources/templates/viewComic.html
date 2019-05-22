@@ -46,7 +46,7 @@
         .heading{margin-top:25px}
         #comicTitle{font-size: 27px; font-weight: bold;padding-left:25px}
         #comicSeries{padding-left:25px}
-        .actionButtons{float:right;padding-right:100px}
+        .actionButtons{float:right;margin-top:-5%;margin-right:15%}
 
         .subscribe{float:right;}
 
@@ -171,7 +171,7 @@
                 <input name = "username" th:value = "${username}" hidden>
             </form>
 
-            <span>Votes: <span th:text="${comic.getScore()}" style="margin-right:10px"></span></span>
+            <span style="font-weight: bold">Votes: <span th:text="${comic.getScore()}" style="margin-right:10px"></span></span>
 
             <!--
             <form action = "/interaction/vote" method ="post" style="float:right">
@@ -188,7 +188,7 @@
 
     <div>
         <a th:href="@{'/profile/'+ ${comic.getUsername()}}"><span style="padding-left:25px" th:text="'By: ' + ${comic.getUsername()}"></span></a>
-        <div style="padding-right:100px" th:if="${isLoggedIn}">
+        <div style="margin-top:-5%;margin-right:15%" th:if="${isLoggedIn}">
             <form th:if = "${!isSubscribed}" action = "/interaction/subscribers/addByComic/">
                 <input name = "comicId" th:value = "${comic.getId()}" hidden>
                 <button type = "submit" class="btn btn-danger subscribe" th:text="${subscribeType}" ></button>
@@ -212,11 +212,11 @@
 
         <div class="comments">
             <div class="comment" th:each="comment,iter: ${comments}">
-                <a style="margin-right:15px;float:left;" href="viewUser.html">
+                <a style="margin-right:15px;float:left;" th:href="@{'/profile/'+ ${commentUsers.get(iter.index).getUsername()}}">
                     <img class="profileImages" th:src="${commentUsers.get(iter.index).getProfilePictureUrl()}">
                 </a>
                 <span>
-                    <div th:text="${comment.getUserId()}" style="font-weight:bold"></div>
+                    <a th:href="@{'/profile/'+ ${commentUsers.get(iter.index).getUsername()}}" th:text="${comment.getUserId()}" style="font-weight:bold"></a>
                     <div th:text="${comment.getCommentBody()}"></div>
                 </span>
             </div>
