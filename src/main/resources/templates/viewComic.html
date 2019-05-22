@@ -40,7 +40,7 @@
         .carousel-inner{text-align: center}
         .carousel-item > img{background-color:white;border:1px black solid}
 
-        .profileImages{border-radius: 50%;width:50px;border:0.5px black solid}
+        .profileImages{border-radius: 50%;width:50px;height:50px;border:0.5px black solid}
         .bottom{padding-left:50px}
         .actions{border-style:none;background-color: white}
         .heading{margin-top:25px}
@@ -201,7 +201,7 @@
     </div>
 
     <div class="commentSection">
-        <div class="user" th:if="${isLoggedIn}">
+        <div class="user" th:if="${isLoggedIn}" th:style="${isLoggedIn} ? 'margin-top:75px'">
             <form id="commentForm" action="/interaction/comment/" method="post">
                 <img class="profileImages" th:src="${currentUser.getProfilePictureUrl()}">
                 <input name="comment" placeholder="Type your comment">
@@ -209,8 +209,8 @@
                 <button onclick= "form_submit()" type="submit">Comment</button>
             </form>
         </div>
-
-        <div class="comments">
+        <h5 style="margin-top:5px">Comments (<span th:text="${#lists.size(comments)}"></span>)</h5>
+        <div class="comments" style="margin-top:-5px">
             <div class="comment" th:each="comment,iter: ${comments}">
                 <a style="margin-right:15px;float:left;" th:href="@{'/profile/'+ ${commentUsers.get(iter.index).getUsername()}}">
                     <img class="profileImages" th:src="${commentUsers.get(iter.index).getProfilePictureUrl()}">
