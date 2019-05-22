@@ -109,7 +109,11 @@ public class ComicService {
 
         System.out.println("COMIC SERVICE FIND ALL COMICS BY USERNAME: " + username);
         List<Comic> list = comicRepository.findByUsername(username);
-        return list;
+        List<Comic> comics = new ArrayList<Comic>();
+        for(Comic comic: list)
+            if(comic.isPublished())
+                comics.add(comic);
+        return comics;
 
     }
 
@@ -258,8 +262,9 @@ public class ComicService {
 
     public List<Comic> findAllBySeriesId(String id) {
 
-        return comicRepository.findBySeriesID(id);
+        List<Comic> allComics = comicRepository.findBySeriesID(id);
 
+        return allComics;
     }
 
     public void addToHistory(String username, String comicID) {

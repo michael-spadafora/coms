@@ -53,7 +53,6 @@ public class UserService {
         String encrypted = encrypt(password);
         User user = new User(username, encrypted);
         user.setProfilePictureUrl("https://s3.us-east-2.amazonaws.com/seafoamgreen/person+1.png");
-        user.setProfilePictureBlob(this.getBlob(username));
         //use default for now
         userRepository.save(user);
         return user;
@@ -241,7 +240,11 @@ public class UserService {
 
 
     public List<Comic> getUsersComics(String username) {
-        List<Comic> comics = comicRepository.findAllByUsername(username);
+        List<Comic> allComics = comicRepository.findAllByUsername(username);
+        List<Comic> comics = new ArrayList<Comic>();
+        for(Comic comic: allComics)
+            if(comic.isPublished())
+                comics.add(comic);
         return comics;
     }
 
@@ -250,7 +253,8 @@ public class UserService {
         List<String> myList = user.getMyList();
         List<Comic> ret = new ArrayList<Comic>();
         for (String s:myList) {
-            ret.add(comicRepository.findByComicId(s));
+            if(comicRepository.findByComicId(s).isPublished())
+                ret.add(comicRepository.findByComicId(s));
         }
         return ret;
     }
@@ -284,7 +288,9 @@ public class UserService {
         List<Comic> ret = new ArrayList<Comic>();
         for (String subKey: subscriptions) {
             List<Comic> coms = comicRepository.findBySeriesID(subKey);
-            ret.addAll(coms);
+            for(Comic comic: coms)
+                if(comic.isPublished())
+                    ret.add(comic);
         }
 		return ret;
     }
@@ -300,12 +306,10 @@ public class UserService {
 		return ret;
 	}
 
-	public void addProfilePicture(String username, String blob) {
+	public void addProfilePicture(String username, String url) {
         User user = userRepository.findByUsername(username);
         if (user == null) return;
-        String url = storeBlobInAWS(username, blob);
         user.setProfilePictureUrl(url);
-        user.setProfilePictureBlob(this.getBlob(username));
         userRepository.save(user);
     }
     
