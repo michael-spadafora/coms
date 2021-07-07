@@ -2,7 +2,6 @@ package seafoamgreen.coms.controllers;
 
 
 
-import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Panel;
 import seafoamgreen.coms.services.ComicService;
 import seafoamgreen.coms.services.PanelService;
@@ -41,6 +40,16 @@ public class PanelController {
     {
         ModelAndView mav = new ModelAndView("createComic");
         return mav;
+    }
+
+    @GetMapping("/getBlob")
+    public String getPanelBlob(HttpServletRequest request) {
+        String panelId = request.getParameter("panelId");
+        if (panelId == null) {
+            panelId = request.getParameter("panelID");
+        }
+
+        return panelService.getBlob(panelId);
     }
 
     @PostMapping("/savePanel")

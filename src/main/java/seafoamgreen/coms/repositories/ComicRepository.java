@@ -1,7 +1,8 @@
 package seafoamgreen.coms.repositories;
 
-
 import seafoamgreen.coms.model.Comic;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -35,5 +36,8 @@ public interface ComicRepository extends MongoRepository<Comic, String> {
 
     @Query("{ 'username' : ?0 }")
     List<Comic> findAllByUsername(String username);
+
+    @Query("{ }")
+	List<Comic> findMostPopular(Sort sort);
 
 }

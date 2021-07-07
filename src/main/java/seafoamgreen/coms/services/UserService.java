@@ -1,12 +1,13 @@
 package seafoamgreen.coms.services;
 
-import org.jasypt.util.password.PasswordEncryptor;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import seafoamgreen.coms.model.Comic;
 import seafoamgreen.coms.model.Message;
 import seafoamgreen.coms.model.User;
+import seafoamgreen.coms.repositories.ComicRepository;
 import seafoamgreen.coms.repositories.MessageRepository;
 import seafoamgreen.coms.repositories.UserRepository;
 
@@ -24,7 +25,11 @@ public class UserService {
     @Autowired
     private MessageRepository messageRepository;
 
-    private PasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+    @Autowired
+    private ComicRepository comicRepository;
+
+    @Autowired
+    private PanelService panelService;
 
     // Create
     public User create(String username, String password) {
@@ -54,7 +59,6 @@ public class UserService {
             // String encrypted = passwordEncryptor.encryptPassword(password);
             return generatedPassword;
         } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -133,6 +137,25 @@ public class UserService {
 
         return ret;
     }
+
+	public List<Comic> getPopular() {
+        Sort sort = new Sort(Sort.Direction.DESC, "score");
+        List<Comic> popular = comicRepository.findMostPopular(sort);
+		return popular;
+    }
+    
+
+	public List<String> getThumbnails(List<Comic> popularComics) {
+        List<String> thumbs = new ArrayList<>();
+        for (Comic c: popularComics) {
+            List<String> panelIds = c.getPanelList();
+            String panel1 = panelIds.get(0);
+            if (panel1 == null) continue;
+            panelService.getBlob(panel1);
+
+        }
+		return null;
+	}
 
 
 }
